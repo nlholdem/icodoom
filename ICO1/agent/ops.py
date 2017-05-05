@@ -31,6 +31,8 @@ def linear(input_, output_size, name='linear', msra_coeff=1):
 def conv_encoder(data, params, name, msra_coeff=1):
     layers = []
     for nl, param in enumerate(params):
+        print "nl", nl
+        print "conv_encoder: nl: ", nl, " param out_channels: ", param['out_channels'], " param kernel: ", param['kernel'], " param stride: ", param['stride']
         if len(layers) == 0:
             curr_inp = data
         else:
@@ -42,7 +44,9 @@ def conv_encoder(data, params, name, msra_coeff=1):
         
 def fc_net(data, params, name, last_linear = False, return_layers = [-1], msra_coeff=1):
     layers = []
+
     for nl, param in enumerate(params):
+
         if len(layers) == 0:
             curr_inp = data
         else:
@@ -52,6 +56,9 @@ def fc_net(data, params, name, last_linear = False, return_layers = [-1], msra_c
             layers.append(linear(curr_inp, param['out_dims'], name=name + str(nl), msra_coeff=msra_coeff))
         else:
             layers.append(lrelu(linear(curr_inp, param['out_dims'], name=name + str(nl), msra_coeff=msra_coeff)))
+
+        print "Ok, here's the ", nl, "th layer: ", layers[-1].get_shape(), " param[", nl, "]: ", param, "linear: ", last_linear
+
             
     if len(return_layers) == 1:
         return layers[return_layers[0]]

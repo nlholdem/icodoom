@@ -46,7 +46,7 @@ class DoomSimulator:
         self.available_controls, self.continuous_controls, self.discrete_controls = self.analyze_controls(self.config)
         self.num_buttons = self._game.get_available_buttons_size()
         assert (self.num_buttons == len(self.discrete_controls) + len(self.continuous_controls))
-        assert (len(self.continuous_controls) == 0)  # only discrete for now
+#        assert (len(self.continuous_controls) == 0)  # only discrete for now
         self.num_meas = self._game.get_available_game_variables_size()
 
         self.game_initialized = False
@@ -61,6 +61,7 @@ class DoomSimulator:
         avail_controls = m.group(1).split()
         cont_controls = np.array([bool(re.match('.*_DELTA', c)) for c in avail_controls])
         discr_controls = np.invert(cont_controls)
+        print (avail_controls, np.squeeze(np.nonzero(cont_controls)), np.squeeze(np.nonzero(discr_controls)))
         return avail_controls, np.squeeze(np.nonzero(cont_controls)), np.squeeze(np.nonzero(discr_controls))
 
     def step(self, action):
@@ -76,6 +77,7 @@ class DoomSimulator:
 
         img = state.screen_buffer
         meas = state.game_variables  # this is a numpy array of game variables specified by the scenario
+#        print(meas)
         term = self._game.is_episode_finished()
 
         return img, meas, rwrd, term

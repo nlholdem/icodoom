@@ -82,11 +82,11 @@ WORKDIR ${HOME_DIR}
 
 
 # Copy agent files inside Docker image:
-COPY IntelAct_track2 .
+COPY ICO1 .
 
 
 ### Do not change this ###
-COPY cig2017.wad .
+COPY *.wad ./
 COPY _vizdoom.cfg .
 ##########################
 RUN sudo chown ${HOST_UID}:${HOST_GID} -R *

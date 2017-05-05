@@ -13,7 +13,7 @@ def main():
     simulator_args = {}
     simulator_args['config'] = 'config/config.cfg'
     simulator_args['resolution'] = (160,120)
-    simulator_args['frame_skip'] = 2
+    simulator_args['frame_skip'] = 1
     simulator_args['color_mode'] = 'GRAY'   
     simulator_args['game_args'] = "+name IntelAct +colorset 7"
         
@@ -38,7 +38,10 @@ def main():
     agent_args['fc_meas_params']  = np.array([(128,), (128,), (128,)], dtype = [('out_dims',int)]) 
     agent_args['fc_joint_params'] = np.array([(256,), (256,), (-1,)], dtype = [('out_dims',int)])   
     agent_args['target_dim'] = agent_args['num_future_steps'] * len(agent_args['meas_for_net_init'])
-    
+
+    # efference copy
+    agent_args['n_ffnet_hidden'] = np.array([200,200])
+
     # experiment arguments
     agent_args['test_objective_params'] = (np.array([5,11,17]), np.array([1.,1.,1.]))
     agent_args['history_length'] = 1
@@ -69,10 +72,11 @@ def main():
     gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
     sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options,log_device_placement=False))
     ag = Agent(sess, agent_args)
-    ag.load('./checkpoints')
+#    ag.load('./checkpoints')
     
     img_buffer = np.zeros((agent_args['history_length'], simulator.num_channels, simulator.resolution[1], simulator.resolution[0]))
     meas_buffer = np.zeros((agent_args['history_length'], simulator.num_meas))
+    act_buffer = np.zeros((agent_args['history_length'], 6))
     curr_step = 0
     term = False
     
@@ -81,25 +85,42 @@ def main():
     replacement_act = [0,1,0,0,0,1,0,0,0,0,0,0]
     #MOVE_FORWARD   MOVE_BACKWARD   TURN_LEFT   TURN_RIGHT  ATTACK  SPEED   SELECT_WEAPON2  SELECT_WEAPON3  SELECT_WEAPON4  SELECT_WEAPON5  SELECT_WEAPON6  SELECT_WEAPON7
 
+#    img, meas, rwrd, term = simulator.step(np.squeeze(ag.random_actions(1)).tolist())
+
+
+
+
     while not term:
         if curr_step < agent_args['history_length']:
-            img, meas, rwrd, term = simulator.step(np.squeeze(ag.random_actions(1)).tolist())
+            curr_act = np.squeeze(ag.random_actions(1)).tolist()
+            img, meas, rwrd, term = simulator.step(curr_act)
+
         else:
             state_imgs = np.transpose(np.reshape(img_buffer[np.arange(curr_step-agent_args['history_length'], curr_step) % agent_args['history_length']], (1,) + agent_args['state_imgs_shape']), [0,2,3,1])
             state_meas = np.reshape(meas_buffer[np.arange(curr_step-agent_args['history_length'], curr_step) % agent_args['history_length']], (1,agent_args['history_length']*simulator.num_meas))
+#            print ("img type: ", img.dtype, "img_buffer type: ", img_buffer[0].dtype)
 
-            curr_act = np.squeeze(ag.act(state_imgs, state_meas, agent_args['test_objective_params'])[0]).tolist()
+
+            curr_act = np.squeeze(ag.random_actions(1)[0]).tolist()
             if curr_act[:6] in acts_to_replace:
                 curr_act = replacement_act
+            hack = [0] * len(curr_act)
+            hack[0] = 1
+
             img, meas, rwrd, term = simulator.step(curr_act)
             if (not (meas is None)) and meas[0] > 30.:
                 meas[0] = 30.
-            
+
+#            print ("state_imgs: ", np.shape(state_imgs), "state_meas: ", np.shape(state_meas), "curr_act: ", np.shape(curr_act))
+#            print ("img type: ", np.ndarray.flatten(ag.preprocess_input_images(img)).dtype, "state_img type: ", state_imgs.dtype, "state_meas type: ", state_meas.dtype)
+
+            ag.act_ffnet(np.ndarray.flatten(state_imgs), np.ndarray.flatten(state_meas), np.array(curr_act[:6], dtype='float64'), np.ndarray.flatten(ag.preprocess_input_images(img)))
         if not term:
             img_buffer[curr_step % agent_args['history_length']] = img
             meas_buffer[curr_step % agent_args['history_length']] = meas
+            act_buffer[curr_step % agent_args['history_length']] = curr_act[:6]
             curr_step += 1
-                
+
     simulator.close_game()
 
 
