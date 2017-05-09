@@ -2,9 +2,11 @@ from __future__ import print_function
 import numpy as np
 import sys
 sys.path.append('./bin/python')
-import vizdoom 
+import os.path
+import vizdoom
 from agent.doom_simulator import DoomSimulator
 from agent.agent import Agent
+from agent.nnet import visPredictor
 import tensorflow as tf
 
 def main():
@@ -40,7 +42,7 @@ def main():
     agent_args['target_dim'] = agent_args['num_future_steps'] * len(agent_args['meas_for_net_init'])
 
     # efference copy
-    agent_args['n_ffnet_hidden'] = np.array([200,200])
+    agent_args['n_ffnet_hidden'] = np.array([50,50])
 
     # experiment arguments
     agent_args['test_objective_params'] = (np.array([5,11,17]), np.array([1.,1.,1.]))
@@ -72,7 +74,7 @@ def main():
     gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
     sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options,log_device_placement=False))
     ag = Agent(sess, agent_args)
-#    ag.load('./checkpoints')
+    ag.load('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/checkpoint')
     
     img_buffer = np.zeros((agent_args['history_length'], simulator.num_channels, simulator.resolution[1], simulator.resolution[0]))
     meas_buffer = np.zeros((agent_args['history_length'], simulator.num_meas))
@@ -88,7 +90,14 @@ def main():
 #    img, meas, rwrd, term = simulator.step(np.squeeze(ag.random_actions(1)).tolist())
 
 
+    diff_y = 0
+    diff_x = 0
+    diff_z = 0
+    inertia = 0.5
+    iter = 1
+    epoch = 200
 
+    userdoc = os.path.join(os.path.expanduser("~"), "Documents")
 
     while not term:
         if curr_step < agent_args['history_length']:
@@ -100,21 +109,48 @@ def main():
             state_meas = np.reshape(meas_buffer[np.arange(curr_step-agent_args['history_length'], curr_step) % agent_args['history_length']], (1,agent_args['history_length']*simulator.num_meas))
 #            print ("img type: ", img.dtype, "img_buffer type: ", img_buffer[0].dtype)
 
-
             curr_act = np.squeeze(ag.random_actions(1)[0]).tolist()
             if curr_act[:6] in acts_to_replace:
                 curr_act = replacement_act
             hack = [0] * len(curr_act)
-            hack[0] = 1
+
+            hack[6] = diff_x
+            hack[8] = -diff_y * 0.2
+            hack[3] = 0 #diff_z
+#            hack[6] = 1
+#            hack[8] = 1
+            curr_act[4] = 0
 
             img, meas, rwrd, term = simulator.step(curr_act)
             if (not (meas is None)) and meas[0] > 30.:
                 meas[0] = 30.
+            if (not (img is None)):
 
-#            print ("state_imgs: ", np.shape(state_imgs), "state_meas: ", np.shape(state_meas), "curr_act: ", np.shape(curr_act))
-#            print ("img type: ", np.ndarray.flatten(ag.preprocess_input_images(img)).dtype, "state_img type: ", state_imgs.dtype, "state_meas type: ", state_meas.dtype)
+#                print ("state_imgs: ", np.shape(state_imgs), "state_meas: ", np.shape(state_meas), "curr_act: ", np.shape(curr_act))
+#                print ("img type: ", np.ndarray.flatten(ag.preprocess_input_images(img)).dtype, "state_img type: ", state_imgs.dtype, "state_meas type: ", state_meas.dtype)
 
-            ag.act_ffnet(np.ndarray.flatten(state_imgs), np.ndarray.flatten(state_meas), np.array(curr_act[:6], dtype='float64'), np.ndarray.flatten(ag.preprocess_input_images(img)))
+                ag.act_ffnet(np.ndarray.flatten(state_imgs), np.ndarray.flatten(state_meas), np.array(hack[:6], dtype='float64'), np.ndarray.flatten(ag.preprocess_input_images(img)))
+                diff_image = np.absolute(np.reshape(np.array(ag.ext_ffnet_output), [img.shape[0], img.shape[1]]) - ag.preprocess_input_images(img))
+#                diff_image = np.absolute(ag.preprocess_input_images(img_buffer[(curr_step-1) % agent_args['history_length']] - ag.preprocess_input_images(img)))
+#                diff_image = ag.preprocess_input_images(img)
+
+                diff_x = diff_x + inertia *((np.argmax(diff_image.sum(axis=0)) / float(diff_image.shape[1])) - 0.5 - diff_x)
+                diff_y = diff_x + inertia *((np.argmax(diff_image.sum(axis=1)) / float(diff_image.shape[0])) - 0.5 - diff_y)
+
+
+
+#                print ("diff_x: ", diff_x, " diff_y: ", hack[6], "centre_x: ", np.argmax(diff_image.sum(axis=0)), "centre_y: ", np.argmax(diff_image.sum(axis=1)))
+
+                if (iter % epoch == 0):
+                    print ("saving...")
+                    np.save(os.path.join('/home/paul', "hack"), np.reshape(np.array(ag.ext_ffnet_output), [img.shape[0], img.shape[1]]))
+                    np.save(os.path.join('/home/paul', "target"), ag.preprocess_input_images(img))
+                    np.save(os.path.join('/home/paul', "diff"), diff_image)
+                    diff_x = np.random.normal(0, 2)
+                    diff_z = np.random.normal(4, 2)
+
+                iter += 1
+
         if not term:
             img_buffer[curr_step % agent_args['history_length']] = img
             meas_buffer[curr_step % agent_args['history_length']] = meas
@@ -122,6 +158,7 @@ def main():
             curr_step += 1
 
     simulator.close_game()
+    ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))
 
 
 if __name__ == '__main__':

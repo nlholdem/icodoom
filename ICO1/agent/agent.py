@@ -37,7 +37,9 @@ class Agent:
         self.target_dim = args['target_dim']
 
         self.n_ffnet_hidden = args['n_ffnet_hidden']
-            
+        self.ext_ffnet_output = np.zeros(self.state_imgs_shape[1] * self.state_imgs_shape[2])
+        print ("ext_ffnet_output: ", self.ext_ffnet_output.shape)
+
         self.build_model()
         self.epoch = 50
         self.iter = 1
@@ -88,11 +90,11 @@ class Agent:
         return self.postprocess_actions(acts_net, acts_manual)
 
     def weight_variable(self, shape):
-        initial = tf.truncated_normal(shape, stddev=0.1)
+        initial = tf.truncated_normal(shape, stddev=0.01)
         return tf.Variable(initial)
 
     def bias_variable(self, shape):
-        initial = tf.constant(0.1, shape=shape)
+        initial = tf.constant(0.01, shape=shape)
         return tf.Variable(initial)
 
     def make_ffnet(self):
@@ -102,7 +104,7 @@ class Agent:
 
 
         self.ffnet_input = tf.placeholder(tf.float32, shape=[None, n_ffnet_inputs])
-        ffnet_output = tf.placeholder(tf.float32, shape=[None, n_ffnet_outputs])
+        self.ffnet_output = tf.placeholder(tf.float32, shape=[None, n_ffnet_outputs])
         self.ffnet_target = tf.placeholder(tf.float32, shape=[None, n_ffnet_outputs])
 
         W_layer1 = self.weight_variable([n_ffnet_inputs, self.n_ffnet_hidden[0]])
@@ -120,24 +122,20 @@ class Agent:
         # dropout
         self.keep_prob = tf.placeholder(tf.float32)
         my_drop = tf.nn.dropout(h_2, self.keep_prob)
-        print("output shape: ", ffnet_output.get_shape(), "target shape: ", self.ffnet_target.get_shape())
+        print("output shape: ", self.ffnet_output.get_shape(), "target shape: ", self.ffnet_target.get_shape())
         print("W3: ", W_layer3.get_shape(), " bias3: ", b_layer3.get_shape())
 
-        ffnet_output = tf.matmul(h_2, W_layer3) + b_layer3
-        print("output shape: ", ffnet_output.get_shape(), "target shape: ", self.ffnet_target.get_shape())
+        self.ffnet_output = tf.matmul(h_2, W_layer3) + b_layer3
+        print("output shape: ", self.ffnet_output.get_shape(), "target shape: ", self.ffnet_target.get_shape())
         print("W3: ", W_layer3.get_shape(), " bias3: ", b_layer3.get_shape())
 
-        self.loss = tf.squared_difference(ffnet_output, self.ffnet_target)
+        self.loss = tf.squared_difference(self.ffnet_output, self.ffnet_target)
 
-        self.ffnet_train_step = tf.train.AdamOptimizer(1e-4).minimize(self.loss)
+        self.ffnet_train_step = tf.train.AdamOptimizer(0).minimize(self.loss)
 
         self.accuracy = tf.reduce_mean(self.loss)
 #        sess.run(tf.global_variables_initializer())
 
-    def make_ico(self):
-
-
-        
     def make_net(self, input_images, input_measurements, input_actions, reuse=False):
         if reuse:
             tf.get_variable_scope().reuse_variables()
@@ -185,11 +183,11 @@ class Agent:
             self.input_measurements_preprocessed = self.preprocess_input_measurements(self.input_measurements)
         
         # make the actual net
-#        self.make_net(self.input_images_preprocessed, self.input_measurements_preprocessed, self.input_actions)
+        self.make_net(self.input_images_preprocessed, self.input_measurements_preprocessed, self.input_actions)
         self.make_ffnet()
         
         # make the saver, lr and param summaries
-#        self.saver = tf.train.Saver()
+        self.saver = tf.train.Saver()
 
         tf.initialize_all_variables().run(session=self.sess)
     
@@ -200,18 +198,20 @@ class Agent:
 
         in_length = in_image.shape[0] + in_meas.shape[0] + in_actions.shape[0]
         net_inputs = np.reshape(np.concatenate([in_image, in_meas, in_actions], axis=0), (1, in_length))
-        net_targets = np.reshape(target_image, (1, target_image.shape[0])) - in_image
+        net_targets = np.reshape(target_image, (1, target_image.shape[0]))
 #        print ("Health: ", in_meas[1])
 
         if (in_meas[1] > 1.0): # don't train on images where the player is dead
-            self.ffnet_train_step.run(session=self.sess, feed_dict={
-                self.ffnet_input: net_inputs,
-                self.ffnet_target: net_targets, self.keep_prob: 0.5
-            })
-            if self.iter % self.epoch == 0:
-                print ("LOSS: ", self.accuracy.eval(session=self.sess, feed_dict={
+            with self.sess.as_default():
+                self.ext_ffnet_output, hack = self.sess.run([self.ffnet_output, self.ffnet_train_step], feed_dict={
                     self.ffnet_input: net_inputs,
                     self.ffnet_target: net_targets, self.keep_prob: 0.5
+                })
+
+                if self.iter % self.epoch == 0:
+                    print ("LOSS: ", self.accuracy.eval(feed_dict={
+                        self.ffnet_input: net_inputs,
+                        self.ffnet_target: net_targets, self.keep_prob: 0.5
                     }))
 
             self.iter = self.iter+1
@@ -250,6 +250,13 @@ class Agent:
                     if not state_meas[ns,self.meas_for_manual[12]] == best_weapon+2:
                         curr_act[ns, best_weapon] = 1
             return curr_act
+
+    def save(self, checkpoint_dir):
+        with self.sess.as_default():
+            save_path = self.saver.save(self.sess, checkpoint_dir)
+            print ("saving model file: ", save_path)
+
+
 
     def load(self, checkpoint_dir):
         ckpt = tf.train.get_checkpoint_state(checkpoint_dir)
