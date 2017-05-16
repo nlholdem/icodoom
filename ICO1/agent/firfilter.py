@@ -7,10 +7,12 @@ class Filterbank:
 
         temp_bank = []
         for i in range(0, num_filters-1):
-            f = np.array([min_filterlen + i * (max_filterlen - min_filterlen) / num_filters])
+            f = np.full([min_filterlen + i * (max_filterlen - min_filterlen) / num_filters],
+                         1. / float(min_filterlen + i * (max_filterlen - min_filterlen) / num_filters) )
             temp_bank.append(f)
 
-        this.bank = np.asarray(temp_bank)
+#        print temp_bank
+        self.bank = np.asarray(temp_bank)
 
 
 
