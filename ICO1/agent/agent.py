@@ -22,6 +22,7 @@ class Agent:
         self.discrete_controls = args['discrete_controls']
         self.discrete_controls_manual = args['discrete_controls_manual']
         self.opposite_button_pairs = args['opposite_button_pairs']
+        self.history_length = args['history_length']
         self.prepare_controls_and_actions()
         
         # preprocessing
@@ -37,6 +38,11 @@ class Agent:
         self.target_dim = args['target_dim']
 
         self.n_ffnet_hidden = args['n_ffnet_hidden']
+        self.n_ffnet_meas = args['n_ffnet_meas']
+        self.n_ffnet_act = args['n_ffnet_act']
+
+        #        self.n_ffnet_inputs = args['n_ffnet_inputs']
+#        self.n_ffnet_outputs = args['n_ffnet_outputs']
         self.ext_ffnet_output = np.zeros(self.state_imgs_shape[1] * self.state_imgs_shape[2])
         print ("ext_ffnet_output: ", self.ext_ffnet_output.shape)
 
@@ -99,8 +105,13 @@ class Agent:
 
     def make_ffnet(self):
 
-        n_ffnet_inputs = self.state_imgs_shape[0] * self.state_imgs_shape[1] * self.state_imgs_shape[2] + 16 + 6
+        n_ffnet_inputs = self.state_imgs_shape[0] * self.state_imgs_shape[1] * self.state_imgs_shape[2] + self.n_ffnet_act + self.n_ffnet_meas
         n_ffnet_outputs = self.state_imgs_shape[1] * self.state_imgs_shape[2]
+        print ("n_ffnet_act: ", self.n_ffnet_act)
+        print ("n_ffnet_meas: ", self.n_ffnet_meas)
+        print ("ffnet: in: ", n_ffnet_inputs)
+        print ("ffnet: hid: ", self.n_ffnet_hidden)
+        print ("ffnet: out: ", n_ffnet_outputs)
 
 
         self.ffnet_input = tf.placeholder(tf.float32, shape=[None, n_ffnet_inputs])
@@ -122,16 +133,16 @@ class Agent:
         # dropout
         self.keep_prob = tf.placeholder(tf.float32)
         my_drop = tf.nn.dropout(h_2, self.keep_prob)
-        print("output shape: ", self.ffnet_output.get_shape(), "target shape: ", self.ffnet_target.get_shape())
-        print("W3: ", W_layer3.get_shape(), " bias3: ", b_layer3.get_shape())
+#        print("output shape: ", self.ffnet_output.get_shape(), "target shape: ", self.ffnet_target.get_shape())
+#        print("W3: ", W_layer3.get_shape(), " bias3: ", b_layer3.get_shape())
 
         self.ffnet_output = tf.matmul(h_2, W_layer3) + b_layer3
-        print("output shape: ", self.ffnet_output.get_shape(), "target shape: ", self.ffnet_target.get_shape())
-        print("W3: ", W_layer3.get_shape(), " bias3: ", b_layer3.get_shape())
+#        print("output shape: ", self.ffnet_output.get_shape(), "target shape: ", self.ffnet_target.get_shape())
+#        print("W3: ", W_layer3.get_shape(), " bias3: ", b_layer3.get_shape())
 
         self.loss = tf.squared_difference(self.ffnet_output, self.ffnet_target)
 
-        self.ffnet_train_step = tf.train.AdamOptimizer(0).minimize(self.loss)
+        self.ffnet_train_step = tf.train.AdamOptimizer(1e-4).minimize(self.loss)
 
         self.accuracy = tf.reduce_mean(self.loss)
 #        sess.run(tf.global_variables_initializer())
@@ -195,6 +206,10 @@ class Agent:
         return self.postprocess_actions(self.act_net(state_imgs, state_meas, objective), self.act_manual(state_meas)), None # last output should be predictions, but we omit these for now
 
     def act_ffnet(self, in_image, in_meas, in_actions, target_image):
+#        print ("ACT: img: ", in_image.shape)
+#        print ("ACT: meas: ", in_meas.shape)
+#        print ("ACT: act: ", in_actions.shape)
+#        print ("ACT: targ: ", target_image.shape)
 
         in_length = in_image.shape[0] + in_meas.shape[0] + in_actions.shape[0]
         net_inputs = np.reshape(np.concatenate([in_image, in_meas, in_actions], axis=0), (1, in_length))

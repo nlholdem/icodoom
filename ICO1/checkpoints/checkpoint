@@ -1,2 +1,2 @@
-model_checkpoint_path: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/hack-20978"
-all_model_checkpoint_paths: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/hack-20978"
+model_checkpoint_path: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/hack-1"
+all_model_checkpoint_paths: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/hack-1"
