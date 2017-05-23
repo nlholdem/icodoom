@@ -8,7 +8,8 @@ import os.path
 import vizdoom
 from agent.doom_simulator import DoomSimulator
 from agent.agent import Agent
-from agent.firfilter import Filterbank
+from agent.trace import Trace
+from agent.icolearning import Icolearning
 import tensorflow as tf
 import cv2
 
@@ -50,6 +51,8 @@ def main():
     # experiment arguments
     agent_args['test_objective_params'] = (np.array([5, 11, 17]), np.array([1., 1., 1.]))
     agent_args['history_length'] = 3
+    agent_args['history_length_ico'] = 3
+
     agent_args['test_checkpoint'] = 'model'
 
     print('starting simulator')
@@ -85,9 +88,13 @@ def main():
 
     img_buffer = np.zeros(
         (agent_args['history_length'], simulator.num_channels, simulator.resolution[1], simulator.resolution[0]), dtype='uint8')
+    img_buffer_ico = np.zeros(
+        (agent_args['history_length_ico'], simulator.num_channels, simulator.resolution[1], simulator.resolution[0]), dtype='uint8')
     meas_buffer = np.zeros((agent_args['history_length'], simulator.num_meas))
-    act_buffer = np.zeros((agent_args['history_length'], 6))
+    act_buffer = np.zeros((agent_args['history_length'], 7))
+    act_buffer_ico = np.zeros((agent_args['history_length_ico'], 7))
     curr_step = 0
+    old_step = -1
     term = False
 
     print ("state_meas_shape: ", meas_buffer.shape, " == ", agent_args['state_meas_shape'])
@@ -97,8 +104,7 @@ def main():
 
 
     ag = Agent(sess, agent_args)
-    ag.load('./checkpoints')
-    filterBank = Filterbank(3)
+#    ag.load('./checkpoints')
 
     acts_to_replace = [a + b + d + e for a in [[0, 0], [1, 1]] for b in [[0, 0], [1, 1]] for d in [[0]] for e in
                        [[0], [1]]]
@@ -112,118 +118,163 @@ def main():
     diff_y = 0
     diff_x = 0
     diff_z = 0
-    inertia = 0.5
+    diff_theta = 0
     iter = 1
     epoch = 200
-    radialFlow = 10000
-    radialFlowInertia = 0.01
-    radialGain = 1000
-    errorThresh = 1000
+    radialFlowLeft = 30
+    radialFlowRight = 30
+    radialFlowInertia = 0.4
+    radialGain = 4.
+    rotationGain = 100.
+    errorThresh = 0
     updatePtsFreq = 50
+    skipImage = 1
+    skipImageICO = 5
+    reflexGain = 1.
+
+    maskLeft = np.zeros([simulator_args['resolution'][1], simulator_args['resolution'][0]], np.uint8)
+    maskLeft[:, :simulator_args['resolution'][0]/2] = 1.
+    maskRight = np.zeros([simulator_args['resolution'][1], simulator_args['resolution'][0]], np.uint8)
+    maskRight[:, simulator_args['resolution'][0]/2:] = 1.
+    print (maskLeft)
+    print (maskRight)
 
     userdoc = os.path.join(os.path.expanduser("~"), "Documents")
+
+    # inputs: reflex + image + first 6 actions
+    icoLeft = Icolearning(num_inputs= 1 + simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, num_filters=1)
+    icoRight = Icolearning(num_inputs= 1 + simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, num_filters=1)
 
     lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
     feature_params = dict(maxCorners=500, qualityLevel=0.03, minDistance=7, blockSize=7)
     imgCentre = np.array([simulator_args['resolution'][0] / 2, simulator_args['resolution'][1] /2])
     print ("Image centre: ", imgCentre)
 
+
     while not term:
         if curr_step < agent_args['history_length']:
-            curr_act = np.squeeze(ag.random_actions(1)).tolist()
+            curr_act = np.zeros(7).tolist()
+#            curr_act = np.squeeze(ag.random_actions(1)).tolist()
             img, meas, rwrd, term = simulator.step(curr_act)
-            p0 = cv2.goodFeaturesToTrack(img, mask=None, **feature_params)
+            if curr_step == 0:
+                p0Left = cv2.goodFeaturesToTrack(img, mask=maskLeft, **feature_params)
+                p0Right = cv2.goodFeaturesToTrack(img, mask=maskRight, **feature_params)
+
+            img_buffer[curr_step % agent_args['history_length']] = img
+            meas_buffer[curr_step % agent_args['history_length']] = meas
+            act_buffer[curr_step % agent_args['history_length']] = curr_act[:7]
+
 
         else:
-            state_imgs = np.transpose(np.reshape(img_buffer[np.arange(curr_step-agent_args['history_length'], curr_step) % agent_args['history_length']], (1,) + agent_args['state_imgs_shape']), [0,2,3,1])
+            img1 = img_buffer[(curr_step-2) % agent_args['history_length'],0,:,:]
+            img2 = img_buffer[(curr_step-1) % agent_args['history_length'],0,:,:]
 
-            state_imgs = np.transpose\
-                (np.reshape
-                 (img_buffer[
-                      np.arange(curr_step-agent_args['history_length'], curr_step) % agent_args['history_length']
-                  ],
-                  (1,) + agent_args['state_imgs_shape']), [0,2,3,1])
-            state_meas = np.reshape(meas_buffer[np.arange(curr_step-agent_args['history_length'], curr_step) % agent_args['history_length']], (1,agent_args['history_length']*simulator.num_meas))
-#            img1 = np.sqrt(img)
-            hack1 = img_buffer[(curr_step-2) % agent_args['history_length'],0,:,:]
-            hack2 = img_buffer[(curr_step-1) % agent_args['history_length'],0,:,:]
-#            print ("imgs shape: ", img.shape, " meas shape: ", state_meas.shape, " hack shape: ", hack1.shape, " buf shape: ", img_buffer.shape)
-#            print("hacktype: ", hack1.dtype, " imgtype: ", img.dtype)
-            if(curr_step % updatePtsFreq == 0):
-                p0 = cv2.goodFeaturesToTrack(hack1, mask=None, **feature_params)
+            if(curr_step % updatePtsFreq == 0 or curr_step == agent_args['history_length']):
+                print ("updating tracking points")
+                p0Left = cv2.goodFeaturesToTrack(img, mask=maskLeft, **feature_params)
+                p0Right = cv2.goodFeaturesToTrack(img, mask=maskRight, **feature_params)
 
-            p1, st, err = cv2.calcOpticalFlowPyrLK(hack1, hack2, p0, None, **lk_params)
-#            print ("flat imgs shape: ", np.ndarray.flatten(state_imgs).shape, " flat meas shape: ", np.ndarray.flatten(state_meas).shape)
-#            print ("meas shape: ", state_meas.shape)
-            flow = (p1 - p0)[:,0,:]
-#            print (len(p0), " ", flow.shape, " ", p0.shape, " ", p1.shape)
-#            radialFlow = np.transpose(flow).dot(p0[:,0,:])
-#            print ("FLOW ", radialFlow)
-            radialFlowTmp = 0
-            for i in range(0, len(p0)):
-                radialFlowTmp += ((p0[i,0,:] - imgCentre)).dot(flow[i,:])
+            p1Left, st, err = cv2.calcOpticalFlowPyrLK(img1, img2, p0Left, None, **lk_params)
+            p1Right, st, err = cv2.calcOpticalFlowPyrLK(img1, img2, p0Right, None, **lk_params)
+            flowLeft = (p1Left - p0Left)[:,0,:]
+            flowRight = (p1Right - p0Right)[:,0,:]
+            radialFlowTmpLeft = 0
+            radialFlowTmpRight = 0
 
+            for i in range(0, len(p0Left)):
+                radialFlowTmpLeft += ((p0Left[i,0,:] - imgCentre)).dot(flowLeft[i,:]) / float(len(p0Left))
+            for i in range(0, len(p0Right)):
+                radialFlowTmpRight += ((p0Right[i,0,:] - imgCentre)).dot(flowRight[i,:]) / float(len(p0Right))
 
-#            for vec0, vec1 in zip(flow, p0[:,0,:]):
-#                radialFlowTmp += (vec1 - imgCentre).dot(vec0)
+            rotation = act_buffer[(curr_step - 1) % agent_args['history_length']][6]
+            forward = act_buffer[(curr_step - 1) % agent_args['history_length']][3]
+            # keep separate radial errors for left and right fields
+            radialFlowLeft = radialFlowLeft + radialFlowInertia * (radialFlowTmpLeft - radialFlowLeft)
+            radialFlowRight = radialFlowRight + radialFlowInertia * (radialFlowTmpRight - radialFlowRight)
+            expectFlowLeft = radialGain * forward + rotationGain * rotation if rotation < 0. else 0.
+            expectFlowRight = radialGain * forward - rotationGain * rotation if rotation > 0. else 0.
+            flowErrorLeft = forward * (expectFlowLeft - radialFlowLeft) / (1. + rotationGain * np.abs(rotation))
+            flowErrorRight = forward * (expectFlowRight - radialFlowRight) / (1. + rotationGain * np.abs(rotation))
 
 
-            curr_act = np.squeeze(ag.random_actions(1)[0]).tolist()
-            if curr_act[:6] in acts_to_replace:
-                curr_act = replacement_act
+#            else:
+#                print ("FLOW ", radialFlow, "num pts ", len(p0))
+
+
+            icoControlLeft = icoLeft.prediction(np.concatenate(
+                ([(flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain], np.ndarray.flatten(img), curr_act[:7])))
+#            print ("ICO input: ", [(flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain], " : ",
+#                   [(flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain])
+
+            icoControlRight = icoRight.prediction(np.concatenate(
+                ([(flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain], np.ndarray.flatten(img), curr_act[:7])))
+
+
+#            print ("ICO in: ", (flowError - errorThresh) if (flowError - errorThresh) > 0. else 0.)
+
+
+#            if (flowError > errorThresh):
+            print("** Expected ", expectFlowLeft, " ", expectFlowRight, " Actual: ", radialFlowLeft, " ", radialFlowRight, " err ", flowErrorLeft, " ", flowErrorRight, " ICOcontrol: ", icoControlLeft, " ", icoControlRight)
+
+#            if (icoControl > .1):
+#                print("ICO: ", icoControl)
+
+            diff_theta = .3 * min(icoControlRight - icoControlLeft, 40.)
+            #            diff_z = -10. #* min(icoControl, 1.)
+            diff_x = np.random.normal(0, 2)
+
+            curr_act = np.zeros(7).tolist()
+#            curr_act = np.squeeze(ag.random_actions(1)[0]).tolist()
+#            if curr_act[:6] in acts_to_replace:
+#                curr_act = replacement_act
             hack = [0] * len(curr_act)
-
-            hack[6] = diff_x
-            hack[8] = -diff_y * 0.2
-            hack[3] = 0  # diff_z
-            #            hack[6] = 1
-            #            hack[8] = 1
+            curr_act[0] = 0
+            curr_act[1] = 0
             curr_act[2] = 0
-            curr_act[3] =  6
+            curr_act[3] = curr_act[3] + diff_z
+            curr_act[3] = 10.
+            curr_act[4] = 0
+            curr_act[5] = 0
 
-            radialFlow = radialFlow + radialFlowInertia * (radialFlowTmp - radialFlow)
-            expectFlow = radialGain * act_buffer[(curr_step-2) % agent_args['history_length']][3]
-            flowError = act_buffer[(curr_step-2) % agent_args['history_length']][3] * (expectFlow - radialFlow)
-            if (flowError > errorThresh):
-                print ("** FLOW ERR **")
-            else:
-                print ("FLOW ", radialFlow, "num pts ", len(p0))
+            curr_act[6] = curr_act[6] + diff_theta
+#            curr_act[6] = 0.
 
             img, meas, rwrd, term = simulator.step(curr_act)
             if (not (meas is None)) and meas[0] > 30.:
                 meas[0] = 30.
-            if (not (img is None)):
+#            if (not (img is None)):
 
-#                print ("state_imgs: ", np.shape(state_imgs), "state_meas: ", np.shape(state_meas), "curr_act: ", np.shape(curr_act))
-#                print ("img type: ", np.ndarray.flatten(ag.preprocess_input_images(img)).dtype, "state_img type: ", state_imgs.dtype, "state_meas type: ", state_meas.dtype)
+#                ag.act_ffnet(np.ndarray.flatten(state_imgs), np.ndarray.flatten(state_meas),
+#                             np.array(np.ndarray.flatten(act_buffer), dtype='float64'), np.ndarray.flatten(ag.preprocess_input_images(img)))
+#                diff_image = np.absolute(np.reshape(np.array(ag.ext_ffnet_output),
+#                                                    [img.shape[0], img.shape[1]]) - ag.preprocess_input_images(img))
+#                diff_image = np.absolute(ag.preprocess_input_images(img_buffer[(curr_step-1) % agent_args['history_length']] - ag.preprocess_input_images(img)))
+#                diff_image = ag.preprocess_input_images(img)
 
-                ag.act_ffnet(np.ndarray.flatten(state_imgs), np.ndarray.flatten(state_meas),
-                             np.array(np.ndarray.flatten(act_buffer), dtype='float64'), np.ndarray.flatten(ag.preprocess_input_images(img)))
-                diff_image = np.absolute(np.reshape(np.array(ag.ext_ffnet_output),
-                                                    [img.shape[0], img.shape[1]]) - ag.preprocess_input_images(img))
-                diff_image = np.absolute(ag.preprocess_input_images(img_buffer[(curr_step-1) % agent_args['history_length']] - ag.preprocess_input_images(img)))
-                diff_image = ag.preprocess_input_images(img)
-
-                diff_x = diff_x + inertia * (
-                (np.argmax(diff_image.sum(axis=0)) / float(diff_image.shape[1])) - 0.5 - diff_x)
-                diff_y = diff_x + inertia * (
-                (np.argmax(diff_image.sum(axis=1)) / float(diff_image.shape[0])) - 0.5 - diff_y)
+#                diff_x = diff_x + inertia * (
+#                (np.argmax(diff_image.sum(axis=0)) / float(diff_image.shape[1])) - 0.5 - diff_x)
+#                diff_y = diff_x + inertia * (
+#                (np.argmax(diff_image.sum(axis=1)) / float(diff_image.shape[0])) - 0.5 - diff_y)
 
 #                print ("diff_x: ", diff_x, " diff_y: ", hack[6], "centre_x: ", np.argmax(diff_image.sum(axis=0)), "centre_y: ", np.argmax(diff_image.sum(axis=1)))
 
-                if (curr_step % epoch == 0):
-                    print("saving...")
-                    np.save(os.path.join('/home/paul', "hack"),
-                            np.reshape(np.array(ag.ext_ffnet_output), [img.shape[0], img.shape[1]]))
-                    np.save(os.path.join('/home/paul', "target"), ag.preprocess_input_images(img))
-                    np.save(os.path.join('/home/paul', "diff"), diff_image)
-                    diff_x = np.random.normal(0, 2)
-                    diff_z = np.random.normal(10, 5)
+#                if (curr_step % epoch == 0):
+#                    print("saving...")
+#                    np.save(os.path.join('/home/paul', "hack"),
+#                            np.reshape(np.array(ag.ext_ffnet_output), [img.shape[0], img.shape[1]]))
+#                    np.save(os.path.join('/home/paul', "target"), ag.preprocess_input_images(img))
+#                    np.save(os.path.join('/home/paul', "diff"), diff_image)
 
         if not term:
             img_buffer[curr_step % agent_args['history_length']] = img
             meas_buffer[curr_step % agent_args['history_length']] = meas
-            act_buffer[curr_step % agent_args['history_length']] = curr_act[:6]
+            act_buffer[curr_step % agent_args['history_length']] = curr_act[:7]
+
+            if (curr_step - old_step) % skipImageICO == 0:
+                img_buffer_ico[(curr_step // skipImage) % agent_args['history_length_ico']] = img
+                act_buffer_ico[(curr_step // skipImage) % agent_args['history_length_ico']] = curr_act[:7]
+
+            old_step = curr_step
             curr_step += 1
 
     simulator.close_game()

@@ -4,8 +4,10 @@ from agent.firfilter import Filterbank
 
 
 
+
+
 def main():
-    filterbank = Filterbank(10, min_filterlen=1, max_filterlen=20)
+    filterbank = Filterbank(num_filters=2, ntaps=5, tau=1)
     print (filterbank.bank)
 
 

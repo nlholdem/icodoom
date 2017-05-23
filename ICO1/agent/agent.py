@@ -194,11 +194,11 @@ class Agent:
             self.input_measurements_preprocessed = self.preprocess_input_measurements(self.input_measurements)
         
         # make the actual net
-        self.make_net(self.input_images_preprocessed, self.input_measurements_preprocessed, self.input_actions)
-        self.make_ffnet()
+#        self.make_net(self.input_images_preprocessed, self.input_measurements_preprocessed, self.input_actions)
+#        self.make_ffnet()
         
         # make the saver, lr and param summaries
-        self.saver = tf.train.Saver()
+#        self.saver = tf.train.Saver()
 
         tf.initialize_all_variables().run(session=self.sess)
     
