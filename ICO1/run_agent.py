@@ -32,11 +32,8 @@ def main():
     agent_args['num_future_steps'] = 6
     pred_scale_coeffs = np.expand_dims(
         (np.expand_dims(np.array([8., 40., 1.]), 1) * np.ones((1, agent_args['num_future_steps']))).flatten(), 0)
-    agent_args['postprocess_predictions'] = lambda x: x * pred_scale_coeffs
-    agent_args['discrete_controls_manual'] = range(6, 12)
     agent_args['meas_for_net_init'] = range(3)
     agent_args['meas_for_manual_init'] = range(3, 16)
-    agent_args['opposite_button_pairs'] = [(0, 1), (2, 3)]
 
     # net parameters
     agent_args['conv_params'] = np.array([(16, 5, 4), (32, 3, 2), (64, 3, 2), (128, 3, 2)],
@@ -46,17 +43,12 @@ def main():
     agent_args['fc_joint_params'] = np.array([(256,), (256,), (-1,)], dtype=[('out_dims', int)])
     agent_args['target_dim'] = agent_args['num_future_steps'] * len(agent_args['meas_for_net_init'])
 
-    # efference copy
-
     # experiment arguments
     agent_args['test_objective_params'] = (np.array([5, 11, 17]), np.array([1., 1., 1.]))
     agent_args['history_length'] = 3
     agent_args['history_length_ico'] = 3
 
-    agent_args['test_checkpoint'] = 'model'
-
     print('starting simulator')
-
     simulator = DoomSimulator(simulator_args)
 
     print('started simulator')
@@ -102,19 +94,6 @@ def main():
     agent_args['n_ffnet_meas'] = len(np.ndarray.flatten(meas_buffer))
     agent_args['n_ffnet_act'] = len(np.ndarray.flatten(act_buffer))
 
-
-    ag = Agent(sess, agent_args)
-#    ag.load('./checkpoints')
-
-    acts_to_replace = [a + b + d + e for a in [[0, 0], [1, 1]] for b in [[0, 0], [1, 1]] for d in [[0]] for e in
-                       [[0], [1]]]
-    print(acts_to_replace)
-    replacement_act = [0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-    # MOVE_FORWARD   MOVE_BACKWARD   TURN_LEFT   TURN_RIGHT  ATTACK  SPEED   SELECT_WEAPON2  SELECT_WEAPON3  SELECT_WEAPON4  SELECT_WEAPON5  SELECT_WEAPON6  SELECT_WEAPON7
-
-    #    img, meas, rwrd, term = simulator.step(np.squeeze(ag.random_actions(1)).tolist())
-
-
     diff_y = 0
     diff_x = 0
     diff_z = 0
@@ -132,10 +111,12 @@ def main():
     skipImageICO = 5
     reflexGain = 1.
 
+    # create masks for left and right visual fields - note that these only cover the upper half of the image
+    # this is to help prevent the tracking getting confused by the floor pattern
     maskLeft = np.zeros([simulator_args['resolution'][1], simulator_args['resolution'][0]], np.uint8)
-    maskLeft[:, :simulator_args['resolution'][0]/2] = 1.
+    maskLeft[simulator_args['resolution'][1]/2:, :simulator_args['resolution'][0]/2] = 1.
     maskRight = np.zeros([simulator_args['resolution'][1], simulator_args['resolution'][0]], np.uint8)
-    maskRight[:, simulator_args['resolution'][0]/2:] = 1.
+    maskRight[simulator_args['resolution'][1]/2:, simulator_args['resolution'][0]/2:] = 1.
     print (maskLeft)
     print (maskRight)
 
@@ -152,9 +133,8 @@ def main():
 
 
     while not term:
-        if curr_step < agent_args['history_length']:
+        if curr_step < 100: #agent_args['history_length']:
             curr_act = np.zeros(7).tolist()
-#            curr_act = np.squeeze(ag.random_actions(1)).tolist()
             img, meas, rwrd, term = simulator.step(curr_act)
             if curr_step == 0:
                 p0Left = cv2.goodFeaturesToTrack(img, mask=maskLeft, **feature_params)
@@ -169,7 +149,7 @@ def main():
             img1 = img_buffer[(curr_step-2) % agent_args['history_length'],0,:,:]
             img2 = img_buffer[(curr_step-1) % agent_args['history_length'],0,:,:]
 
-            if(curr_step % updatePtsFreq == 0 or curr_step == agent_args['history_length']):
+            if(curr_step == 0 or curr_step % updatePtsFreq == agent_args['history_length']):
                 print ("updating tracking points")
                 p0Left = cv2.goodFeaturesToTrack(img, mask=maskLeft, **feature_params)
                 p0Right = cv2.goodFeaturesToTrack(img, mask=maskRight, **feature_params)
@@ -196,38 +176,21 @@ def main():
             flowErrorLeft = forward * (expectFlowLeft - radialFlowLeft) / (1. + rotationGain * np.abs(rotation))
             flowErrorRight = forward * (expectFlowRight - radialFlowRight) / (1. + rotationGain * np.abs(rotation))
 
-
-#            else:
-#                print ("FLOW ", radialFlow, "num pts ", len(p0))
-
-
             icoControlLeft = icoLeft.prediction(np.concatenate(
                 ([(flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain], np.ndarray.flatten(img), curr_act[:7])))
-#            print ("ICO input: ", [(flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain], " : ",
-#                   [(flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain])
-
             icoControlRight = icoRight.prediction(np.concatenate(
                 ([(flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain], np.ndarray.flatten(img), curr_act[:7])))
 
+#            print ("ICO input: ", [(flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain], " : ",
+#                   [(flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain])
 
-#            print ("ICO in: ", (flowError - errorThresh) if (flowError - errorThresh) > 0. else 0.)
-
-
-#            if (flowError > errorThresh):
             print("** Expected ", expectFlowLeft, " ", expectFlowRight, " Actual: ", radialFlowLeft, " ", radialFlowRight, " err ", flowErrorLeft, " ", flowErrorRight, " ICOcontrol: ", icoControlLeft, " ", icoControlRight)
 
-#            if (icoControl > .1):
-#                print("ICO: ", icoControl)
-
-            diff_theta = .3 * min(icoControlRight - icoControlLeft, 40.)
+            diff_theta = .3 * min(icoControlRight - icoControlLeft, 30.)
             #            diff_z = -10. #* min(icoControl, 1.)
-            diff_x = np.random.normal(0, 2)
 
             curr_act = np.zeros(7).tolist()
-#            curr_act = np.squeeze(ag.random_actions(1)[0]).tolist()
-#            if curr_act[:6] in acts_to_replace:
-#                curr_act = replacement_act
-            hack = [0] * len(curr_act)
+
             curr_act[0] = 0
             curr_act[1] = 0
             curr_act[2] = 0
@@ -242,6 +205,8 @@ def main():
             img, meas, rwrd, term = simulator.step(curr_act)
             if (not (meas is None)) and meas[0] > 30.:
                 meas[0] = 30.
+
+# Nnet to learn to predict next image - disabled at the moment
 #            if (not (img is None)):
 
 #                ag.act_ffnet(np.ndarray.flatten(state_imgs), np.ndarray.flatten(state_meas),
@@ -276,6 +241,11 @@ def main():
 
             old_step = curr_step
             curr_step += 1
+
+        if curr_step % epoch == 0:
+            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoLeft-' + str(curr_step), icoLeft.weights)
+            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoRight-' + str(curr_step), icoRight.weights)
+            print ("saving weights... ")
 
     simulator.close_game()
     ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))

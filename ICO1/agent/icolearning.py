@@ -21,9 +21,9 @@ class Icolearning:
         self.diff = np.zeros(num_filters) # we are only keeping the derivative of the reflex
         self.oldOutput = np.zeros(num_filters)
         self.norm = 1.
-        self.learningRate = 0. #1e-7
+        self.learningRate = 0. #1e-8
 
-        self.weights[0, 0] = 1 # reflex is always 1
+        self.weights[0, 0] = 1  # reflex is always 1
 
         # put the filter (single filter only) for the reflex first
 #        self.filterBank.append([Trace(ntaps=self.ntaps)])
