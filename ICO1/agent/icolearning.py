@@ -3,7 +3,7 @@ from trace import Trace
 
 class Icolearning:
 
-    def __init__(self, num_inputs, num_filters = 1, learning_rate = 0.0001):
+    def __init__(self, num_inputs, num_filters = 1, learning_rate = 1e-8):
 
         print ("construcing ICO: num_inputs: ", num_inputs, " num_filters: ", num_filters)
         self.n_inputs = num_inputs
@@ -21,7 +21,8 @@ class Icolearning:
         self.diff = np.zeros(num_filters) # we are only keeping the derivative of the reflex
         self.oldOutput = np.zeros(num_filters)
         self.norm = 1.
-        self.learningRate = 0. #1e-8
+
+        self.learningRate = learning_rate
 
         self.weights[0, 0] = 1  # reflex is always 1
 
