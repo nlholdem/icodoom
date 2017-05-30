@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install -y dbus
 
 
 # Python with pip
-RUN apt-get update && apt-get install -y python-dev python python-pip
+RUN apt-get update && apt-get install -y python-dev python python-pip 
 RUN pip install pip --upgrade
 
 
@@ -56,7 +56,7 @@ RUN pip --no-cache-dir install \
 
 RUN pip --no-cache-dir install \
     https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.9.0-cp27-none-linux_x86_64.whl
-RUN pip --no-cache-dir install opencv-python termcolor tqdm subprocess32 msgpack-python msgpack-numpy
+RUN pip --no-cache-dir install opencv-python termcolor tqdm subprocess32 msgpack-python msgpack-numpy scipy
 
 
 # Enables X11 sharing and creates user home directory

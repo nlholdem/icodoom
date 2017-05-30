@@ -1,9 +1,10 @@
+from scipy import signal
 import numpy as np
 from trace import Trace
 
 class Icolearning:
 
-    def __init__(self, num_inputs, num_filters = 1, learning_rate = 1e-8):
+    def __init__(self, num_inputs, num_filters = 1, learning_rate = 1e-8, filter_type='trace'):
 
         print ("construcing ICO: num_inputs: ", num_inputs, " num_filters: ", num_filters)
         self.n_inputs = num_inputs
@@ -11,16 +12,20 @@ class Icolearning:
         self.ntaps = 5
         self.tau = 1
         self.filterBank = []
-        self.curr_input = np.zeros(num_inputs)
+
+        # note that we seem to need an additional dimension for the inputs so that lfilter thinks it's a time series of one sample
+        self.curr_input = np.zeros([num_inputs, 1])
         self.inputs = np.zeros([num_inputs, self.ntaps])
         self.lastInputs = np.zeros(num_inputs) # needed??
         self.filteredOutputs = np.zeros([num_filters, num_inputs])
         self.weights = np.zeros([num_filters, num_inputs])
         self.lastCorr = np.zeros([num_filters, num_inputs-1])
         self.actualActivity = 0.
-        self.diff = np.zeros(num_filters) # we are only keeping the derivative of the reflex
-        self.oldOutput = np.zeros(num_filters)
+        self.diff = 0.
+        self.oldOutput = 0.
         self.norm = 1.
+        self.filterType = filter_type
+        self.IIROrder = 3
 
         self.learningRate = learning_rate
 
@@ -29,39 +34,76 @@ class Icolearning:
         # put the filter (single filter only) for the reflex first
 #        self.filterBank.append([Trace(ntaps=self.ntaps)])
 
-        for i in range(num_filters):
-            ntaps = int(float(self.ntaps) / float(i + 1))
-            self.filterBank.append(Trace.calCoeffTrace(ntaps, self.tau))
+        if self.filterType == 'trace':
+            for i in range(num_filters):
+                ntaps = int(float(self.ntaps) / float(i + 1))
+                self.filterBank.append(Trace.calCoeffTrace(ntaps, self.tau))
+            print (self.filterBank)
 
-        print self.filterBank
+        elif self.filterType == 'IIR':
+            maxFreq = 0.5
+            minFreq = 0.05
+            self.a = np.zeros([num_filters, self.IIROrder+1])
+            self.b = np.zeros([num_filters, self.IIROrder+1])
+            self.zf_old = np.zeros([num_filters, num_inputs-1, self.IIROrder])
 
 
-        # Then the filters for the inputs
-#        for i in range(1, num_inputs):
-#            filterlist = []
-#            for j in range(num_filters):
-#                filterlist.append(Trace(ntaps=int(float(self.ntaps) / float(j + 1))))
-#                print type(filterlist[j])
-#                filterlist[j].calCoeffTrace()
-#                print filterlist[j].coeffFIR
-#            self.filterBank.append(filterlist)
+            for i in range(num_filters):
+                freq = minFreq + float(i) * (maxFreq - minFreq)/float(num_filters)
+                print ("Freq: ", freq)
+                self.a[i,:], self.b[i,:] = signal.butter(self.IIROrder, freq) # 3rd order lowpass
+                zi = signal.lfilter_zi(self.b[i,:], self.a[i,:]) # initialise state
 
-        for i in range(num_filters):
-            print ("filterBank: shape=", self.filterBank[i].shape)
+                # set initial filter state
+                temp = np.empty(num_inputs-1)
+                temp.fill(0.5)
+                self.zf_old[i,:,:] = np.outer(temp, zi)
 
+                print ("a: ", self.a)
+                print ("b: ", self.b)
+
+        else:
+            print ("unknown filter type, exiting")
+            return
 
     def setCurrInput(self, input):
-        self.curr_input = input
+        self.curr_input[:,0] = input
 
     def filter(self):
-        # shift
-        self.inputs = (np.c_[self.curr_input, self.inputs])[:,:self.ntaps]
+        if (self.filterType == 'trace'):
+            # shift - append the new column, then trim off the old one
+            self.inputs = (np.c_[self.curr_input[:,0], self.inputs])[:,:self.ntaps]
 
-        # dot product with filter coefficients
-        for i in range(self.n_filters):
-            self.filteredOutputs[i,:] = (self.inputs[:,:(self.filterBank[i]).shape[0]]).dot(self.filterBank[i]) / self.norm
-            self.diff[i] = self.filteredOutputs[i,0] - self.oldOutput[i]
-            self.oldOutput[i] = self.filteredOutputs[i,0]
+            # dot product with filter coefficients
+            self.diff = 0.
+            for i in range(self.n_filters):
+                self.filteredOutputs[i,:] = (self.inputs[:,:(self.filterBank[i]).shape[0]]).dot(self.filterBank[i]) / self.norm
+
+            # derivative of the reflex
+            self.diff = self.filteredOutputs[0,0] - self.oldOutput
+            self.oldOutput = self.filteredOutputs[0,0]
+
+        else:
+            self.diff = 0.
+            self.filteredOutputs[0,0] = self.curr_input[0,0]
+
+            for i in range(self.n_filters):
+                a = self.a[i]
+                b = self.b[i]
+                zfold = self.zf_old[i,:,:]
+#                print ("MIN: ", np.amin(self.curr_input[1:19201,0:1]), " MAX: ", np.amax(self.curr_input[1:19201,0:1]))
+
+                # we have to do this in an awkward way because we can't assign an (n,1) array to a row in filtereredOutputs
+                z1, zf = signal.lfilter(b, a, self.curr_input[1:,0:1], zi=zfold)
+                self.filteredOutputs[i,1:] = np.ndarray.flatten(z1)
+#                print ("filteredOut: ", z1.shape, " b: ", b.shape, " a: ", a.shape, "in: ", self.curr_input.shape, " zf_old: ", zfold.shape)
+
+            # derivative of reflex
+            self.diff = self.filteredOutputs[0, 0] - self.oldOutput
+            self.oldOutput = self.filteredOutputs[0, 0]
+            # copy state to old_state
+            self.zf_old[i, :, :] = zf
+
 
     def prediction(self, inputs):
         self.setCurrInput(inputs)
@@ -70,7 +112,7 @@ class Icolearning:
         self.actualActivity = (np.ndarray.flatten(self.filteredOutputs)).dot(np.ndarray.flatten(self.weights))
 
         for j in range(self.n_filters):
-            correl = self.diff[j]*self.filteredOutputs[j, 1:]
+            correl = self.diff*self.filteredOutputs[j, 1:]
             integral = correl - (correl-self.lastCorr[j, :])/2.
             self.weights[j, 1:] = self.weights[j, 1:] + self.learningRate * integral
 
@@ -80,4 +122,10 @@ class Icolearning:
     # at the moment, only support setting the entire input block in one operation.
     def setInput(self, f):
         self.inputs = f
+
+
+    def saveInputs(self, curr_step):
+#        print("saving input images...")
+        for i in range(self.n_filters):
+            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/inputImages/icoSteer-' + str(i) + "-" + str(curr_step), self.filteredOutputs[i,:])
 
