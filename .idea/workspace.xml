@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61524628-251f-49c7-9d02-8286c25110bf" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-200.npy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-400.npy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-200.npy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-400.npy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-200.npy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-400.npy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-200.npy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-400.npy" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Dockerfile" afterPath="$PROJECT_DIR$/Dockerfile" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/agent/icolearning.py" afterPath="$PROJECT_DIR$/ICO1/agent/icolearning.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/run_agent.py" afterPath="$PROJECT_DIR$/ICO1/run_agent.py" />
     </list>
@@ -22,11 +29,11 @@
             <file leaf-file-name="icolearning.py" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/ICO1/agent/icolearning.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="702">
-                    <caret line="127" column="1" lean-forward="false" selection-start-line="127" selection-start-column="1" selection-end-line="127" selection-end-column="1" />
+                  <state relative-caret-position="328">
+                    <caret line="106" column="0" lean-forward="true" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
                     <folding>
                       <element signature="e#0#24#0" expanded="true" />
-                      <marker date="1496148862967" expanded="true" signature="5015:5173" ph="..." />
+                      <marker date="1496158786177" expanded="true" signature="5121:5279" ph="..." />
                     </folding>
                   </state>
                 </provider>
@@ -46,8 +53,8 @@
       <file leaf-file-name="run_agent.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="158" column="1" lean-forward="false" selection-start-line="158" selection-start-column="1" selection-end-line="158" selection-end-column="1" />
+            <state relative-caret-position="861">
+              <caret line="275" column="1" lean-forward="false" selection-start-line="275" selection-start-column="1" selection-end-line="275" selection-end-column="1" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -165,7 +172,6 @@
       <find>img</find>
       <find>shape</find>
       <find>arange</find>
-      <find>curr_step</find>
       <find>img_buffer</find>
       <find>ilterb</find>
       <find>history_length_ico</find>
@@ -188,6 +194,7 @@
       <find>curr_in</find>
       <find>oldOutput</find>
       <find>preprocess_input_images</find>
+      <find>curr_step</find>
     </findStrings>
     <replaceStrings>
       <replace>ffnet_output</replace>
@@ -228,10 +235,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1882" />
-    <option name="y" value="258" />
+    <option name="x" value="1766" />
+    <option name="y" value="87" />
     <option name="width" value="1582" />
-    <option name="height" value="1026" />
+    <option name="height" value="1246" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -420,7 +427,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1882" y="258" width="1582" height="1026" extended-state="0" />
+    <frame x="1766" y="87" width="1582" height="1246" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1948775" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -877,19 +884,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/agent/icolearning.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="127" column="1" lean-forward="false" selection-start-line="127" selection-start-column="1" selection-end-line="127" selection-end-column="1" />
+        <state relative-caret-position="328">
+          <caret line="106" column="0" lean-forward="true" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
-            <marker date="1496148862967" expanded="true" signature="5015:5173" ph="..." />
+            <marker date="1496158786177" expanded="true" signature="5121:5279" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="158" column="1" lean-forward="false" selection-start-line="158" selection-start-column="1" selection-end-line="158" selection-end-column="1" />
+        <state relative-caret-position="861">
+          <caret line="275" column="1" lean-forward="false" selection-start-line="275" selection-start-column="1" selection-end-line="275" selection-end-column="1" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>

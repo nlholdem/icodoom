@@ -105,11 +105,13 @@ class Icolearning:
             self.zf_old[i, :, :] = zf
 
 
-    def prediction(self, inputs):
+    def prediction(self, curr_step, inputs):
+        print ("PREDICT: ", curr_step)
         self.setCurrInput(inputs)
         self.filter()
 
         self.actualActivity = (np.ndarray.flatten(self.filteredOutputs)).dot(np.ndarray.flatten(self.weights))
+        print ("ActualActivity: ", self.actualActivity)
 
         for j in range(self.n_filters):
             correl = self.diff*self.filteredOutputs[j, 1:]

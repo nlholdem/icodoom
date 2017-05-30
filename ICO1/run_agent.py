@@ -155,8 +155,8 @@ def main():
             img1 = img_buffer[(curr_step-2) % agent_args['history_length'],0,:,:]
             img2 = img_buffer[(curr_step-1) % agent_args['history_length'],0,:,:]
 
-            if(curr_step == 0 or curr_step % updatePtsFreq == 0):
-#                print ("updating tracking points")
+            if(curr_step % updatePtsFreq == 0):
+                print ("updating tracking points")
                 p0Left = cv2.goodFeaturesToTrack(img, mask=maskLeft, **feature_params)
                 p0Right = cv2.goodFeaturesToTrack(img, mask=maskRight, **feature_params)
 
@@ -189,16 +189,20 @@ def main():
             icoControlLeft = 0.
             icoControlRight = 0.
             icoControlSteer = 0.
+
             if curr_step > 100:
                 icoInLeft = (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain
                 icoInRight = (flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain
-                icoInSteer = ((flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain -
-                (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain)
+                icoInSteer = ((flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain - (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain)
+
+                if np.absolute(icoInSteer) > 0.:
+                    print ("Step: ", curr_step, "ICO input: ", icoInSteer)
 
 
 #                icoControlLeft = icoLeft.prediction(np.concatenate(([icoInLeft], np.ndarray.flatten(preprocess_input_images(img)), curr_act[:7])))
 #                icoControlRight = icoRight.prediction(np.concatenate(([icoInRight], np.ndarray.flatten(preprocess_input_images(img)), curr_act[:7])))
-                icoControlSteer = icoSteer.prediction(np.concatenate(([icoInSteer], np.ndarray.flatten(preprocess_input_images(img)), curr_act[:7])))
+
+                icoControlSteer = icoSteer.prediction(curr_step, np.concatenate(([icoInSteer], np.ndarray.flatten(preprocess_input_images(img)), np.zeros(7)))) #curr_act[:7])))
 
 #                print("** St: ", curr_step, "Fwd: ", forward, " Expected ", expectFlowLeft, " ", expectFlowRight, " Actual: ", radialFlowLeft, " ",
 #                      radialFlowRight, " err ", flowErrorLeft, " ", flowErrorRight, "IcoIn: ", icoInSteer, " ICOcontrol: ", icoControlSteer)
@@ -208,21 +212,21 @@ def main():
 #                   [(flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain])
 
 
-            diff_theta = .6 * max(min(icoControlSteer, 5.), -5.)
-            #            diff_z = -10. #* min(icoControl, 1.)
+                diff_theta = .6 * max(min(icoControlSteer, 5.), -5.)
+                #            diff_z = -10. #* min(icoControl, 1.)
 
-            curr_act = np.zeros(7).tolist()
+                curr_act = np.zeros(7).tolist()
 
-            curr_act[0] = 0
-            curr_act[1] = 0
-            curr_act[2] = 0
-            curr_act[3] = curr_act[3] + diff_z
-            curr_act[3] = 15.
-            curr_act[4] = 0
-            curr_act[5] = 0
+                curr_act[0] = 0
+                curr_act[1] = 0
+                curr_act[2] = 0
+                curr_act[3] = curr_act[3] + diff_z
+                curr_act[3] = 15.
+                curr_act[4] = 0
+                curr_act[5] = 0
 
-            curr_act[6] = curr_act[6] + diff_theta
-#            curr_act[6] = 0.
+                curr_act[6] = curr_act[6] + diff_theta
+    #            curr_act[6] = 0.
 
             img, meas, rwrd, term = simulator.step(curr_act)
             if (not (meas is None)) and meas[0] > 30.:
@@ -268,8 +272,8 @@ def main():
 #            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoLeft-' + str(curr_step), icoLeft.weights)
 #            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoRight-' + str(curr_step), icoRight.weights)
 #            print ("saving weights... ")
-            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoSteer-' + str(curr_step), icoSteer.weights)
-            icoSteer.saveInputs(curr_step)
+#            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoSteer-' + str(curr_step), icoSteer.weights)
+#            icoSteer.saveInputs(curr_step)
 
     simulator.close_game()
     ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))
