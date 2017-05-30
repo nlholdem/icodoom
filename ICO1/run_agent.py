@@ -156,7 +156,7 @@ def main():
             img2 = img_buffer[(curr_step-1) % agent_args['history_length'],0,:,:]
 
             if(curr_step % updatePtsFreq == 0):
-                print ("updating tracking points")
+#                print ("updating tracking points")
                 p0Left = cv2.goodFeaturesToTrack(img, mask=maskLeft, **feature_params)
                 p0Right = cv2.goodFeaturesToTrack(img, mask=maskRight, **feature_params)
 
@@ -195,8 +195,8 @@ def main():
                 icoInRight = (flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain
                 icoInSteer = ((flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain - (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain)
 
-                if np.absolute(icoInSteer) > 0.:
-                    print ("Step: ", curr_step, "ICO input: ", icoInSteer)
+#                if np.absolute(icoInSteer) > 0.:
+#                    print ("Step: ", curr_step, "ICO input: ", icoInSteer)
 
 
 #                icoControlLeft = icoLeft.prediction(np.concatenate(([icoInLeft], np.ndarray.flatten(preprocess_input_images(img)), curr_act[:7])))
@@ -268,15 +268,16 @@ def main():
             old_step = curr_step
             curr_step += 1
 
-        if curr_step % epoch == 0:
+#        if curr_step % epoch == 0:
 #            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoLeft-' + str(curr_step), icoLeft.weights)
 #            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoRight-' + str(curr_step), icoRight.weights)
 #            print ("saving weights... ")
 #            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoSteer-' + str(curr_step), icoSteer.weights)
 #            icoSteer.saveInputs(curr_step)
 
+
     simulator.close_game()
-    ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))
+#    ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))
 
 
 if __name__ == '__main__':
