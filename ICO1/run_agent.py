@@ -1,8 +1,7 @@
 from __future__ import print_function
 import numpy as np
 import sys
-from collections import deque
-
+from PIL import Image
 sys.path.append('./bin/python')
 import os.path
 import vizdoom
@@ -12,6 +11,7 @@ from agent.trace import Trace
 from agent.icolearning import Icolearning
 import tensorflow as tf
 import cv2
+import imutils
 
 
 def main():
@@ -21,7 +21,7 @@ def main():
     simulator_args['resolution'] = (160, 120)
     simulator_args['frame_skip'] = 1
     simulator_args['color_mode'] = 'GRAY'
-    simulator_args['game_args'] = "+name IntelAct +colorset 7"
+    simulator_args['game_args'] = "+name ICO +colorset 7"
 
     ## Agent
     agent_args = {}
@@ -103,16 +103,14 @@ def main():
     epoch = 200
     radialFlowLeft = 30.
     radialFlowRight = 30.
-    flowErrorLeft = 30.
-    flowErrorRight = 30.
     radialFlowInertia = 0.4
     radialGain = 4.
-    rotationGain = 100.
-    errorThresh = 200.
+    rotationGain = 50.
+    errorThresh = 10.
     updatePtsFreq = 50
     skipImage = 1
     skipImageICO = 5
-    reflexGain = 1.
+    reflexGain = 0.01
 
     # create masks for left and right visual fields - note that these only cover the upper half of the image
     # this is to help prevent the tracking getting confused by the floor pattern
@@ -122,15 +120,15 @@ def main():
     maskLeft[height/2:, :width/2] = 1.
     maskRight = np.zeros([height, width], np.uint8)
     maskRight[height/2:, width/2:] = 1.
-#    print (maskLeft)
-#    print (maskRight)
 
-    userdoc = os.path.join(os.path.expanduser("~"), "Documents")
 
     # inputs: reflex + image + first 6 actions
-    icoLeft = Icolearning(num_inputs= 1 + simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, num_filters=1)
-    icoRight = Icolearning(num_inputs= 1 + simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, num_filters=1, learning_rate=0.)
-    icoSteer = Icolearning(num_inputs= 1 + simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, num_filters=4, learning_rate=0., filter_type='IIR')
+    icoSteer = Icolearning(num_inputs= 1 + simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, num_filters=4, learning_rate=1e-6, filter_type='IIR')
+
+    static = Image.open("/home/paul/Pictures/hack1.resized.jpg")
+    staticarray = np.array(static)
+    staticimg = np.zeros([height, width])
+    staticimg[:staticarray.shape[0], :staticarray.shape[1]] = staticarray[:,:,0]
 
     lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
     feature_params = dict(maxCorners=500, qualityLevel=0.03, minDistance=7, blockSize=7)
@@ -179,38 +177,20 @@ def main():
             radialFlowRight = radialFlowRight + radialFlowInertia * (radialFlowTmpRight - radialFlowRight)
             expectFlowLeft = radialGain * forward + (rotationGain * rotation if rotation < 0. else 0.)
             expectFlowRight = radialGain * forward - (rotationGain * rotation if rotation > 0. else 0.)
-#            flowErrorLeft = flowErrorLeft + radialFlowInertia * ((forward * (expectFlowLeft - radialFlowLeft) / (1. + rotationGain * np.abs(rotation))) - flowErrorLeft)
-#            flowErrorRight = flowErrorRight + radialFlowInertia * ((forward * (expectFlowRight - radialFlowRight) / (1. + rotationGain * np.abs(rotation))) - flowErrorRight)
             flowErrorLeft = forward * (expectFlowLeft - radialFlowLeft) / (1. + rotationGain * np.abs(rotation))
             flowErrorRight = forward * (expectFlowRight - radialFlowRight) / (1. + rotationGain * np.abs(rotation))
-            flowErrorLeft = flowErrorLeft if flowErrorLeft > 0. else 0.
-            flowErrorRight = flowErrorRight if flowErrorRight > 0. else 0.
 
-            icoControlLeft = 0.
-            icoControlRight = 0.
-            icoControlSteer = 0.
 
             if curr_step > 100:
-                icoInLeft = (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain
-                icoInRight = (flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain
-                icoInSteer = ((flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain - (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain)
+                icoInSteer = reflexGain * ((flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. - (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. )
 
 #                if np.absolute(icoInSteer) > 0.:
 #                    print ("Step: ", curr_step, "ICO input: ", icoInSteer)
 
-
-#                icoControlLeft = icoLeft.prediction(np.concatenate(([icoInLeft], np.ndarray.flatten(preprocess_input_images(img)), curr_act[:7])))
-#                icoControlRight = icoRight.prediction(np.concatenate(([icoInRight], np.ndarray.flatten(preprocess_input_images(img)), curr_act[:7])))
-
-                icoControlSteer = icoSteer.prediction(curr_step, np.concatenate(([icoInSteer], np.ndarray.flatten(preprocess_input_images(img)), np.zeros(7)))) #curr_act[:7])))
+                icoControlSteer = icoSteer.prediction(curr_step, np.concatenate(([icoInSteer], np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step-1) % agent_args['history_length'],0,:,:])), np.zeros(7))))  # curr_act[:7])))
 
 #                print("** St: ", curr_step, "Fwd: ", forward, " Expected ", expectFlowLeft, " ", expectFlowRight, " Actual: ", radialFlowLeft, " ",
 #                      radialFlowRight, " err ", flowErrorLeft, " ", flowErrorRight, "IcoIn: ", icoInSteer, " ICOcontrol: ", icoControlSteer)
-
-
-#            print ("ICO input: ", [(flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain], " : ",
-#                   [(flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain])
-
 
                 diff_theta = .6 * max(min(icoControlSteer, 5.), -5.)
                 #            diff_z = -10. #* min(icoControl, 1.)
@@ -268,11 +248,9 @@ def main():
             old_step = curr_step
             curr_step += 1
 
-#        if curr_step % epoch == 0:
-#            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoLeft-' + str(curr_step), icoLeft.weights)
-#            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoRight-' + str(curr_step), icoRight.weights)
+        if curr_step % epoch == 0:
 #            print ("saving weights... ")
-#            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoSteer-' + str(curr_step), icoSteer.weights)
+            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoSteer-' + str(curr_step), icoSteer.weights)
 #            icoSteer.saveInputs(curr_step)
 
 

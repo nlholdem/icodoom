@@ -42,25 +42,24 @@ class Icolearning:
 
         elif self.filterType == 'IIR':
             maxFreq = 0.5
-            minFreq = 0.05
+            minFreq = 0.01
             self.a = np.zeros([num_filters, self.IIROrder+1])
             self.b = np.zeros([num_filters, self.IIROrder+1])
             self.zf_old = np.zeros([num_filters, num_inputs-1, self.IIROrder])
 
-
             for i in range(num_filters):
-                freq = minFreq + float(i) * (maxFreq - minFreq)/float(num_filters)
+                freq = maxFreq - float(i) * (maxFreq - minFreq)/(float(num_filters)-1)
                 print ("Freq: ", freq)
-                self.a[i,:], self.b[i,:] = signal.butter(self.IIROrder, freq) # 3rd order lowpass
+                self.b[i,:], self.a[i,:] = signal.butter(self.IIROrder, freq) # 3rd order lowpass
                 zi = signal.lfilter_zi(self.b[i,:], self.a[i,:]) # initialise state
 
                 # set initial filter state
                 temp = np.empty(num_inputs-1)
-                temp.fill(0.5)
+                temp.fill(0.0)
                 self.zf_old[i,:,:] = np.outer(temp, zi)
 
-                print ("a: ", self.a)
-                print ("b: ", self.b)
+            print ("a: ", self.a)
+            print ("b: ", self.b)
 
         else:
             print ("unknown filter type, exiting")
@@ -96,13 +95,13 @@ class Icolearning:
                 # we have to do this in an awkward way because we can't assign an (n,1) array to a row in filtereredOutputs
                 z1, zf = signal.lfilter(b, a, self.curr_input[1:,0:1], zi=zfold)
                 self.filteredOutputs[i,1:] = np.ndarray.flatten(z1)
-#                print ("filteredOut: ", z1.shape, " b: ", b.shape, " a: ", a.shape, "in: ", self.curr_input.shape, " zf_old: ", zfold.shape)
+                # copy state to old_state
+                self.zf_old[i,:,:] = zf
+
 
             # derivative of reflex
             self.diff = self.filteredOutputs[0, 0] - self.oldOutput
             self.oldOutput = self.filteredOutputs[0, 0]
-            # copy state to old_state
-            self.zf_old[i, :, :] = zf
 
 
     def prediction(self, curr_step, inputs):
@@ -111,7 +110,6 @@ class Icolearning:
         self.filter()
 
         self.actualActivity = (np.ndarray.flatten(self.filteredOutputs)).dot(np.ndarray.flatten(self.weights))
-#        print ("ActualActivity: ", self.actualActivity)
 
         for j in range(self.n_filters):
             correl = self.diff*self.filteredOutputs[j, 1:]
@@ -127,7 +125,7 @@ class Icolearning:
 
 
     def saveInputs(self, curr_step):
-#        print("saving input images...")
+        print("saving input images...")
         for i in range(self.n_filters):
             np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/inputImages/icoSteer-' + str(i) + "-" + str(curr_step), self.filteredOutputs[i,:])
 

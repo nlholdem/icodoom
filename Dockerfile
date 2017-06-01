@@ -56,7 +56,7 @@ RUN pip --no-cache-dir install \
 
 RUN pip --no-cache-dir install \
     https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.9.0-cp27-none-linux_x86_64.whl
-RUN pip --no-cache-dir install opencv-python termcolor tqdm subprocess32 msgpack-python msgpack-numpy scipy
+RUN pip --no-cache-dir install opencv-python termcolor tqdm subprocess32 msgpack-python msgpack-numpy scipy Pillow imutils
 
 
 # Enables X11 sharing and creates user home directory
