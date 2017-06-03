@@ -41,22 +41,19 @@ RUN apt-get update && apt-get install -y \
 
 RUN apt-get update && apt-get install -y dbus
 
-
-
-# Python with pip
-RUN apt-get update && apt-get install -y python-dev python python-pip 
-RUN pip install pip --upgrade
-
-
+# Python3 
+RUN apt-get install -y python3-dev python3 python3-pip
+RUN pip3 install pip --upgrade
 
 
 # Vizdoom and other pip packages if needed
-RUN pip --no-cache-dir install \
-    git+https://github.com/mwydmuch/ViZDoom
+RUN git clone https://github.com/mwydmuch/ViZDoom ${HOME_DIR}/vizdoom
 
-RUN pip --no-cache-dir install \
-    https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.9.0-cp27-none-linux_x86_64.whl
-RUN pip --no-cache-dir install opencv-python termcolor tqdm subprocess32 msgpack-python msgpack-numpy scipy Pillow imutils
+RUN pip3 install ${HOME_DIR}/vizdoom
+RUN pip3 install tensorflow-gpu
+RUN pip3 --no-cache-dir install opencv-python termcolor 
+RUN pip3 --no-cache-dir install tqdm msgpack-python 
+RUN pip3 --no-cache-dir install msgpack-numpy scipy Pillow imutils
 
 
 # Enables X11 sharing and creates user home directory
@@ -90,4 +87,4 @@ COPY _vizdoom.cfg .
 RUN sudo chown ${HOST_UID}:${HOST_GID} -R *
 
 
-CMD taskset -c 1 python run_agent.py
+CMD taskset -c 1 python3 run_agent.py

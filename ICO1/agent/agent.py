@@ -1,7 +1,7 @@
 from __future__ import print_function
 import numpy as np
 import time
-import tensorflow as tf
+#import tensorflow as tf
 import ops as my_ops
 import os
 import re

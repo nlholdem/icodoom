@@ -42,7 +42,7 @@ class Icolearning:
 
         elif self.filterType == 'IIR':
             maxFreq = 0.5
-            minFreq = 0.01
+            minFreq = 0.1
             self.a = np.zeros([num_filters, self.IIROrder+1])
             self.b = np.zeros([num_filters, self.IIROrder+1])
             self.zf_old = np.zeros([num_filters, num_inputs-1, self.IIROrder])

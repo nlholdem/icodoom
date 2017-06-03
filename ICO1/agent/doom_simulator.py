@@ -21,6 +21,7 @@ class DoomSimulator:
         self._game = vizdoom.DoomGame()
         self._game.load_config(self.config)
         self._game.add_game_args(self.game_args)
+        self._game.add_game_args("+name AI +colorset 0")
 
         if 'ticrate' in args:
             self._game.set_ticrate(args['ticrate'])

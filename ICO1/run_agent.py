@@ -1,17 +1,11 @@
 from __future__ import print_function
 import numpy as np
 import sys
-from PIL import Image
 sys.path.append('./agent')
 import os.path
-import vizdoom
 from agent.doom_simulator import DoomSimulator
-from agent.agent import Agent
-from agent.trace import Trace
 from agent.icolearning import Icolearning
-import tensorflow as tf
 import cv2
-import imutils
 
 
 def main():
@@ -76,8 +70,8 @@ def main():
         agent_args['meas_for_manual'] = []
     agent_args['state_meas_shape'] = (len(agent_args['meas_for_net']),)
 
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
-    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, log_device_placement=False))
+#    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
+#    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, log_device_placement=False))
 
     img_buffer = np.zeros(
         (agent_args['history_length'], simulator.num_channels, simulator.resolution[1], simulator.resolution[0]), dtype='uint8')
@@ -111,6 +105,7 @@ def main():
     skipImage = 1
     skipImageICO = 5
     reflexGain = 0.01
+    oldHealth = 0.
 
     # create masks for left and right visual fields - note that these only cover the upper half of the image
     # this is to help prevent the tracking getting confused by the floor pattern
@@ -125,7 +120,7 @@ def main():
 
 
     # inputs: reflex + image + first 6 actions
-    icoSteer = Icolearning(num_inputs= 1 + simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, num_filters=4, learning_rate=1e-6, filter_type='IIR')
+    icoSteer = Icolearning(num_inputs= 1 + simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, num_filters=2, learning_rate=1e-6, filter_type='IIR')
 
     lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
     feature_params = dict(maxCorners=500, qualityLevel=0.03, minDistance=7, blockSize=7)
@@ -184,26 +179,34 @@ def main():
 #                if np.absolute(icoInSteer) > 0.:
 #                    print ("Step: ", curr_step, "ICO input: ", icoInSteer)
 
-                icoControlSteer = icoSteer.prediction(curr_step, np.concatenate(([icoInSteer], np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step-1) % agent_args['history_length'],0,:,:])), np.zeros(7))))  # curr_act[:7])))
+                health = meas[1]
+                healthChange = health-oldHealth if health<oldHealth else 0.
 
-#                print("** St: ", curr_step, "Fwd: ", forward, " Expected ", expectFlowLeft, " ", expectFlowRight, " Actual: ", radialFlowLeft, " ",
-#                      radialFlowRight, " err ", flowErrorLeft, " ", flowErrorRight, "IcoIn: ", icoInSteer, " ICOcontrol: ", icoControlSteer)
+                if (health < 101. and health > 0.):
 
-                diff_theta = .6 * max(min(icoControlSteer, 5.), -5.)
-                #            diff_z = -10. #* min(icoControl, 1.)
 
-                curr_act = np.zeros(7).tolist()
+    #                icoControlSteer = icoSteer.prediction(curr_step, np.concatenate(([icoInSteer], np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step-1) % agent_args['history_length'],0,:,:])), np.zeros(7))))  # curr_act[:7])))
+                    icoControlSteer = icoSteer.prediction(curr_step, np.concatenate(([healthChange], np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step-1) % agent_args['history_length'],0,:,:])), np.zeros(7))))  # curr_act[:7])))
 
-                curr_act[0] = 0
-                curr_act[1] = 0
-                curr_act[2] = 0
-                curr_act[3] = curr_act[3] + diff_z
-                curr_act[3] = 15.
-                curr_act[4] = 0
-                curr_act[5] = 0
+    #                print("** St: ", curr_step, "Fwd: ", forward, " Expected ", expectFlowLeft, " ", expectFlowRight, " Actual: ", radialFlowLeft, " ",
+    #                      radialFlowRight, " err ", flowErrorLeft, " ", flowErrorRight, "IcoIn: ", icoInSteer, " ICOcontrol: ", icoControlSteer)
 
-                curr_act[6] = curr_act[6] + diff_theta
-    #            curr_act[6] = 0.
+                    diff_theta = .6 * max(min(icoControlSteer, 5.), -5.)
+                    #            diff_z = -10. #* min(icoControl, 1.)
+
+                    curr_act = np.zeros(7).tolist()
+
+                    curr_act[0] = 0
+                    curr_act[1] = 0
+                    curr_act[2] = 0
+                    curr_act[3] = curr_act[3] + diff_z
+                    curr_act[3] = 0.
+                    curr_act[4] = 0
+                    curr_act[5] = 0
+
+                    curr_act[6] = curr_act[6] # + diff_theta
+        #            curr_act[6] = 0.
+                    oldHealth = health
 
             img, meas, rwrd, term = simulator.step(curr_act)
             if (not (meas is None)) and meas[0] > 30.:
@@ -247,7 +250,7 @@ def main():
 
         if curr_step % epoch == 0:
 #            print ("saving weights... ")
-            np.save('/tmp/icoSteer-' + str(curr_step), icoSteer.weights)
+            np.save('/home/paul/tmp/icoSteer-' + str(curr_step), icoSteer.weights)
 #            icoSteer.saveInputs(curr_step)
 
 

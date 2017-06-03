@@ -2,66 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61524628-251f-49c7-9d02-8286c25110bf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1000.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1600.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1800.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-1800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-2000.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-2000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-2200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-2200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-600.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-800.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-0-800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1000.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1600.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1800.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-1800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-2000.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-2000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-2200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-2200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-600.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-800.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-1-800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1000.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1600.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1800.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-1800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-2000.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-2000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-2200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-2200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-600.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-800.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-2-800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1000.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1600.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1800.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-1800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-2000.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-2000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-2200.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-2200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-400.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-600.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-800.npy" afterPath="$PROJECT_DIR$/ICO1/inputImages/icoSteer-3-800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-1000.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-1000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-1200.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-1200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-1400.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-1400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-1600.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-1600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-1800.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-1800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-200.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-2000.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-2000.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-2200.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-2200.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-2400.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-2400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-2600.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-2600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-2800.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-2800.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-400.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-400.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-600.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-600.npy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/weights/icoSteer-800.npy" afterPath="$PROJECT_DIR$/ICO1/weights/icoSteer-800.npy" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Dockerfile" afterPath="$PROJECT_DIR$/Dockerfile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/agent/agent.py" afterPath="$PROJECT_DIR$/ICO1/agent/agent.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/agent/doom_simulator.py" afterPath="$PROJECT_DIR$/ICO1/agent/doom_simulator.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/agent/icolearning.py" afterPath="$PROJECT_DIR$/ICO1/agent/icolearning.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/run_agent.py" afterPath="$PROJECT_DIR$/ICO1/run_agent.py" />
     </list>
@@ -80,11 +24,11 @@
             <file leaf-file-name="icolearning.py" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/ICO1/agent/icolearning.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="753">
-                    <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+                  <state relative-caret-position="345">
+                    <caret line="52" column="77" lean-forward="false" selection-start-line="52" selection-start-column="77" selection-end-line="52" selection-end-column="77" />
                     <folding>
                       <element signature="e#0#24#0" expanded="true" />
-                      <marker date="1496333127400" expanded="true" signature="4925:5083" ph="..." />
+                      <marker date="1496516475045" expanded="true" signature="4924:5082" ph="..." />
                     </folding>
                   </state>
                 </provider>
@@ -104,8 +48,8 @@
       <file leaf-file-name="run_agent.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="23" column="44" lean-forward="false" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
+            <state relative-caret-position="-425">
+              <caret line="131" column="52" lean-forward="true" selection-start-line="131" selection-start-column="52" selection-end-line="131" selection-end-column="52" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -113,24 +57,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="trace.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ICO1/agent/trace.py">
+      <file leaf-file-name="doom_simulator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ICO1/agent/doom_simulator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="28" lean-forward="false" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-              <folding />
+            <state relative-caret-position="255">
+              <caret line="16" column="44" lean-forward="false" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testico.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ICO1/testico.py">
+      <file leaf-file-name="host.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../host/host.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1989">
+              <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -138,8 +82,8 @@
       <file leaf-file-name="loadWeights.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+            <state relative-caret-position="238">
+              <caret line="14" column="32" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="32" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -162,18 +106,8 @@
       <file leaf-file-name="agent.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2669">
-              <caret line="164" column="81" lean-forward="false" selection-start-line="164" selection-start-column="42" selection-end-line="164" selection-end-column="81" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="doom_simulator.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ICO1/agent/doom_simulator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="7" column="18" lean-forward="false" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+            <state relative-caret-position="442">
+              <caret line="33" column="50" lean-forward="false" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="50" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -181,38 +115,46 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ffnet.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/ffnet.py">
+      <file leaf-file-name="agent.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="42" column="57" lean-forward="false" selection-start-line="42" selection-start-column="57" selection-end-line="42" selection-end-column="57" />
+            <state relative-caret-position="3553">
+              <caret line="216" column="0" lean-forward="false" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="0" />
               <folding>
-                <element signature="e#0#23#0" expanded="true" />
+                <element signature="e#0#37#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testButterworth.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../Python/Temp/testButterworth.py">
+      <file leaf-file-name="run_agent.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/run_agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+            <state relative-caret-position="988">
+              <caret line="78" column="111" lean-forward="true" selection-start-line="78" selection-start-column="111" selection-end-line="78" selection-end-column="111" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="doom_simulator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/doom_simulator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="15" column="44" lean-forward="false" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
               <folding>
-                <element signature="e#0#24#0" expanded="true" />
+                <element signature="e#0#37#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testButterworthRT.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../Python/Temp/testButterworthRT.py">
+      <file leaf-file-name="_vizdoom.ini" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../host/_vizdoom.ini">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2">
-              <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#24#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -228,9 +170,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>saver</find>
-      <find>load</find>
-      <find>histor</find>
       <find>state_meas</find>
       <find>img</find>
       <find>shape</find>
@@ -258,6 +197,9 @@
       <find>curr_step</find>
       <find>reflexGain</find>
       <find>img_buffer</find>
+      <find>intela</find>
+      <find>tf.</find>
+      <find>health</find>
     </findStrings>
     <replaceStrings>
       <replace>ffnet_output</replace>
@@ -276,15 +218,11 @@
         <option value="$PROJECT_DIR$/ICO1/agent/ops.py" />
         <option value="$PROJECT_DIR$/ICO1/config/config.cfg" />
         <option value="$PROJECT_DIR$/ICO1/ico/ico.py" />
-        <option value="$PROJECT_DIR$/../intelact/IntelAct_track2/run_agent.py" />
-        <option value="$PROJECT_DIR$/../host/host.py" />
         <option value="$PROJECT_DIR$/../../../Python/Tensorflow/src/ffnet.py" />
         <option value="$PROJECT_DIR$/ICO1/agent/nnet.py" />
         <option value="$PROJECT_DIR$/ICO1/test_agent.py" />
-        <option value="$PROJECT_DIR$/ICO1/agent/doom_simulator.py" />
         <option value="$PROJECT_DIR$/ICO1/FIRFilter.py" />
         <option value="$PROJECT_DIR$/ICO1/temp/testico.py" />
-        <option value="$PROJECT_DIR$/ICO1/agent/agent.py" />
         <option value="$PROJECT_DIR$/ICO1/agent/firfilter.py" />
         <option value="$PROJECT_DIR$/ICO1/testico.py" />
         <option value="$PROJECT_DIR$/ICO1/agent/trace.py" />
@@ -293,15 +231,20 @@
         <option value="$PROJECT_DIR$/../../../Python/Tensorflow/src/loadInputImags.py" />
         <option value="$PROJECT_DIR$/../../../Python/Temp/testButterworthRT.py" />
         <option value="$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py" />
+        <option value="$PROJECT_DIR$/ICO1/agent/agent.py" />
+        <option value="$PROJECT_DIR$/../intelact/IntelAct_track2/agent/doom_simulator.py" />
+        <option value="$PROJECT_DIR$/../host/host.py" />
+        <option value="$PROJECT_DIR$/ICO1/agent/doom_simulator.py" />
+        <option value="$PROJECT_DIR$/../intelact/IntelAct_track2/run_agent.py" />
         <option value="$PROJECT_DIR$/ICO1/agent/icolearning.py" />
         <option value="$PROJECT_DIR$/ICO1/run_agent.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1849" />
-    <option name="y" value="36" />
-    <option name="width" value="1865" />
+    <option name="x" value="1780" />
+    <option name="y" value="67" />
+    <option name="width" value="1866" />
     <option name="height" value="1246" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -340,7 +283,7 @@
     <panes />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Python/Tensorflow/src/loadInputImags.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../host/host.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.28960645" />
   </component>
@@ -491,7 +434,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1849" y="36" width="1865" height="1246" extended-state="0" />
+    <frame x="1780" y="67" width="1866" height="1246" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1948775" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -549,36 +492,12 @@
           <line>8</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ICO1/run_agent.py</url>
-          <line>160</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ICO1/run_agent.py</url>
-          <line>176</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
       </breakpoints>
       <option name="time" value="5" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/mnist_naive.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2516">
-          <caret line="155" column="0" lean-forward="false" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -649,7 +568,7 @@
         <state relative-caret-position="544">
           <caret line="33" column="74" lean-forward="false" selection-start-line="33" selection-start-column="74" selection-end-line="33" selection-end-column="74" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -676,7 +595,7 @@
         <state relative-caret-position="544">
           <caret line="33" column="74" lean-forward="false" selection-start-line="33" selection-start-column="74" selection-end-line="33" selection-end-column="74" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -703,7 +622,7 @@
         <state relative-caret-position="544">
           <caret line="33" column="74" lean-forward="false" selection-start-line="33" selection-start-column="74" selection-end-line="33" selection-end-column="74" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -737,7 +656,7 @@
         <state relative-caret-position="208">
           <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -780,16 +699,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/doom_simulator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="7" column="18" lean-forward="false" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/FIRFilter.py" />
     <entry file="file://$PROJECT_DIR$/ICO1/temp/testico.py" />
     <entry file="file://$PROJECT_DIR$/ICO1/agent/firfilter.py" />
@@ -814,37 +723,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../host/host.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="15" column="33" lean-forward="false" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="833">
-          <caret line="49" column="28" lean-forward="false" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/testico.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/run_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1292">
-          <caret line="78" column="50" lean-forward="false" selection-start-line="78" selection-start-column="50" selection-end-line="78" selection-end-column="50" />
         </state>
       </provider>
     </entry>
@@ -862,35 +744,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="141" column="0" lean-forward="false" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/test_agent.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1153">
           <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/ffnet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="42" column="57" lean-forward="false" selection-start-line="42" selection-start-column="57" selection-end-line="42" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2669">
-          <caret line="164" column="81" lean-forward="false" selection-start-line="164" selection-start-column="42" selection-end-line="164" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -905,7 +762,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="28" lean-forward="false" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -913,8 +769,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="3" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Python/Temp/testButterworthRT.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="952">
+          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/ffnet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="42" column="57" lean-forward="false" selection-start-line="42" selection-start-column="57" selection-end-line="42" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ICO1/agent/ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="23" lean-forward="false" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
           <folding>
-            <element signature="e#0#24#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -929,41 +806,95 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Python/Temp/testButterworthRT.py">
+    <entry file="file://$PROJECT_DIR$/../host/_vizdoom.ini">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2">
-          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ICO1/agent/doom_simulator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="16" column="44" lean-forward="false" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
           <folding>
-            <element signature="e#0#24#0" expanded="true" />
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../host/host.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1989">
+          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="33" column="50" lean-forward="false" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3553">
+          <caret line="216" column="0" lean-forward="false" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state relative-caret-position="238">
+          <caret line="14" column="32" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="32" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/doom_simulator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="15" column="44" lean-forward="false" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/run_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="988">
+          <caret line="78" column="111" lean-forward="true" selection-start-line="78" selection-start-column="111" selection-end-line="78" selection-end-column="111" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/agent/icolearning.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="753">
-          <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+        <state relative-caret-position="345">
+          <caret line="52" column="77" lean-forward="false" selection-start-line="52" selection-start-column="77" selection-end-line="52" selection-end-column="77" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
-            <marker date="1496333127400" expanded="true" signature="4925:5083" ph="..." />
+            <marker date="1496516475045" expanded="true" signature="4924:5082" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="23" column="44" lean-forward="false" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
+        <state relative-caret-position="-425">
+          <caret line="131" column="52" lean-forward="true" selection-start-line="131" selection-start-column="52" selection-end-line="131" selection-end-column="52" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>
