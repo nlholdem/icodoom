@@ -104,6 +104,7 @@ class Icolearning:
             self.oldOutput = self.filteredOutputs[0, 0]
 
 
+    # that's the one to call
     def prediction(self, curr_step, inputs):
 #        print ("PREDICT: ", curr_step)
         self.setCurrInput(inputs)
@@ -127,5 +128,4 @@ class Icolearning:
     def saveInputs(self, curr_step):
         print("saving input images...")
         for i in range(self.n_filters):
-            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/inputImages/icoSteer-' + str(i) + "-" + str(curr_step), self.filteredOutputs[i,:])
-
+            np.save('/tmp/icoSteer-' + str(i) + "-" + str(curr_step), self.filteredOutputs[i,:])
