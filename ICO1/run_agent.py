@@ -2,7 +2,7 @@ from __future__ import print_function
 import numpy as np
 import sys
 from PIL import Image
-sys.path.append('./bin/python')
+sys.path.append('./agent')
 import os.path
 import vizdoom
 from agent.doom_simulator import DoomSimulator
@@ -117,18 +117,15 @@ def main():
     width = simulator_args['resolution'][0]
     height = simulator_args['resolution'][1]
     maskLeft = np.zeros([height, width], np.uint8)
-    maskLeft[height/2:, :width/2] = 1.
+    half_height = round(height/2)
+    half_width = round(width/2)
+    maskLeft[half_height:, :half_width] = 1.
     maskRight = np.zeros([height, width], np.uint8)
-    maskRight[height/2:, width/2:] = 1.
+    maskRight[half_height:, half_width:] = 1.
 
 
     # inputs: reflex + image + first 6 actions
     icoSteer = Icolearning(num_inputs= 1 + simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, num_filters=4, learning_rate=1e-6, filter_type='IIR')
-
-    static = Image.open("/home/paul/Pictures/hack1.resized.jpg")
-    staticarray = np.array(static)
-    staticimg = np.zeros([height, width])
-    staticimg[:staticarray.shape[0], :staticarray.shape[1]] = staticarray[:,:,0]
 
     lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
     feature_params = dict(maxCorners=500, qualityLevel=0.03, minDistance=7, blockSize=7)
@@ -250,7 +247,7 @@ def main():
 
         if curr_step % epoch == 0:
 #            print ("saving weights... ")
-            np.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/weights/icoSteer-' + str(curr_step), icoSteer.weights)
+            np.save('/tmp/icoSteer-' + str(curr_step), icoSteer.weights)
 #            icoSteer.saveInputs(curr_step)
 
 
