@@ -4,25 +4,26 @@ hyperbolic tangent as the sigmoid squashing function.
 
 Original Author: Neil Schemenauer <nas@arctrix.com>
 Modified Author: James Howard <james.w.howard@gmail.com>
+Modified Author: Bernd Porr <mail@berndporr.me.uk>
 
-
-Modified to work for function regression and added option to use matplotlib
-to display regression networks.
-
-Code is placed in public domain by the two first authors.
+GNU public license
 ==
 
 Modified by Jerzy Karczmarczuk <jerzy.karczmarczuk@unicaen.fr>
 * Converted to Python 3 (syntax)
 * Uses numpy
-* uses Matplotlib.
+
 
 """
+
+import csv
+
 try:
   from pylab import *      
 except:
     print("No Matplotlib")
     from numpy import *
+
 
 # Make a matrix (NumPy to speed this up)
 def makeZ(I, J):
@@ -35,7 +36,10 @@ def rnd(a, b, shp):
 
 
 class NN(object):
-    def __init__(self, ni, nh, no, learnig_rate=0.5, momentum=0.1, no_derivative = True):
+    def __init__(self, num_input, num_hidden, num_output, 
+                 learnig_rate=0.005, momentum=0.1, init_weight = 0.01,
+                 derivative = True,
+                 do_tan = True):
         """NN constructor.
         
         ni, nh, no are the number of input, hidden and output nodes.
@@ -45,12 +49,13 @@ class NN(object):
         
         self.N = learnig_rate
         self.M = momentum
-        self.nd = no_derivative
+        self.de = derivative
+        self.dt = do_tan
         
         #Number of input, hidden and output nodes.
-        self.ni = ni  + 1 # +1 for bias node
-        self.nh = nh  + 1 # +1 for bias node
-        self.no = no
+        self.ni = num_input
+        self.nh = num_hidden
+        self.no = num_output
 
         # activations for nodes
         self.ai = ones(self.ni)
@@ -59,39 +64,42 @@ class NN(object):
         
         # create weights
         # set them to random values
-        self.wi=rnd(-1,1,(self.ni,self.nh))
-        self.wo=rnd(-1,1,(self.nh,self.no))
+        self.wi=rnd(-init_weight,init_weight,(self.ni,self.nh))
+        self.wo=rnd(-init_weight,init_weight,(self.nh,self.no))
         # last change in weights for momentum   
         self.ci = makeZ(self.ni, self.nh)
         self.co = makeZ(self.nh, self.no)
 
 
     # derivative of our sigmoid function, in terms of the output (i.e. y)
-    def dsigmoid(y):
-        if (self.nd) :
-            return y
-        else :
+    def dsigmoid(self, y):
+        if (self.de) :
             return 1.0 - y**2
+        else :
+            return y
 
 
-    def sigmoid(x):
-        return tanh(x)
+    def sigmoid(self, x):
+        if (self.dt) :
+            return tanh(x)
+        else :
+            return x
 
 
     def step(self, inputs, errors):
-        if len(inputs) != self.ni-1:
+        if len(inputs) != self.ni:
             raise ValueError('wrong number of inputs')
 
         # input activations
-        for i in range(self.ni - 1):
+        for i in range(self.ni):
             self.ai[i] = inputs[i]
 
         # hidden activations
-        for j in range(self.nh - 1):
+        for j in range(self.nh):
             total = 0.0
             for i in range(self.ni):
                 total += self.ai[i] * self.wi[i,j]
-            self.ah[j] = sigmoid(total)
+            self.ah[j] = self.sigmoid(total)
 
         # output activations
         for k in range(self.no):
@@ -99,10 +107,9 @@ class NN(object):
             for j in range(self.nh):
                 total += self.ah[j] * self.wo[j,k]
             self.ao[k] = total
-            if not self.regression:
-                self.ao[k] = sigmoid(total)
+            self.ao[k] = self.sigmoid(total)
 
-        learn(errors);
+        self.learn(errors);
 	
         return copy(self.ao)  # self.ao[:]
 
@@ -118,7 +125,7 @@ class NN(object):
             error = 0.0
             for k in range(self.no):
                 error += errors[k]*self.wo[j,k]
-            hidden_deltas[j] = dsigmoid(self.ah[j]) * error
+            hidden_deltas[j] = self.dsigmoid(self.ah[j]) * error
 
         # update output weights
         for j in range(self.nh):
@@ -143,13 +150,29 @@ class NN(object):
         print()
         print('Output weights:')
         for j in range(self.nh):
-            print(self.wo[j])
-
+            outp = print(self.wo[j])
+            print(outp)
 
 def demoDEEPICO():
-    # create a network with two input, two hidden, and one output nodes
-    net = NN(2, 2, 1)
-
+    with open('test.csv', 'wb') as csvfile:
+        csvfile.close()
+        
+    with open('test.csv', 'ab') as csvfile:
+        net = NN(2, 2, 1, momentum = 0, derivative = True, do_tan = True)
+        inp = zeros(2)
+        err = zeros(1)
+        for i in range(100):
+            if (i > 10) :
+                inp[0] = 1
+            if ((i > 20) and (i<90)) :
+                err[0] = 1
+            else :
+                err[0] = 0
+            output = net.step(inp,err.T)
+            print(output)
+            np.savetxt(csvfile,np.hstack((inp,err,output)),delimiter="\t",newline="\t")
+            crlf="\n"
+            csvfile.write(crlf.encode())
 
 if __name__ == '__main__':
     demoDEEPICO()
