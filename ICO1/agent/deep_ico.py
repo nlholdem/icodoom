@@ -17,22 +17,17 @@ Modified by Jerzy Karczmarczuk <jerzy.karczmarczuk@unicaen.fr>
 """
 
 import csv
-
-try:
-  from pylab import *      
-except:
-    print("No Matplotlib")
-    from numpy import *
+import numpy as np
 
 
 # Make a matrix (NumPy to speed this up)
 def makeZ(I, J):
-    return zeros((I,J),dtype='double')
+    return np.zeros((I,J),dtype='double')
 
     
 # calculate a random number where:  a <= rand < b
 def rnd(a, b, shp):
-    return (b-a)*rand(*shp)+a
+    return (b-a)*np.random.rand(*shp)+a
 
 
 class NN(object):
@@ -58,9 +53,9 @@ class NN(object):
         self.no = num_output
 
         # activations for nodes
-        self.ai = ones(self.ni)
-        self.ah = ones(self.nh)
-        self.ao = ones(self.no)
+        self.ai = np.ones(self.ni)
+        self.ah = np.ones(self.nh)
+        self.ao = np.ones(self.no)
         
         # create weights
         # set them to random values
@@ -81,7 +76,7 @@ class NN(object):
 
     def sigmoid(self, x):
         if (self.dt) :
-            return tanh(x)
+            return np.tanh(x)
         else :
             return x
 
@@ -111,7 +106,7 @@ class NN(object):
 
         self.learn(errors);
 	
-        return copy(self.ao)  # self.ao[:]
+        return np.copy(self.ao)  # self.ao[:]
 
 
 
@@ -120,7 +115,7 @@ class NN(object):
             raise ValueError('wrong number of target values')
 
         # calculate error terms for hidden
-        hidden_deltas = zeros(self.nh)
+        hidden_deltas = np.zeros(self.nh)
         for j in range(self.nh):
             error = 0.0
             for k in range(self.no):
@@ -159,8 +154,8 @@ def demoDEEPICO():
         
     with open('test.csv', 'ab') as csvfile:
         net = NN(2, 2, 1, momentum = 0, derivative = True, do_tan = True)
-        inp = zeros(2)
-        err = zeros(1)
+        inp = np.zeros(2)
+        err = np.zeros(1)
         for i in range(100):
             if (i > 10) :
                 inp[0] = 1

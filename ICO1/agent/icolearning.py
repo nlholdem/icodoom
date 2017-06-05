@@ -4,7 +4,7 @@ from trace import Trace
 
 class Icolearning:
 
-    def __init__(self, num_inputs, num_filters = 1, learning_rate = 1e-8, filter_type='trace'):
+    def __init__(self, num_inputs, num_filters = 1, learning_rate = 1e-8, filter_type='trace', freqResp="band"):
 
         print ("construcing ICO: num_inputs: ", num_inputs, " num_filters: ", num_filters)
         self.n_inputs = num_inputs
@@ -25,7 +25,7 @@ class Icolearning:
         self.oldOutput = 0.
         self.norm = 1.
         self.filterType = filter_type
-        self.IIROrder = 3
+        self.IIROrder = 4
 
         self.learningRate = learning_rate
 
@@ -41,16 +41,28 @@ class Icolearning:
             print (self.filterBank)
 
         elif self.filterType == 'IIR':
-            maxFreq = 0.5
-            minFreq = 0.1
-            self.a = np.zeros([num_filters, self.IIROrder+1])
-            self.b = np.zeros([num_filters, self.IIROrder+1])
-            self.zf_old = np.zeros([num_filters, num_inputs-1, self.IIROrder])
+            maxFreq = 0.05
+            minFreq = 0.01
+            if (freqResp == 'low'):
+                self.a = np.zeros([num_filters, self.IIROrder+1])
+                self.b = np.zeros([num_filters, self.IIROrder+1])
+                self.zf_old = np.zeros([num_filters, num_inputs-1, self.IIROrder])
+            elif (freqResp == 'band'):
+                self.a = np.zeros([num_filters, self.IIROrder*2 + 1])
+                self.b = np.zeros([num_filters, self.IIROrder*2 + 1])
+                self.zf_old = np.zeros([num_filters, num_inputs - 1, self.IIROrder*2])
 
             for i in range(num_filters):
-                freq = maxFreq - float(i) * (maxFreq - minFreq)/(float(num_filters)-1)
+                if (num_filters < 2):
+                    freq = minFreq
+                else:
+                    freq = maxFreq - float(i) * (maxFreq - minFreq)/(float(num_filters)-1)
                 print ("Freq: ", freq)
-                self.b[i,:], self.a[i,:] = signal.butter(self.IIROrder, freq) # 3rd order lowpass
+                if (freqResp == 'low'):
+                    self.b[i,:], self.a[i,:] = signal.butter(self.IIROrder, freq, analog=False) # 3rd order lowpass
+                elif (freqResp == 'band'):
+                    self.b[i,:], self.a[i,:] = signal.butter(self.IIROrder, [minFreq, maxFreq], 'band', analog=False)
+
                 zi = signal.lfilter_zi(self.b[i,:], self.a[i,:]) # initialise state
 
                 # set initial filter state
