@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
-# Cuda 7.5 with cudnn 4.0.7
-FROM nvidia/cuda:7.5-devel
+
+FROM nvidia/cuda:8.0-cudnn5-devel
 
 RUN echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1404/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list
 ENV CUDNN_VERSION 4
@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
             libcudnn4=4.0.7 libcudnn4-dev=4.0.7
 
 # ViZdoom dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get install -y \
     build-essential \
     bzip2 \
     cmake \
@@ -37,29 +37,17 @@ RUN apt-get update && apt-get install -y \
     timidity \
     unzip \
     wget \
-    zlib1g-dev
+zlib1g-dev
 
-RUN apt-get update && apt-get install -y dbus
-
-# Python3 
+# Python3
 RUN apt-get install -y python3-dev python3 python3-pip
 RUN pip3 install pip --upgrade
 
 
-# Vizdoom and other pip packages if needed
-RUN git clone https://github.com/mwydmuch/ViZDoom ${HOME_DIR}/vizdoom
-
-RUN pip3 install ${HOME_DIR}/vizdoom
-RUN pip3 install tensorflow-gpu
-RUN pip3 --no-cache-dir install opencv-python termcolor 
-RUN pip3 --no-cache-dir install tqdm msgpack-python 
-RUN pip3 --no-cache-dir install msgpack-numpy scipy Pillow imutils
-
-
 # Enables X11 sharing and creates user home directory
-ENV USER_NAME cig2017
+ENV USER_NAME vizdoom
 ENV HOME_DIR /home/$USER_NAME
-
+#
 # Replace HOST_UID/HOST_GUID with your user / group id (needed for X11)
 ENV HOST_UID 1000
 ENV HOST_GID 1000
@@ -71,6 +59,13 @@ RUN export uid=${HOST_UID} gid=${HOST_GID} && \
     echo "$USER_NAME ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER_NAME && \
     chmod 0440 /etc/sudoers.d/$USER_NAME && \
     chown ${uid}:${gid} -R ${HOME_DIR}
+
+
+RUN git clone https://github.com/mwydmuch/ViZDoom ${HOME_DIR}/vizdoom
+RUN pip3 install ${HOME_DIR}/vizdoom
+RUN pip3 install tensorflow-gpu
+RUN pip3 install matplotlib scipy scikit-image tqdm
+RUN pip3 --no-cache-dir install opencv-python termcolor 
 
 USER ${USER_NAME}
 WORKDIR ${HOME_DIR}
@@ -88,3 +83,4 @@ RUN sudo chown ${HOST_UID}:${HOST_GID} -R *
 
 
 CMD taskset -c 1 python3 run_agent.py
+

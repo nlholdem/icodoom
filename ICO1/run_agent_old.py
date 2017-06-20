@@ -15,7 +15,7 @@ def main():
     simulator_args['resolution'] = (160,120)
     simulator_args['frame_skip'] = 2
     simulator_args['color_mode'] = 'GRAY'   
-    simulator_args['game_args'] = "+name IntelAct +colorset 7"
+    simulator_args['game_args'] = "+name ICO +colorset 7"
         
     ## Agent    
     agent_args = {}

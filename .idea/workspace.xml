@@ -2,12 +2,68 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61524628-251f-49c7-9d02-8286c25110bf" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Dockerfile-old" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/agent/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/agent/agent.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/agent/doom_simulator.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/agent/nnet.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/agent/ops.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/checkpoints/Hack/hack-20978" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/checkpoints/Hack/hack-20978.meta" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/checkpoints/Temp/net" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/checkpoints/Temp/net.meta" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/checkpoints/checkpoint" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/checkpoints/hack-20978" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/checkpoints/hack-20978.meta" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/checkpoints/net" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/checkpoints/net.meta" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/config/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/config1/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/config2/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/config3/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/ico/ico.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/run_agent.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/run_agent_mine.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/run_agent_old.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine/test_agent.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/agent/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/agent/agent.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/agent/doom_simulator.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/agent/nnet.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/agent/ops.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/checkpoints/Hack/hack-20978" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/checkpoints/Hack/hack-20978.meta" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/checkpoints/Temp/net" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/checkpoints/Temp/net.meta" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/checkpoints/checkpoint" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/checkpoints/hack-20978" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/checkpoints/hack-20978.meta" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/checkpoints/net" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/checkpoints/net.meta" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/config/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/config1/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/config2/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/config3/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/ico/ico.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/run_agent.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/run_agent_mine.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/run_agent_old.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1-Mine2/test_agent.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1/agent/icolearning.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1/config1/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1/config2/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1/config3/config.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ICO1/ico/ico.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Dockerfile" afterPath="$PROJECT_DIR$/Dockerfile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/_vizdoom.cfg" afterPath="$PROJECT_DIR$/ICO1/_vizdoom.cfg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/agent/agent.py" afterPath="$PROJECT_DIR$/ICO1/agent/agent.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/agent/doom_simulator.py" afterPath="$PROJECT_DIR$/ICO1/agent/doom_simulator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/agent/icolearning.py" afterPath="$PROJECT_DIR$/ICO1/agent/icolearning.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/config/config.cfg" afterPath="$PROJECT_DIR$/ICO1/config/config.cfg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/run_agent.py" afterPath="$PROJECT_DIR$/ICO1/run_agent.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/run_agent_mine.py" afterPath="$PROJECT_DIR$/ICO1/run_agent_mine.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/run_agent_old.py" afterPath="$PROJECT_DIR$/ICO1/run_agent_old.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ICO1/test_agent.py" afterPath="$PROJECT_DIR$/ICO1/test_agent.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,15 +77,36 @@
       <content type="file-editors">
         <state>
           <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file leaf-file-name="icolearning.py" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/ICO1/agent/icolearning.py">
+            <file leaf-file-name="run_agent.py" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="345">
-                    <caret line="52" column="77" lean-forward="false" selection-start-line="52" selection-start-column="77" selection-end-line="52" selection-end-column="77" />
+                  <state relative-caret-position="459">
+                    <caret line="283" column="134" lean-forward="false" selection-start-line="283" selection-start-column="134" selection-end-line="283" selection-end-column="134" />
+                    <folding>
+                      <element signature="e#0#37#0" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="icolearner.py" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/ICO1/agent/icolearner.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="68">
+                    <caret line="6" column="89" lean-forward="false" selection-start-line="6" selection-start-column="89" selection-end-line="6" selection-end-column="89" />
                     <folding>
                       <element signature="e#0#24#0" expanded="true" />
-                      <marker date="1496516475045" expanded="true" signature="4924:5082" ph="..." />
                     </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="scipy-signal-lfilter-1.py" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/../../../Python/Temp/scipy-signal-lfilter-1.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="51">
+                    <caret line="3" column="31" lean-forward="false" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+                    <folding />
                   </state>
                 </provider>
               </entry>
@@ -45,81 +122,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="run_agent.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-425">
-              <caret line="131" column="52" lean-forward="true" selection-start-line="131" selection-start-column="52" selection-end-line="131" selection-end-column="52" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="doom_simulator.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ICO1/agent/doom_simulator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="16" column="44" lean-forward="false" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="host.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../host/host.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1989">
-              <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="loadWeights.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="32" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="32" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="loadInputImags.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/loadInputImags.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="15" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="agent.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/agent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="33" column="50" lean-forward="false" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="50" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="agent.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3553">
-              <caret line="216" column="0" lean-forward="false" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="0" />
+            <state relative-caret-position="3060">
+              <caret line="188" column="50" lean-forward="false" selection-start-line="188" selection-start-column="50" selection-end-line="188" selection-end-column="50" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -130,18 +137,84 @@
       <file leaf-file-name="run_agent.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/run_agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="988">
-              <caret line="78" column="111" lean-forward="true" selection-start-line="78" selection-start-column="111" selection-end-line="78" selection-end-column="111" />
+            <state relative-caret-position="1547">
+              <caret line="93" column="1" lean-forward="false" selection-start-line="93" selection-start-column="1" selection-end-line="93" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="doom_simulator.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/doom_simulator.py">
+      <file leaf-file-name="host.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../host/host.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="15" column="44" lean-forward="false" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+            <state relative-caret-position="17">
+              <caret line="9" column="12" lean-forward="false" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="my_glorious_agent.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../f1/F1_track1/my_glorious_agent.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="12" column="42" lean-forward="false" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
+              <folding>
+                <element signature="e#19#56#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="agent.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../f1/F1_track1/agent.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3536">
+              <caret line="210" column="30" lean-forward="false" selection-start-line="210" selection-start-column="22" selection-end-line="210" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="history.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../f1/F1_track1/history.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="11" column="28" lean-forward="false" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+              <folding>
+                <element signature="e#107#125#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../f1/F1_track1/tensorpack/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="loadWeights.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="22" column="72" lean-forward="false" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="72" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="doom_simulator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ICO1/agent/doom_simulator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -149,11 +222,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_vizdoom.ini" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../host/_vizdoom.ini">
+      <file leaf-file-name="doom_simulator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/doom_simulator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="272">
+              <caret line="17" column="37" lean-forward="false" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -170,42 +243,49 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>state_meas</find>
-      <find>img</find>
-      <find>shape</find>
-      <find>arange</find>
-      <find>ilterb</find>
-      <find>history_length_ico</find>
-      <find>6</find>
-      <find>act_buffer</find>
-      <find>updatePtsFreq</find>
-      <find>flatten</find>
-      <find>history_length</find>
+      <find>num_</find>
+      <find>lastc</find>
+      <find>Icolearning</find>
+      <find>learnin</find>
+      <find>1</find>
+      <find>img_buffer_ico</find>
+      <find>getoutput</find>
+      <find>efference</find>
+      <find>getOutputArray</find>
+      <find>deepIcoEfferenceOutput</find>
       <find>hack</find>
-      <find>diff_theta</find>
-      <find>inerti</find>
-      <find>radialGain</find>
-      <find>curr_act</find>
-      <find>rotationGain</find>
-      <find>icolearn</find>
-      <find>curr_input</find>
-      <find>zf_old</find>
-      <find>filteredOutputs</find>
-      <find>curr_in</find>
-      <find>oldOutput</find>
+      <find>img_buffer_predict</find>
+      <find>agent_args['history_length']</find>
+      <find>channe</find>
+      <find>simul</find>
+      <find>n_ffnet_outputs</find>
+      <find>n_ffnet_hidden</find>
+      <find>print</find>
+      <find>outputim</find>
+      <find>target</find>
+      <find>img</find>
       <find>preprocess_input_images</find>
-      <find>curr_step</find>
-      <find>reflexGain</find>
-      <find>img_buffer</find>
-      <find>intela</find>
-      <find>tf.</find>
-      <find>health</find>
+      <find>imageDiff</find>
+      <find>conv</find>
+      <find>make</find>
+      <find>colorset</find>
+      <find>channel</find>
+      <find>num_channels</find>
+      <find>getColourImbalance</find>
+      <find>Left</find>
     </findStrings>
     <replaceStrings>
       <replace>ffnet_output</replace>
       <replace>self.ffnet_output</replace>
       <replace>img</replace>
       <replace>filteredOutputs</replace>
+      <replace>icoSteer</replace>
+      <replace>args</replace>
+      <replace>IcoLearner</replace>
+      <replace>historyLen</replace>
+      <replace>outputArray</replace>
+      <replace>normImg</replace>
+      <replace>Right</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -229,23 +309,30 @@
         <option value="$PROJECT_DIR$/../../../Python/Tensorflow/src/optic_flow.py" />
         <option value="$PROJECT_DIR$/../../../Python/Temp/testButterworth.py" />
         <option value="$PROJECT_DIR$/../../../Python/Tensorflow/src/loadInputImags.py" />
-        <option value="$PROJECT_DIR$/../../../Python/Temp/testButterworthRT.py" />
-        <option value="$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py" />
-        <option value="$PROJECT_DIR$/ICO1/agent/agent.py" />
         <option value="$PROJECT_DIR$/../intelact/IntelAct_track2/agent/doom_simulator.py" />
-        <option value="$PROJECT_DIR$/../host/host.py" />
         <option value="$PROJECT_DIR$/ICO1/agent/doom_simulator.py" />
-        <option value="$PROJECT_DIR$/../intelact/IntelAct_track2/run_agent.py" />
         <option value="$PROJECT_DIR$/ICO1/agent/icolearning.py" />
+        <option value="$PROJECT_DIR$/ICO1/agent/icolearner.py" />
+        <option value="$PROJECT_DIR$/../../../Python/Temp/scipy-signal-lfilter-1.py" />
+        <option value="$PROJECT_DIR$/../../../Python/Temp/testButterworthRT.py" />
+        <option value="$PROJECT_DIR$/ICO1/agent/icoreflex.py" />
+        <option value="$PROJECT_DIR$/ICO1/deep_ico/saveWeights.py" />
+        <option value="$PROJECT_DIR$/ICO1/deep_ico/deep_ico.py" />
+        <option value="$PROJECT_DIR$/../intelact/IntelAct_track2/agent/agent.py" />
+        <option value="$PROJECT_DIR$/ICO1/agent/agent.py" />
+        <option value="$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py" />
+        <option value="$PROJECT_DIR$/ICO1/deep_ico/test_deep_ico.py" />
+        <option value="$PROJECT_DIR$/../intelact/IntelAct_track2/run_agent.py" />
+        <option value="$PROJECT_DIR$/../host/host.py" />
         <option value="$PROJECT_DIR$/ICO1/run_agent.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1780" />
-    <option name="y" value="67" />
-    <option name="width" value="1866" />
-    <option name="height" value="1246" />
+    <option name="x" value="1800" />
+    <option name="y" value="125" />
+    <option name="width" value="1616" />
+    <option name="height" value="1294" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -267,7 +354,7 @@
     </entry>
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -280,10 +367,41 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icolearner" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icolearner" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icolearner" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icolearner" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ICO1" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../host/host.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../intelact/IntelAct_track2/agent/doom_simulator.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.28960645" />
   </component>
@@ -434,10 +552,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1780" y="67" width="1866" height="1246" extended-state="0" />
+    <frame x="1800" y="125" width="1616" height="1294" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1948775" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19442725" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28725165" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -488,118 +606,41 @@
           <line>17</line>
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ICO1/agent/icolearning.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="1" />
+          <url>file://$PROJECT_DIR$/../host/host.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../host/host.py</url>
+          <line>9</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ICO1/run_agent.py</url>
+          <line>174</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ICO1/run_agent.py</url>
+          <line>176</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../host/host.py</url>
+          <line>55</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py</url>
+          <line>6</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="5" />
+      <option name="time" value="13" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Python/hack.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/mnist_naive.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="63" column="8" lean-forward="true" selection-start-line="63" selection-start-column="8" selection-end-line="63" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="7" column="23" lean-forward="false" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/mnist_naive.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1666">
-          <caret line="105" column="83" lean-forward="true" selection-start-line="105" selection-start-column="83" selection-end-line="105" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="33" column="74" lean-forward="false" selection-start-line="33" selection-start-column="74" selection-end-line="33" selection-end-column="74" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1717">
-          <caret line="108" column="69" lean-forward="false" selection-start-line="108" selection-start-column="69" selection-end-line="108" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="60" lean-forward="false" selection-start-line="17" selection-start-column="60" selection-end-line="17" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="33" column="74" lean-forward="false" selection-start-line="33" selection-start-column="74" selection-end-line="33" selection-end-column="74" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1717">
@@ -765,20 +806,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Python/Temp/testButterworth.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Python/Temp/testButterworthRT.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/ffnet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="680">
@@ -800,9 +827,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="15" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -810,91 +834,173 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/doom_simulator.py">
+    <entry file="file://$PROJECT_DIR$/ICO1/agent/icolearning.py" />
+    <entry file="file://$PROJECT_DIR$/../../../Python/Temp/testButterworth.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="16" column="44" lean-forward="false" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="17">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../host/host.py">
+    <entry file="file://$PROJECT_DIR$/../../../Python/Temp/testButterworthBandp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1989">
-          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="221">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Python/Temp/testButterworthRT.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="37" column="64" lean-forward="false" selection-start-line="37" selection-start-column="60" selection-end-line="37" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ICO1/agent/icoreflex.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="23" lean-forward="false" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ICO1/deep_ico/saveWeights.py" />
+    <entry file="file://$PROJECT_DIR$/ICO1/agent/deep_ico.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="54" column="31" lean-forward="true" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ICO1/deep_ico/deep_ico.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3434">
+          <caret line="202" column="0" lean-forward="false" selection-start-line="202" selection-start-column="0" selection-end-line="202" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="33" column="50" lean-forward="false" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="510">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ICO1/deep_ico/test_deep_ico.py" />
     <entry file="file://$PROJECT_DIR$/ICO1/agent/agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3553">
-          <caret line="216" column="0" lean-forward="false" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="0" />
+        <state relative-caret-position="3060">
+          <caret line="188" column="50" lean-forward="false" selection-start-line="188" selection-start-column="50" selection-end-line="188" selection-end-column="50" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="32" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/agent/doom_simulator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="15" column="44" lean-forward="false" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+        <state relative-caret-position="272">
+          <caret line="17" column="37" lean-forward="false" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../f1/F1_track1/tensorpack/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../f1/F1_track1/my_glorious_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="12" column="42" lean-forward="false" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
           <folding>
-            <element signature="e#0#37#0" expanded="true" />
+            <element signature="e#19#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../f1/F1_track1/agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3536">
+          <caret line="210" column="30" lean-forward="false" selection-start-line="210" selection-start-column="22" selection-end-line="210" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../f1/F1_track1/history.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="11" column="28" lean-forward="false" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+          <folding>
+            <element signature="e#107#125#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Python/Tensorflow/src/loadWeights.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="72" lean-forward="false" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intelact/IntelAct_track2/run_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="988">
-          <caret line="78" column="111" lean-forward="true" selection-start-line="78" selection-start-column="111" selection-end-line="78" selection-end-column="111" />
+        <state relative-caret-position="1547">
+          <caret line="93" column="1" lean-forward="false" selection-start-line="93" selection-start-column="1" selection-end-line="93" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ICO1/agent/icolearning.py">
+    <entry file="file://$PROJECT_DIR$/ICO1/agent/doom_simulator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="52" column="77" lean-forward="false" selection-start-line="52" selection-start-column="77" selection-end-line="52" selection-end-column="77" />
+        <state relative-caret-position="153">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ICO1/agent/icolearner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="89" lean-forward="false" selection-start-line="6" selection-start-column="89" selection-end-line="6" selection-end-column="89" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
-            <marker date="1496516475045" expanded="true" signature="4924:5082" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Python/Temp/scipy-signal-lfilter-1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="31" lean-forward="false" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../host/host.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="9" column="12" lean-forward="false" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ICO1/run_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-425">
-          <caret line="131" column="52" lean-forward="true" selection-start-line="131" selection-start-column="52" selection-end-line="131" selection-end-column="52" />
+        <state relative-caret-position="459">
+          <caret line="283" column="134" lean-forward="false" selection-start-line="283" selection-start-column="134" selection-end-line="283" selection-end-column="134" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>
