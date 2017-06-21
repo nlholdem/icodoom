@@ -182,13 +182,13 @@ def main():
     minT = 3
     maxT = 15
 
-    deepBP = DeepFeedbackLearning(width*height, 20, 1, nFiltersInput, nFiltersHidden, minT,maxT)
+    deepBP = DeepFeedbackLearning(width*height, 50, 1, nFiltersInput, nFiltersHidden, minT,maxT)
     # init the weights
-    deepBP.initWeights(0.01);
+    deepBP.initWeights(0.0001);
     deepBP.setAlgorithm(DeepFeedbackLearning.backprop);
-    deepBP.setLearningRate(0.1)
+    deepBP.setLearningRate(.001)
     deepBP.seedRandom(88)
-    deepBP.setUseDerivative(1)
+    deepBP.setUseDerivative(0)
 
 #    deepIcoEfference = Deep_ICO(simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, 10, 1)
     nh = np.asarray([36,36])
@@ -208,6 +208,7 @@ def main():
     lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
     feature_params = dict(maxCorners=500, qualityLevel=0.03, minDistance=7, blockSize=7)
     imgCentre = np.array([simulator_args['resolution'][0] / 2, simulator_args['resolution'][1] /2])
+    print ("Image centre: ", imgCentre)
 
     while not term:
         if curr_step < historyLen:
@@ -281,18 +282,27 @@ def main():
 
                     imageDiff = preprocess_input_images(img_buffer[(curr_step - 1) % historyLen, 0, :, :]) \
                                 - img_buffer_predict[(curr_step - 1) % historyLen, 0, :, :]
-                    deepBP.doStep(np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step - 1) % historyLen, 0, :, :])), [0.0])
+                    if (curr_step > 5999):
+                        deepBP.setLearningRate(0.)
+                    input = np.zeros((width, height))
+                    input[colourSteer,:] = 1
+
+#                    deepBP.doStep(np.ndarray.flatten(input), [0.0001 * colourStrength * (colourSteer - imgCentre[0])])
+                    deepBP.doStep(np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step - 1) % historyLen, 0, :, :])), [0.0001 * colourStrength * (colourSteer - imgCentre[0])])
+#                    deepBP.doStep([(colourSteer - imgCentre[0])/width], [0.0001*colourStrength * (colourSteer - imgCentre[0])])
                     icoSteer = deepBP.getOutput(0)
+                    print ("IcoSteer", icoSteer, "Error: ", 0.0001 * colourStrength * (colourSteer - imgCentre[0]))
 
                     diff_theta = 0.6 * max(min((icoInSteer), 5.), -5.)
-                    diff_theta = diff_theta + 0.0005 * colourStrength * (colourSteer - imgCentre[0])
-                    diff_theta = diff_theta + icoSteer
+                    if (curr_step < 6000):
+                        diff_theta = diff_theta + 0.0001 * colourStrength * (colourSteer - imgCentre[0])
+                    diff_theta = diff_theta + 10. * icoSteer
                     curr_act = np.zeros(7).tolist()
                     curr_act[0] = 0
                     curr_act[1] = 0
                     curr_act[2] = 0
                     curr_act[3] = curr_act[3] + diff_z
-                    curr_act[3] = 20.
+                    curr_act[3] = 0.
                     curr_act[4] = 0
                     curr_act[5] = 0
                     curr_act[6] = curr_act[6] + diff_theta
