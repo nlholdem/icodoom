@@ -37,6 +37,9 @@ class DoomSimulator:
         if self.color_mode == 'RGB':
             self._game.set_screen_format(vizdoom.ScreenFormat.CRCGCB)
             self.num_channels = 3
+        elif self.color_mode == 'RGB24':
+            self._game.set_screen_format(vizdoom.ScreenFormat.RGB24)
+            self.num_channels = 3
         elif self.color_mode == 'GRAY':
             self._game.set_screen_format(vizdoom.ScreenFormat.GRAY8)
             self.num_channels = 1
@@ -51,6 +54,8 @@ class DoomSimulator:
         self.num_meas = self._game.get_available_game_variables_size()
 
         self.game_initialized = False
+        self._game.set_render_messages(False)
+        self._game.set_render_corpses(False)
 
     def close_game(self):
         self._game.close()
@@ -88,3 +93,10 @@ class DoomSimulator:
 
     def is_new_episode(self):
         return self._game.is_new_episode()
+
+    def getGameState(self):
+        return self._game.get_state()
+
+    def getStateImg(self):
+        state = self._game.get_state()
+        return state.screen_buffer
