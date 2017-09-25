@@ -1,0 +1,6 @@
+model_checkpoint_path: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/ICO-8600"
+all_model_checkpoint_paths: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/ICO-7800"
+all_model_checkpoint_paths: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/ICO-8000"
+all_model_checkpoint_paths: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/ICO-8200"
+all_model_checkpoint_paths: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/ICO-8400"
+all_model_checkpoint_paths: "/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/ICO-8600"
