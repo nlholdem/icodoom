@@ -36,12 +36,16 @@ class DoomSimulator:
         if self.color_mode == 'RGB':
             self._game.set_screen_format(vizdoom.ScreenFormat.CRCGCB)
             self.num_channels = 3
+        elif self.color_mode == 'RGB24':
+            self._game.set_screen_format(vizdoom.ScreenFormat.RGB24)
+            self.num_channels = 3
         elif self.color_mode == 'GRAY':
             self._game.set_screen_format(vizdoom.ScreenFormat.GRAY8)
             self.num_channels = 1
         else:
             print("Unknown color mode")
-            raise
+
+        print ("Simulator: colour format: ", self.color_mode)
 
         self.available_controls, self.continuous_controls, self.discrete_controls = self.analyze_controls(self.config)
         self.num_buttons = self._game.get_available_buttons_size()

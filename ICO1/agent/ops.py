@@ -41,7 +41,8 @@ def conv_encoder(data, params, name, msra_coeff=1):
         layers.append(lrelu(conv2d(curr_inp, param['out_channels'], k_h=param['kernel'], k_w=param['kernel'], d_h=param['stride'], d_w=param['stride'], name=name + str(nl), msra_coeff=msra_coeff)))
         
     return layers[-1]
-        
+
+#Fully-connected network
 def fc_net(data, params, name, last_linear = False, return_layers = [-1], msra_coeff=1):
     layers = []
 
