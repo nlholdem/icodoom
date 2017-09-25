@@ -148,7 +148,7 @@ def main():
                     diff_x = np.random.normal(0, 2)
                     diff_z = np.random.normal(4, 2)
 
-                iter += 1
+                iter += 1z
 
         if not term:
             img_buffer[curr_step % agent_args['history_length']] = img

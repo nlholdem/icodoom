@@ -91,4 +91,4 @@ COPY _vizdoom.cfg .
 ##########################
 RUN sudo chown ${HOST_UID}:${HOST_GID} -R *
 
-CMD taskset -c 1 python test_agent.py
+CMD taskset -c 1 python run_agentTF.py

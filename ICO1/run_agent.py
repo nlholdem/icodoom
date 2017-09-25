@@ -8,17 +8,76 @@ from agent.doom_simulator import DoomSimulator
 from agent.agent import Agent
 from agent.nnet import visPredictor
 import tensorflow as tf
+import cv2
+
+
+def buildFilters():
+    ksize = 35
+    sigma = 5.
+    gamma = 1.
+    theta_vals = np.linspace(0., np.pi, 4, endpoint=False)
+#    lambd_vals = (3, 7, 13, 27)
+#    sigma_vals = (1, 3, 7, 15)
+    lambd_vals = (1.5, 3)
+    sigma_vals = (0.5, 1.5)
+
+    """
+    theta: orientation
+    lambda: wavelength
+    sigma: standard deviation
+    gamma: aspect ratio
+    """
+    coeffs = ((theta, lambd, sigma) for lambd, sigma in zip(lambd_vals, sigma_vals) for theta in theta_vals)
+
+    filters = [(cv2.getGaborKernel((ksize,ksize), coeff[2], coeff[0], coeff[1], gamma)/(0.01*ksize*ksize*sigma), coeff[2])
+               for coeff in coeffs]
+
+    for f in filters:
+        print("Spatial filter: Min: ", np.amin(f[0]), " Max: ", np.amax(f[0]))
+
+    return filters
+
+def getMaxColourPos(img, colour):
+    img = np.array(img, dtype='float64')
+    width = int(img.shape[1])
+    height = int(img.shape[0])
+#    img[:,10,10] = [0,0,255]
+    diff = np.ones(img.shape)
+    diff[:,:,0] = colour[0]
+    diff[:,:,1] = colour[1]
+    diff[:,:,2] = colour[2]
+    diff = np.absolute(np.add(diff, (-1*img)))
+    diff = np.sum(diff, axis=2)
+
+    indx = np.argmin(diff)
+    indx_y = int(indx / width)
+    indx_x = indx % width
+
+    bestColour = diff[indx_y, indx_x]
+    pts = np.asarray(np.where((diff - bestColour) < 75))
+    if (pts.shape[1]>0):
+        bottomLeft = np.array([np.amin(pts[1]), np.amin(pts[0])])
+        topRight = np.array([np.amax(pts[1]), np.amax(pts[0])])
+    else:
+        bottomLeft = []
+        topRight = []
+#    print("COLOUR: ", [indx_x, indx_y])
+    return np.array([indx_x, indx_y]), bottomLeft, topRight, np.mean(diff) - diff[indx_y,indx_x]
+
+
 
 def main():
     
     ## Simulator
     simulator_args = {}
     simulator_args['config'] = 'config/config.cfg'
-    simulator_args['resolution'] = (160,120)
+    simulator_args['resolution'] = (320,240)
     simulator_args['frame_skip'] = 1
     simulator_args['color_mode'] = 'GRAY'   
     simulator_args['game_args'] = "+name IntelAct +colorset 7"
-        
+    width = simulator_args['resolution'][0]
+    height = simulator_args['resolution'][1]
+
     ## Agent    
     agent_args = {}
     
@@ -41,8 +100,10 @@ def main():
     agent_args['fc_joint_params'] = np.array([(256,), (256,), (-1,)], dtype = [('out_dims',int)])   
     agent_args['target_dim'] = agent_args['num_future_steps'] * len(agent_args['meas_for_net_init'])
 
-    # efference copy
+    # simple NNet controller training with feedback-error learning
+    agent_args['n_ffnet_input'] = width*height
     agent_args['n_ffnet_hidden'] = np.array([50,50])
+    agent_args['n_ffnet_hidden'] = 1
 
     # experiment arguments
     agent_args['test_objective_params'] = (np.array([5,11,17]), np.array([1.,1.,1.]))
@@ -74,7 +135,8 @@ def main():
     gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
     sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options,log_device_placement=False))
     ag = Agent(sess, agent_args)
-    ag.load('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/checkpoint')
+#    ag.load('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/checkpoint')
+    spatialFilters = buildFilters()
     
     img_buffer = np.zeros((agent_args['history_length'], simulator.num_channels, simulator.resolution[1], simulator.resolution[0]))
     meas_buffer = np.zeros((agent_args['history_length'], simulator.num_meas))
@@ -96,6 +158,10 @@ def main():
     inertia = 0.5
     iter = 1
     epoch = 200
+
+    gray = np.zeros((height, width))
+    posImage = np.zeros((height, width))
+    negImage = np.zeros((height, width))
 
     userdoc = os.path.join(os.path.expanduser("~"), "Documents")
 
@@ -126,28 +192,25 @@ def main():
                 meas[0] = 30.
             if (not (img is None)):
 
-#                print ("state_imgs: ", np.shape(state_imgs), "state_meas: ", np.shape(state_meas), "curr_act: ", np.shape(curr_act))
-#                print ("img type: ", np.ndarray.flatten(ag.preprocess_input_images(img)).dtype, "state_img type: ", state_imgs.dtype, "state_meas type: ", state_meas.dtype)
+                centre, bottomLeft, topRight, colourStrength = getMaxColourPos(img, [255, 0, 0])
 
-                ag.act_ffnet(np.ndarray.flatten(state_imgs), np.ndarray.flatten(state_meas), np.array(hack[:6], dtype='float64'), np.ndarray.flatten(ag.preprocess_input_images(img)))
-                diff_image = np.absolute(np.reshape(np.array(ag.ext_ffnet_output), [img.shape[0], img.shape[1]]) - ag.preprocess_input_images(img))
-#                diff_image = np.absolute(ag.preprocess_input_images(img_buffer[(curr_step-1) % agent_args['history_length']] - ag.preprocess_input_images(img)))
-#                diff_image = ag.preprocess_input_images(img)
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-                diff_x = diff_x + inertia *((np.argmax(diff_image.sum(axis=0)) / float(diff_image.shape[1])) - 0.5 - diff_x)
-                diff_y = diff_x + inertia *((np.argmax(diff_image.sum(axis=1)) / float(diff_image.shape[0])) - 0.5 - diff_y)
+                negImage[...] = 0.
+                posImage[...] = 0.
+                for f in spatialFilters:
+                    gray1 = cv2.filter2D(gray, -1, f[0])
+                    negImage[np.where(gray1 < thresh)] += gray1[np.where(gray1 < thresh)] / float(len(spatialFilters))
+                    posImage[np.where(gray1 > thresh)] += gray1[np.where(gray1 > thresh)] / float(len(spatialFilters))
 
+                #print ("state_imgs: ", np.shape(state_imgs), "state_meas: ", np.shape(state_meas), "curr_act: ", np.shape(curr_act))
+                #print ("img type: ", np.ndarray.flatten(ag.preprocess_input_images(img)).dtype, "state_img type: ", state_imgs.dtype, "state_meas type: ", state_meas.dtype)
+                reflex = 0.
+                ag.act_ffnet(np.ndarray.flatten(gray), np.ndarray.flatten(state_meas), [reflex])
 
-
-#                print ("diff_x: ", diff_x, " diff_y: ", hack[6], "centre_x: ", np.argmax(diff_image.sum(axis=0)), "centre_y: ", np.argmax(diff_image.sum(axis=1)))
 
                 if (iter % epoch == 0):
                     print ("saving...")
-                    np.save(os.path.join('/home/paul', "hack"), np.reshape(np.array(ag.ext_ffnet_output), [img.shape[0], img.shape[1]]))
-                    np.save(os.path.join('/home/paul', "target"), ag.preprocess_input_images(img))
-                    np.save(os.path.join('/home/paul', "diff"), diff_image)
-                    diff_x = np.random.normal(0, 2)
-                    diff_z = np.random.normal(4, 2)
 
                 iter += 1
 
