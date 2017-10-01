@@ -1,19 +1,20 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 from __future__ import print_function
 from vizdoom import *
 import sys
 import threading
+import math
+
+from random import choice
 from time import sleep
 from matplotlib import pyplot as plt
-import numpy as np
-import cv2
 
 sys.path.append('../../deep_feedback_learning')
+
+import numpy as np
+import cv2
 import deep_feedback_learning
-
-
-
 
 # Create DoomGame instance. It will run the game and communicate with you.
 game = DoomGame()
@@ -36,9 +37,9 @@ game.set_screen_resolution(ScreenResolution.RES_640X480)
 # create masks for left and right visual fields - note that these only cover the upper half of the image
 # this is to help prevent the tracking getting confused by the floor pattern
 width = 640
+widthNet = 320
 height = 480
 heightNet = 240
-widthNet = 640
 
 # Sets the screen buffer format. Not used here but now you can change it. Defalut is CRCGCB.
 game.set_screen_format(ScreenFormat.RGB24)
@@ -62,7 +63,6 @@ game.set_render_particles(False)
 game.set_render_effects_sprites(False)
 game.set_render_messages(False)
 game.set_render_corpses(False)
-#game.set_render_screen_flashes(False)
 
 # Adds buttons that will be allowed. 
 # game.add_available_button(Button.MOVE_LEFT)
@@ -81,7 +81,7 @@ game.set_episode_timeout(500)
 game.set_episode_start_time(10)
 
 # Makes the window appear (turned on by default)
-#game.set_window_visible(True)
+game.set_window_visible(True)
 
 # Turns on the sound. (turned off by default)
 game.set_sound_enabled(True)
@@ -95,8 +95,8 @@ game.set_mode(Mode.PLAYER)
 # Enables engine output to console.
 #game.set_console_enabled(True)
 
-nFiltersInput = 0
-nFiltersHidden = 0
+nFiltersInput = 3
+nFiltersHidden = 3
 minT = 3
 maxT = 30
 nHidden0 = 4
@@ -105,10 +105,14 @@ net = deep_feedback_learning.DeepFeedbackLearning(widthNet*heightNet,[nHidden0*n
 net.getLayer(0).setConvolution(widthNet,heightNet)
 net.getLayer(1).setConvolution(nHidden0,nHidden0)
 net.initWeights(0.5,0,deep_feedback_learning.Neuron.MAX_OUTPUT_RANDOM);
-net.setAlgorithm(deep_feedback_learning.DeepFeedbackLearning.backprop)
-net.setLearningRate(0.001)
-net.setMomentum(0.5)
-net.initWeights(0.001,1,deep_feedback_learning.Neuron.MAX_OUTPUT_RANDOM)
+net.setLearningRate(0)
+net.setAlgorithm(deep_feedback_learning.DeepFeedbackLearning.backprop);
+# net.getLayer(0).setInputNorm2ZeroMean(128,256)
+net.getLayer(0).setLearningRate(1E-10)
+net.getLayer(1).setLearningRate(0.00001)
+net.getLayer(2).setLearningRate(0.001)
+#net.getLayer(1).setNormaliseWeights(True)
+#net.getLayer(2).setNormaliseWeights(True)
 net.setUseDerivative(0)
 net.setBias(1)
 
@@ -126,6 +130,8 @@ delta2 = 0
 dontshoot = 1
 deltaZeroCtr = 1
 
+inp = np.zeros(widthNet*heightNet)
+
 sharpen = np.array((
 	[0, 1, 0],
 	[1, 4, 1],
@@ -136,36 +142,15 @@ edge = np.array((
 	[1, -4, 1],
 	[0, 1, 0]), dtype="int")
 
+
+
+
+
+
 plt.ion()
 plt.show()
 ln1 = False
 ln2 = [False,False,False,False]
-
-def buildFilters():
-    ksize = 35
-    sigma = 5.
-    gamma = 1.
-    theta_vals = np.linspace(0., np.pi, 4, endpoint=False)
-#    lambd_vals = (3, 7, 13, 27)
-#    sigma_vals = (1, 3, 7, 15)
-    lambd_vals = (1.5, 3)
-    sigma_vals = (0.5, 1.5)
-
-    """
-    theta: orientation
-    lambda: wavelength
-    sigma: standard deviation
-    gamma: aspect ratio
-    """
-    coeffs = ((theta, lambd, sigma) for lambd, sigma in zip(lambd_vals, sigma_vals) for theta in theta_vals)
-
-    filters = [(cv2.getGaborKernel((ksize,ksize), coeff[2], coeff[0], coeff[1], gamma)/(0.01*ksize*ksize*sigma), coeff[2])
-               for coeff in coeffs]
-
-    for f in filters:
-        print("Filter: Min: ", np.amin(f[0]), " Max: ", np.amax(f[0]))
-
-    return filters
 
 def getWeights2D(neuron):
     n_neurons = net.getLayer(0).getNneurons()
@@ -191,6 +176,7 @@ def plotWeights():
     global ln2
 
     while True:
+
         if ln1:
             ln1.remove()
         plt.figure(1)
@@ -200,9 +186,9 @@ def plotWeights():
             w1 = np.where(np.isnan(w2),w1,w2)
         ln1 = plt.imshow(w1,cmap='gray')
         plt.draw()
-        plt.pause(5.)
+        plt.pause(0.1)
 
-        for j in range(1,net.getNumHidLayers()+1):
+        for j in range(1,3):
             if ln2[j]:
                 ln2[j].remove()
             plt.figure(j+1)
@@ -211,28 +197,22 @@ def plotWeights():
                 w1[i,:] = getWeights1D(j,i)
             ln2[j] = plt.imshow(w1,cmap='gray')
             plt.draw()
-            plt.pause(5.)
+            plt.pause(0.1)
 
 
 t1 = threading.Thread(target=plotWeights)
 t1.start()
+            
 
-spatialFilters = buildFilters()
-thresh = 0.
-posImage = np.zeros((heightNet, int(widthNet/2)))
-negImage = np.zeros((heightNet, int(widthNet/2)))
-inputImage = np.zeros((heightNet, widthNet))
 
-curr_step = 0
 for i in range(episodes):
     print("Episode #" + str(i + 1))
 
     # Starts a new episode. It is not needed right after init() but it doesn't cost much. At least the loop is nicer.
     game.new_episode()
 
-
-    output = 0.
     while not game.is_episode_finished():
+
         # Gets the state
         state = game.get_state()
 
@@ -245,13 +225,13 @@ for i in range(episodes):
         automap_buf = state.automap_buffer
         labels = state.labels
 
-        midlinex = int(width/2)
-        midliney = int(height*0.75)
+        midlinex = int(width/2);
+        midliney = int(height*0.75);
         crcb = screen_buf
         screen_left = screen_buf[100:midliney,0:midlinex-1,2]
         screen_right = screen_buf[100:midliney,midlinex+1:(width-1),2]
-        screen_left = cv2.filter2D(screen_left, -1, sharpen)
-        screen_right = cv2.filter2D(screen_right, -1, sharpen)
+        screen_left = cv2.filter2D(screen_left, -1, sharpen);
+        screen_right = cv2.filter2D(screen_right, -1, sharpen);
 #        cv2.imwrite('/tmp/left.png',screen_left)
 #        cv2.imwrite('/tmp/right.png',screen_right)
         lavg = np.average(screen_left)
@@ -259,6 +239,8 @@ for i in range(episodes):
         delta = (lavg - ravg)*15
         dd = delta - delta2
         delta2 = delta
+#        print(delta)
+
         # Makes a random action and get remember reward.
         shoot = 0
         if (dontshoot > 1) :
@@ -273,46 +255,27 @@ for i in range(episodes):
             deltaZeroCtr = deltaZeroCtr - 1
             delta = 0
 
-        gray = cv2.resize(crcb, (int(widthNet/2),heightNet))
-        gray = cv2.cvtColor(gray, cv2.COLOR_BGR2GRAY)
-        if ((curr_step % 10) == 0):
-            cv2.imwrite("/home/paul/tmp/Images/" + str(curr_step) + ".jpg", gray)
+        blue = cv2.resize(crcb, (widthNet,heightNet));
+        blue = blue[:,:,2]
+        blue = cv2.filter2D(blue, -1, edge);
+        err = np.linspace(delta,delta,nHidden0*nHidden0);
+        net.doStep(blue.flatten()/512-0.5,err[:1])
 
-        gray = gray - np.mean(gray)
-#       Add together separately the positive and negative Gabor outputs at
-#       different scales/orientations, as in Watt.
-        negImage[...] = 0.
-        posImage[...] = 0.
-        for f in spatialFilters:
-            gray1 = cv2.filter2D(gray, -1, f[0])
-            negImage[np.where(gray1 < thresh)] += gray1[np.where(gray1 < thresh)] / float(len(spatialFilters))
-            posImage[np.where(gray1 > thresh)] += gray1[np.where(gray1 > thresh)] / float(len(spatialFilters))
+        #weightsplot.set_xdata(np.append(weightsplot.get_xdata(),n))
+        #weightsplot.set_ydata(np.append(weightsplot.get_ydata(),net.getLayer(0).getWeightDistanceFromInitialWeights()))
 
-        inputImage[:,:int(widthNet/2)] = negImage
-        inputImage[:,int(widthNet/2):] = posImage
-
-#        blue = cv2.resize(crcb, (widthNet,heightNet))
-#        blue = blue[:,:,2]
-#        blue = cv2.filter2D(blue, -1, edge)
-        if (i>300):
-            delta = 0
-        err = np.zeros(1)
-        err[0] = delta
-        net.doStep(inputImage.flatten(),err)
-
-        output = net.getOutput(0)
-        print(delta,output)
-        action = [ 0., shoot, (delta+output*40.)*0.1 ]
+        output = net.getOutput(0)*5
+        print(delta,output,
+              net.getLayer(0).getWeightDistanceFromInitialWeights(),"\t",
+              net.getLayer(1).getWeightDistanceFromInitialWeights(),"\t",
+              net.getLayer(2).getWeightDistanceFromInitialWeights())
+#       action[0] is translating left/right; action[2] is rotating/aiming
+#        action = [ delta+output , shoot, 0. ]
+        action = [ 0., shoot, (delta+output)*0.1 ]
         r = game.make_action(action)
 
 #        if sleep_time > 0:
 #            sleep(sleep_time)
-
-        if ((curr_step % 10) == 0):
-            net.saveModel("modelBP.txt")
-            cv2.imwrite("/home/paul/tmp/Images/Gabor-P" + str(curr_step) + ".jpg", posImage)
-            cv2.imwrite("/home/paul/tmp/Images/Gabor-N" + str(curr_step) + ".jpg", negImage)
-        curr_step += 1
 
     # Check how the episode went.
     print("Episode finished.")

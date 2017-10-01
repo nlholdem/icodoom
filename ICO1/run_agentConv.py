@@ -1,36 +1,17 @@
 from __future__ import print_function
 import numpy as np
 import cv2
-#import tensorflow as tf
+import tensorflow as tf
 import sys
 sys.path.append('./agent')
 sys.path.append('./deep_feedback_learning')
 from agent.doom_simulator import DoomSimulator
-#from agent.agent import Agent
-from deep_ico.deep_feedback_learning import DeepFeedbackLearning
-import threading
-from matplotlib import pyplot as plt
+from agent.agent import Agent
 
 width = 320
 widthIn = 320
 height = 240
 heightIn = 240
-nFiltersInput = 3
-nFiltersHidden = 3
-nHidden0 = 4
-# nFiltersHidden = 0 means that the layer is linear without filters
-minT = 3
-maxT = 15
-
-deepBP = DeepFeedbackLearning(width * height, [16, 10, 10], 1, nFiltersInput, nFiltersHidden, minT, maxT)
-# init the weights
-deepBP.getLayer(0).setConvolution(width, height)
-deepBP.initWeights(1E-6, 1)
-deepBP.setBias(1)
-deepBP.setAlgorithm(DeepFeedbackLearning.ico)
-deepBP.setLearningRate(1E-4)
-deepBP.seedRandom(89)
-deepBP.setUseDerivative(1)
 
 preprocess_input_images = lambda x: x / 255. - 0.5
 
@@ -44,36 +25,6 @@ edge = np.array((
 	[1, -4, 1],
 	[0, 1, 0]), dtype="int")
 
-
-plt.ion()
-plt.show()
-ln = False
-
-def getWeights(neuron):
-    n_neurons = deepBP.getLayer(0).getNneurons()
-    n_inputs = deepBP.getLayer(0).getNeuron(neuron).getNinputs()
-    weights = np.zeros(n_inputs)
-    for i in range(n_inputs):
-        if deepBP.getLayer(0).getNeuron(neuron).getMask(i):
-            weights[i] = deepBP.getLayer(0).getNeuron(neuron).getAvgWeight(i)
-        else:
-            weights[i] = np.nan
-    return weights.reshape(height,width)
-
-def plotWeights():
-    global ln
-
-    while True:
-        if ln:
-            ln.remove()
-        w1 = getWeights(0)
-        for i in range(1,deepBP.getLayer(0).getNneurons()):
-            w2 = getWeights(i)
-            w1 = np.where(np.isnan(w2),w1,w2)
-        ln = plt.imshow(w1,cmap='gray')
-        plt.draw()
-        print("*** UPDATE PLOT ***")
-        plt.pause(10)
 
 def getColourImbalance(img, colour):
     if(img.shape[0]) != 3:
@@ -122,7 +73,7 @@ def getMaxColourPos(img, colour):
     else:
         bottomLeft = []
         topRight = []
-    print("COLOUR: ", [indx1, indx0])
+#    print("COLOUR: ", [indx1, indx0])
 
 #    cv2.imwrite("/home/paul/tmp/Images/Positive/rect-" + ".jpg", img)
 
@@ -145,6 +96,7 @@ def saveNegImage(curr_step, img2, myFile, width, height):
 #    img2 = np.rollaxis(img2, 0, 3)
     img = Image.fromarray(img2)
     img.save("/home/paul/tmp/Images/Negative/" + str(curr_step) + ".jpg")
+#    np.save('/home/paul/tmp/Images/Negative/' + str(curr_step), img2)
 
 def main():
     ## Simulator
@@ -192,15 +144,14 @@ def main():
     simulator = DoomSimulator(simulator_args)
     num_channels = simulator.num_channels
 
-
     print('started simulator')
 
     agent_args['state_imgs_shape'] = (
     historyLen * num_channels, simulator.resolution[1], simulator.resolution[0])
 
-    agent_args['n_ffnet_inputs'] = 2*(agent_args['resolution'][0]*agent_args['resolution'][1])
+    agent_args['n_ffnet_input'] = (agent_args['resolution'][0]*agent_args['resolution'][1])
     agent_args['n_ffnet_hidden'] = np.array([50,5])
-    agent_args['n_ffnet_outputs'] = 1
+    agent_args['n_ffnet_output'] = 1
     agent_args['n_ffnet_act'] = 7
     agent_args['n_ffnet_meas'] = simulator.num_meas
     agent_args['learning_rate'] = 1E-4
@@ -244,7 +195,9 @@ def main():
     print ("state_meas_shape: ", meas_buffer.shape, " == ", agent_args['state_meas_shape'])
     print ("act_buffer_shape: ", act_buffer.shape)
 
-#    ag = Agent(agent_args)
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
+    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options,log_device_placement=False))
+    ag = Agent(sess, agent_args)
 
     diff_y = 0
     diff_x = 0
@@ -274,24 +227,6 @@ def main():
     maskRight = np.zeros([height, width], np.uint8)
     maskRight[half_height:, half_width:] = 1.
 
-
-    netErr = np.zeros((width,height))
-
-#    deepIcoEfference = Deep_ICO(simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, 10, 1)
-    nh = np.asarray([36,36])
-#    deepIcoEfference = Deep_ICO_Conv(1, [1], 1, Deep_ICO_Conv.conv)
-#    deepIcoEfference = Deep_ICO_Conv(simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7,
-#                                     nh, simulator_args['resolution'][0] * simulator_args['resolution'][1], Deep_ICO_Conv.conv)
-#    deepIcoEfference.setLearningRate(0.01)
-#    deepIcoEfference.setAlgorithm(Deep_ICO.backprop)
-#    print ("Model type: ", "ff" if deepIcoEfference.getModelType() == 0 else "conv")
-
-#    deepIcoEfference.initWeights(1 / (np.sqrt(float(simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7))))
-#    deepIcoEfference.initWeights(0.0)
-    outputImage = np.zeros(simulator_args['resolution'][0] * simulator_args['resolution'][1])
-    imageDiff = np.zeros(simulator_args['resolution'][0] * simulator_args['resolution'][1])
-    outputArray = np.zeros(1) #deepIcoEfference.getNoutputs())
-
     lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
     feature_params = dict(maxCorners=500, qualityLevel=0.03, minDistance=7, blockSize=7)
 
@@ -301,10 +236,10 @@ def main():
     simpleInputs2 = np.zeros((width, height))
     input_buff = np.zeros((1,width*height))
     target_buff = np.zeros((1,1))
-
-
-    t = threading.Thread(target=plotWeights)
-    t.start()
+    meas_buff = np.zeros((1,simulator.num_meas))
+    netOut = 0.
+    netErr = np.zeros((width,height))
+    delta = 0.
 
     while not term:
         if curr_step < historyLen:
@@ -372,81 +307,42 @@ def main():
                     icoInSteer = ((flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain -
                     (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain)
 
-                    centre1, bottomLeft1, topRight1, colourStrength1 = getMaxColourPos(img1, [255, 0, 0])
-                    centre2, bottomLeft2, topRight2, colourStrength2 = getMaxColourPos(img2, [255, 0, 0])
-                    colourSteer = centre2[0]
+                    centre, bottomLeft, topRight, colourStrength = getMaxColourPos(stateImg, [255, 0, 0])
+                    colourSteer = imgCentre[0]
+                    delta = (colourSteer - imgCentre[0])/width
+
+                    if(len(bottomLeft)>0 and len(topRight)>0 and ((topRight[0] - bottomLeft[0]) < width/3) and ((topRight[1] - bottomLeft[1]) < height/2)):
+                        colourSteer = bottomLeft[0] + int(0.5 * (topRight[0] - bottomLeft[0]))
+
                     # get the setpoint in the -.9/+.9 range
                     simpleInputs1[:,:] = 0.1*np.random.rand(width, height)
                     simpleInputs2[:,:] = 0.1*np.random.rand(width, height)
-                    sp = 1.8*(colourSteer - imgCentre[0]) / width
-                    print ("ColourSteer: ", colourSteer, " ColourStrength: ", colourStrength2)
 
-                    if(colourStrength2 > 150.):
-                        #print ("ColourSteer: ", colourSteer, " ColourStrength: ", colourStrength)
-                        #inputs[colourSteer,:] = colourStrength / 300.
-                        simpleInputs2[bottomLeft2[0]:topRight2[0], bottomLeft2[1]:topRight2[1]] = 1.
-                        #print(bottomLeft[0], bottomLeft[1], topRight[0], topRight[1], np.sum(inputs))
-                    else:
-                        colourStrength2 = 0.
-                        sp =0
-                    if (colourStrength1 > 150.):
-                        simpleInputs1[bottomLeft1[0]:topRight1[0], bottomLeft1[1]:topRight1[1]] = 1.
-
-                    netErr[:,:] = 0.
-                    #deepBP.doStep(np.ndarray.flatten(inputs), np.ndarray.flatten(netErr))
-                    #icoSteer = deepBP.getOutput(0)
-                    #delta = sp - icoSteer
-                    delta = 0.06 * colourStrength2 * (colourSteer - imgCentre[0])/width
-                    #delta = 0.6 * max(min((icoInSteer), 5.), -5.)
-                    #delta = 1. - icoSteer
-
-                    #input_buff[0,:] = preprocess_input_images(np.ndarray.flatten(img2[2,:,:]))
-                    #input_buff[0,:] = np.ndarray.flatten(inputs)
-                    #input_buff[0,:] = np.concatenate([np.ndarray.flatten(greyImg1), np.ndarray.flatten(greyImg2)])
                     greyImg2 = cv2.filter2D(greyImg2, -1, edge)
                     input_buff[0,:] = np.ndarray.flatten(preprocess_input_images(greyImg2))
-                    target_buff[0,0] = delta
-                    if (False):
-                        deepBP.setLearningRate(0.)
+                    target_buff[...] = delta + netOut
+                    meas_buff[0,:] = meas
+
+                    ag.act_ffnet(input_buff, meas, target_buff)
+                    netOut = ag.ext_ffnet_output[0]
+
+                    #if (False):
                         #net_output = np.ndarray.flatten(agent.test_ffnet(input_buff))[0]
                     #else:
                         #net_output = np.ndarray.flatten(agent.learn_ffnet(input_buff, target_buff))[0]
 
-                    netErr[:,:] = delta
-                    deepBP.doStep(preprocess_input_images(greyImg2.flatten()), netErr.flatten())
-
-                    icoSteer = deepBP.getOutput(0)
-                    #print ("In ", inputs[colourSteer], "Error: ", netErr[0,0], "Wt ", deepBP.getLayer(0).getNeuron(0).getWeight(int(colourSteer))
-                    #      , "WtOut ", deepBP.getLayer(1).getNeuron(0).getWeight(0)
-                    #, " Out ", deepBP.getLayer(0).getNeuron(0).getOutput(), " NErr ", deepBP.getLayer(0).getNeuron(0).getError(), " OUT ", 40.*icoSteer
-                    #, " OUTErr ", deepBP.getLayer(1).getNeuron(0).getError())
-
-                    #deepBP.doStep(np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step - 1) % historyLen, 2, :, :])), np.ndarray.flatten(netErr))
-#                    deepBP.doStep(np.ndarray.flatten(inputs), np.ndarray.flatten(netErr))
-                    #deepBP.doStep(np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step - 1) % historyLen, 0, :, :])), [0.0001 * colourStrength * (colourSteer - imgCentre[0])])
-                    #deepBP.doStep([(colourSteer - imgCentre[0])/width], [0.0001*colourStrength * (colourSteer - imgCentre[0])])
-                    print (" ** ", curr_step, icoSteer, " ", delta, " ", colourStrength2)
-
-                    #print (colourSteer, " In ", inputs[colourSteer], "Error: ", netErr[0,0], "Wt ", deepBP.getLayer(0).getNeuron(0).getWeight(int(colourSteer))
-                    #       , " NOut ", deepBP.getLayer(0).getNeuron(0).getOutput(), " NErr ", deepBP.getLayer(0).getNeuron(0).getError(), " OUT ", 40.*icoSteer
-                    #       , "OUTRefl ", diff_theta + 0.03 * colourStrength * (colourSteer - imgCentre[0])/width
-                    #       , " OUTErr ", deepBP.getLayer(1).getNeuron(0).getError())
-
-                    diff_theta = 0.6 * max(min((icoInSteer), 5.), -5.)
-
+                    netErr[:,:] = 0.
                     diff_theta = diff_theta + 0.01 * colourStrength2 * (colourSteer - imgCentre[0])/width
-                    diff_theta = diff_theta + 10. * icoSteer
-                    #diff_theta = diff_theta + 20. * net_output
+
                     curr_act = np.zeros(7).tolist()
                     curr_act[0] = 0
                     curr_act[1] = 0
                     curr_act[2] = 0
-                    curr_act[3] = curr_act[3] + diff_z
+                    curr_act[3] = 0. #curr_act[3] + diff_z
                     curr_act[3] = 0.
                     curr_act[4] = 0
                     curr_act[5] = 0
                     curr_act[6] = curr_act[6] + diff_theta
-                    oldHealth = health
 
 
             img, meas, rwrd, term = simulator.step(curr_act)
@@ -457,20 +353,11 @@ def main():
                 img_buffer[curr_step % historyLen] = img
                 meas_buffer[curr_step % historyLen] = meas
                 act_buffer[curr_step % historyLen] = curr_act[:7]
-
-            #if curr_step % epoch == 0:
-            #    agent.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints', curr_step)
-
-#                np.save('/home/paul/tmp/icoSteer-' + str(curr_step), icoSteer.weights)
-#                np.save('/home/paul/tmp/imageDiff-' + str(curr_step), imageDiff)
-    #            np.save('/home/paul/tmp/icoDetect-' + str(curr_step), icoDetect.weights)
-
-        #            icoSteer.saveInputs(curr_step)
         curr_step += 1
 
 
     simulator.close_game()
-#    ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))
+    ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))
 
 
 if __name__ == '__main__':

@@ -3,15 +3,27 @@ import tensorflow as tf
 
 get_stddev = lambda x, k_h, k_w: 1/np.sqrt(0.5*k_w*k_h*x.get_shape().as_list()[-1])
 
-def conv2d(input_, output_dim, 
-        k_h=3, k_w=3, d_h=2, d_w=2, msra_coeff=1,
-        name="conv2d"):
-    with tf.variable_scope(name):
-        w = tf.get_variable('w', [k_h, k_w, input_.get_shape()[-1], output_dim],
-                            initializer=tf.truncated_normal_initializer(stddev=msra_coeff * get_stddev(input_, k_h, k_w)))
-        b = tf.get_variable('b', [output_dim], initializer=tf.constant_initializer(0.0))
+def conv2d(x, W):
+  """conv2d returns a 2d convolution layer with full stride."""
+  return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
 
-        return tf.nn.bias_add(tf.nn.conv2d(input_, w, strides=[1, d_h, d_w, 1], padding='SAME'), b)
+
+def max_pool_2x2(x):
+  """max_pool_2x2 downsamples a feature map by 2X."""
+  return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
+                        strides=[1, 2, 2, 1], padding='SAME')
+
+
+def weight_variable(shape, sd):
+  """weight_variable generates a weight variable of a given shape."""
+  initial = tf.truncated_normal(shape, stddev=sd)
+  return tf.Variable(initial)
+
+
+def bias_variable(shape):
+  """bias_variable generates a bias variable of a given shape."""
+  initial = tf.constant(0.1, shape=shape)
+  return tf.Variable(initial)
 
 def lrelu(x, leak=0.2, name="lrelu"):
     with tf.variable_scope(name):
@@ -31,8 +43,8 @@ def linear(input_, output_size, name='linear', msra_coeff=1):
 def conv_encoder(data, params, name, msra_coeff=1):
     layers = []
     for nl, param in enumerate(params):
-        print "nl", nl
-        print "conv_encoder: nl: ", nl, " param out_channels: ", param['out_channels'], " param kernel: ", param['kernel'], " param stride: ", param['stride']
+        print ("nl", nl)
+        print ("conv_encoder: nl: ", nl, " param out_channels: ", param['out_channels'], " param kernel: ", param['kernel'], " param stride: ", param['stride'])
         if len(layers) == 0:
             curr_inp = data
         else:
@@ -58,7 +70,7 @@ def fc_net(data, params, name, last_linear = False, return_layers = [-1], msra_c
         else:
             layers.append(lrelu(linear(curr_inp, param['out_dims'], name=name + str(nl), msra_coeff=msra_coeff)))
 
-        print "Ok, here's the ", nl, "th layer: ", layers[-1].get_shape(), " param[", nl, "]: ", param, "linear: ", last_linear
+        print ("Ok, here's the ", nl, "th layer: ", layers[-1].get_shape(), " param[", nl, "]: ", param, "linear: ", last_linear)
 
             
     if len(return_layers) == 1:
