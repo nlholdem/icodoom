@@ -155,7 +155,7 @@ def main():
     agent_args['n_ffnet_output'] = 1
     agent_args['n_ffnet_act'] = 7
     agent_args['n_ffnet_meas'] = simulator.num_meas
-    agent_args['learning_rate'] = 0. #1E-3
+    agent_args['learning_rate'] = 1E-3
 
     modelDir = os.path.join(os.path.expanduser("~"), "Dev/GameAI/vizdoom_cig2017/icodoom/ICO1/Models")
 
@@ -224,7 +224,7 @@ def main():
     updatePtsFreq = 50
     skipImage = 1
     skipImageICO = 5
-    reflexGain = 0.03
+    reflexGain = 0.01
     netGain = 10.
     oldHealth = 0.
 
@@ -398,7 +398,7 @@ def main():
                     curr_act[3] = 0.
                     curr_act[4] = 0
                     curr_act[5] = 0
-                    curr_act[6] = netGain*netOut
+                    curr_act[6] = diff_theta + netGain*netOut
 
                     iter1 += 1
 
