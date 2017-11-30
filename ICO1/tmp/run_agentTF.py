@@ -126,8 +126,6 @@ def main():
 
 
     # net parameters
-    agent_args['net_type'] = "fc"
-#    agent_args['net_type'] = "conv"
     agent_args['conv_params'] = np.array([(16, 5, 4), (32, 3, 2), (64, 3, 2), (128, 3, 2)],
                                          dtype=[('out_channels', int), ('kernel', int), ('stride', int)])
     agent_args['fc_img_params'] = np.array([(128,)], dtype=[('out_dims', int)])
@@ -157,7 +155,7 @@ def main():
     agent_args['n_ffnet_output'] = 1
     agent_args['n_ffnet_act'] = 7
     agent_args['n_ffnet_meas'] = simulator.num_meas
-    agent_args['learning_rate'] = 1E-4
+    agent_args['learning_rate'] = 1E-3
 
     modelDir = os.path.join(os.path.expanduser("~"), "Dev/GameAI/vizdoom_cig2017/icodoom/ICO1/Models")
 
@@ -226,7 +224,7 @@ def main():
     updatePtsFreq = 50
     skipImage = 1
     skipImageICO = 5
-    reflexGain = 1E-4
+    reflexGain = 0.03
     netGain = 10.
     oldHealth = 0.
 
@@ -245,15 +243,13 @@ def main():
 
     imgCentre = np.array([int(simulator_args['resolution'][0] / 2), int(simulator_args['resolution'][1] /2)])
     print ("Image centre: ", imgCentre)
-    simpleInputs = np.zeros((height, width))
-    imgRect = np.zeros((width, height))
+    simpleInputs = np.zeros((width, height))
     input_buff = np.zeros((1,width*height))
     target_buff = np.zeros((1,1))
     meas_buff = np.zeros((1,simulator.num_meas))
     netOut = 0.
     netErr = np.zeros((width,height))
     delta = 0.
-    shoot = 0
 
     reflexOn = False
     iter1 = 0
@@ -332,7 +328,7 @@ def main():
                     centre, bottomLeft, topRight, colourStrength = getMaxColourPos(stateImg, [255, 0, 0])
                     colourSteer = imgCentre[0]
                     imgRect = img
-                    imgRect[...] = 0.
+                    imgRect = np.zeros(img.shape)
 
                     if(len(bottomLeft)>0 and len(topRight)>0 and ((topRight[0] - bottomLeft[0]) < width/3) and ((topRight[1] - bottomLeft[1]) < height/2)):
                         #imgRect = cv2.rectangle(imgRect, (bottomLeft[0], bottomLeft[1]), (topRight[0], topRight[1]), (255,255,255), 2)
@@ -342,17 +338,15 @@ def main():
                         colourSteer = bottomLeft[0] + int(0.5 * (topRight[0] - bottomLeft[0]))
 
                     cv2.arrowedLine(imgRect, (colourSteer, imgCentre[1]+10), (colourSteer, imgCentre[1]), color=(255,255,255), thickness=2)
-#                    cv2.imwrite("/home/paul/tmp/Images/Positive/rect-" + str(curr_step) + ".jpg", imgRect)
+                    #cv2.imwrite("/home/paul/tmp/Images/Positive/rect-" + str(curr_step) + ".jpg", imgRect)
 
                     # get the setpoint in the -.9/+.9 range
-#                    simpleInputs[:,:] = 0.1*np.random.rand(width, height)
+                    simpleInputs[:,:] = 0.1*np.random.rand(width, height)
                     #cv2.arrowedLine(simpleInputs, (colourSteer, imgCentre[1]+10), (colourSteer, imgCentre[1]), color=(0,55,255), thickness=2)
-#                    simpleInputs = np.array(simpleInputs, dtype='uint8')
-                    simpleInputs = np.array(np.sum(img, axis=2) / 3)
+                    simpleInputs = np.array(simpleInputs, dtype='uint8')
 
 #                    greyImg2 = cv2.filter2D(greyImg2, -1, edge)
                     imgRect = np.array(np.sum(imgRect, axis=2) / 3)
-                    np.testing.assert_array_equal(imgRect.shape, simpleInputs.shape)
 
 
 #                    XORin = np.random.rand(2)
@@ -369,7 +363,7 @@ def main():
 #                        XORout = -0.9
 
                     #cv2.imwrite("/home/paul/tmp/Images/Positive/rect-" + str(curr_step) + ".jpg", imgRect)
-                    input_buff[0,:] = np.ndarray.flatten(simpleInputs)
+                    input_buff[0,:] = np.ndarray.flatten(imgRect)
 
                     # we want the reflex to be delayed wrt to the image input, so that the image is. Otherwise the learning can
                     # never reduce the error to zero no matter how good the controller.
@@ -378,23 +372,13 @@ def main():
                     else:
                         delta = 0
 
-                    if(iter1>2):
-                        if(np.abs(delta) < 0.01):
-                            shoot = 1
-
+#                    target_buff[...] = delta + netOut
                     target_buff[...] = delta + netOut
-#                    target_buff[...] = delta
-
-#                    target_buff[...] = 0.2
                     meas_buff[0,:] = meas
 
-                    ag.act(input_buff, meas, target_buff)
-                    if(ag.net_type == 'conv'):
-                        netOut = np.ndarray.flatten(ag.ext_covnet_output)[0].flatten()[0]
-                    elif(ag.net_type == 'fc'):
-                        netOut = np.ndarray.flatten(ag.ext_fcnet_output)[0].flatten()[0]
-
-                    print (reflexGain * colourStrength * delta, netGain*netOut)
+                    ag.act_covnet(input_buff, meas, target_buff)
+                    netOut = np.ndarray.flatten(ag.ext_covnet_output)[0].flatten()[0]
+                    print (curr_step, " target: ", target_buff[0], " NetOut: ", netOut)
 
                     diff_theta = 0.
 
@@ -409,7 +393,7 @@ def main():
                     curr_act = np.zeros(7).tolist()
                     curr_act[0] = 0
                     curr_act[1] = 0
-                    curr_act[2] = 0 #shoot
+                    curr_act[2] = 0
                     curr_act[3] = 0. #curr_act[3] + diff_z
                     curr_act[3] = 0.
                     curr_act[4] = 0
@@ -420,7 +404,7 @@ def main():
 
 
             if (curr_step % epoch == 0):
-                ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icodoom/ICO1/checkpoints/BP', curr_step)
+                ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icodoom/ICO1/checkpoints/BPConv', curr_step)
 
             img, meas, rwrd, term = simulator.step(curr_act)
             if (not (meas is None)) and meas[0] > 30.:
@@ -434,7 +418,7 @@ def main():
 
 
     simulator.close_game()
-    ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))
+#    ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))
 
 
 if __name__ == '__main__':

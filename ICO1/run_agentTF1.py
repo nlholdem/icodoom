@@ -9,12 +9,12 @@ sys.path.append('./deep_feedback_learning')
 from agent.doom_simulator import DoomSimulator
 from agent.agent import Agent
 
-width = 160
-widthIn = 160
-height = 120
-heightIn = 120
+width = 320
+widthIn = 320
+height = 240
+heightIn = 240
 
-preprocess_input_images = lambda x: x / 255. - 0.5
+preprocess_input_images = lambda x: x / 255.
 
 sharpen = np.array((
 	[0, 1, 0],
@@ -60,9 +60,9 @@ def getMaxColourPos(img, colour):
     diff[:,:,1] = colour[1]
     diff[:,:,2] = colour[2]
     diff = np.absolute(np.add(diff, (-1*img)))
-    cv2.imwrite("/home/paul/tmp/Images/Positive/diff-" + ".jpg", diff)
+#    cv2.imwrite("/home/paul/tmp/Images/Positive/diff-" + ".jpg", diff)
     diff = np.sum(diff, axis=2)
-    cv2.imwrite("/home/paul/tmp/Images/Positive/diffGrey-" + ".jpg", diff)
+#    cv2.imwrite("/home/paul/tmp/Images/Positive/diffGrey-" + ".jpg", diff)
 
     indx = np.argmin(diff)
     indx0 = int(indx / width)
@@ -112,8 +112,8 @@ def main():
     agent_args = {}
 
     # preprocessing
-    preprocess_input_images = lambda x: x / 255. - 0.5
-    agent_args['preprocess_input_images'] = lambda x: x / 255. - 0.5
+    preprocess_input_images = lambda x: x / 255.
+    agent_args['preprocess_input_images'] = lambda x: x / 255.
     agent_args['preprocess_input_measurements'] = lambda x: x / 100. - 0.5
     agent_args['num_future_steps'] = 6
     pred_scale_coeffs = np.expand_dims(
@@ -126,8 +126,6 @@ def main():
 
 
     # net parameters
-    agent_args['net_type'] = "fc"
-#    agent_args['net_type'] = "conv"
     agent_args['conv_params'] = np.array([(16, 5, 4), (32, 3, 2), (64, 3, 2), (128, 3, 2)],
                                          dtype=[('out_channels', int), ('kernel', int), ('stride', int)])
     agent_args['fc_img_params'] = np.array([(128,)], dtype=[('out_dims', int)])
@@ -158,6 +156,7 @@ def main():
     agent_args['n_ffnet_act'] = 7
     agent_args['n_ffnet_meas'] = simulator.num_meas
     agent_args['learning_rate'] = 1E-4
+    agent_args['momentum'] = 0.2
 
     modelDir = os.path.join(os.path.expanduser("~"), "Dev/GameAI/vizdoom_cig2017/icodoom/ICO1/Models")
 
@@ -226,8 +225,9 @@ def main():
     updatePtsFreq = 50
     skipImage = 1
     skipImageICO = 5
-    reflexGain = 1E-4
-    netGain = 10.
+    reflexGain = 0.01
+    opticFlowGain =0.03
+    netGain = 40.
     oldHealth = 0.
 
     # create masks for left and right visual fields - note that these only cover the upper half of the image
@@ -245,15 +245,13 @@ def main():
 
     imgCentre = np.array([int(simulator_args['resolution'][0] / 2), int(simulator_args['resolution'][1] /2)])
     print ("Image centre: ", imgCentre)
-    simpleInputs = np.zeros((height, width))
-    imgRect = np.zeros((width, height))
+    simpleInputs = np.zeros((width, height))
     input_buff = np.zeros((1,width*height))
     target_buff = np.zeros((1,1))
     meas_buff = np.zeros((1,simulator.num_meas))
     netOut = 0.
     netErr = np.zeros((width,height))
     delta = 0.
-    shoot = 0
 
     reflexOn = False
     iter1 = 0
@@ -278,7 +276,7 @@ def main():
             state = simulator._game.get_state()
 
             stateImg = state.screen_buffer
-            greyImg2 = np.array(np.sum(stateImg, axis=2)/3, dtype='uint8')
+            greyImg = np.array(np.sum(stateImg, axis=2)/3, dtype="float64")
 #            greyImg2 = cv2.resize(stateImg, (width,height))
 #            greyImg2 = np.array(np.sum(greyImg2, axis=2)/3, dtype='uint8')
 
@@ -324,17 +322,17 @@ def main():
                 if (health < 101. and health > 0.):
                     #print (curr_step)
 
-                    icoInLeft = (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain
-                    icoInRight = (flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain
-                    icoInSteer = ((flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / reflexGain -
-                    (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / reflexGain)
+                    icoInLeft = (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / opticFlowGain
+                    icoInRight = (flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / opticFlowGain
+                    icoInSteer = ((flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. / opticFlowGain -
+                    (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. / opticFlowGain)
 
                     centre, bottomLeft, topRight, colourStrength = getMaxColourPos(stateImg, [255, 0, 0])
                     colourSteer = imgCentre[0]
                     imgRect = img
-                    imgRect[...] = 0.
+                    imgRect = np.zeros(img.shape)
 
-                    if(len(bottomLeft)>0 and len(topRight)>0 and ((topRight[0] - bottomLeft[0]) < width/3) and ((topRight[1] - bottomLeft[1]) < height/2)):
+                    if(len(bottomLeft)>0 and len(topRight)>0 and ((topRight[0] - bottomLeft[0]) < width/2) and ((topRight[1] - bottomLeft[1]) < height/2)):
                         #imgRect = cv2.rectangle(imgRect, (bottomLeft[0], bottomLeft[1]), (topRight[0], topRight[1]), (255,255,255), 2)
                         #imgRect = cv2.circle(imgRect, (bottomLeft[0] + int(0.5*(topRight[0] - bottomLeft[0])),
 #                                                       bottomLeft[1] + int(0.5*(topRight[1] - bottomLeft[1]))),
@@ -342,18 +340,15 @@ def main():
                         colourSteer = bottomLeft[0] + int(0.5 * (topRight[0] - bottomLeft[0]))
 
                     cv2.arrowedLine(imgRect, (colourSteer, imgCentre[1]+10), (colourSteer, imgCentre[1]), color=(255,255,255), thickness=2)
-#                    cv2.imwrite("/home/paul/tmp/Images/Positive/rect-" + str(curr_step) + ".jpg", imgRect)
+                    #cv2.imwrite("/home/paul/tmp/Images/Positive/rect-" + str(curr_step) + ".jpg", imgRect)
 
                     # get the setpoint in the -.9/+.9 range
-#                    simpleInputs[:,:] = 0.1*np.random.rand(width, height)
+                    simpleInputs[:,:] = 0.1*np.random.rand(width, height)
                     #cv2.arrowedLine(simpleInputs, (colourSteer, imgCentre[1]+10), (colourSteer, imgCentre[1]), color=(0,55,255), thickness=2)
-#                    simpleInputs = np.array(simpleInputs, dtype='uint8')
-                    simpleInputs = np.array(np.sum(img, axis=2) / 3)
+                    simpleInputs = np.array(simpleInputs, dtype='uint8')
 
-#                    greyImg2 = cv2.filter2D(greyImg2, -1, edge)
-                    imgRect = np.array(np.sum(imgRect, axis=2) / 3)
-                    np.testing.assert_array_equal(imgRect.shape, simpleInputs.shape)
-
+                    #greyImg = 1.0 * preprocess_input_images(greyImg)
+                    greyImg = cv2.filter2D(greyImg, -1, edge)
 
 #                    XORin = np.random.rand(2)
 #                    imgRect[...] = 0.
@@ -368,8 +363,8 @@ def main():
 #                    if XORin[0] > 0.5 and XORin[1] > 0.5:
 #                        XORout = -0.9
 
-                    #cv2.imwrite("/home/paul/tmp/Images/Positive/rect-" + str(curr_step) + ".jpg", imgRect)
-                    input_buff[0,:] = np.ndarray.flatten(simpleInputs)
+                    #cv2.imwrite("/home/paul/tmp/Images/Positive/rect-" + str(curr_step) + ".jpg", 20.*greyImg)
+                    input_buff[0,:] = np.ndarray.flatten(greyImg)
 
                     # we want the reflex to be delayed wrt to the image input, so that the image is. Otherwise the learning can
                     # never reduce the error to zero no matter how good the controller.
@@ -378,23 +373,13 @@ def main():
                     else:
                         delta = 0
 
-                    if(iter1>2):
-                        if(np.abs(delta) < 0.01):
-                            shoot = 1
-
+#                    target_buff[...] = delta + netOut
                     target_buff[...] = delta + netOut
-#                    target_buff[...] = delta
-
-#                    target_buff[...] = 0.2
                     meas_buff[0,:] = meas
 
-                    ag.act(input_buff, meas, target_buff)
-                    if(ag.net_type == 'conv'):
-                        netOut = np.ndarray.flatten(ag.ext_covnet_output)[0].flatten()[0]
-                    elif(ag.net_type == 'fc'):
-                        netOut = np.ndarray.flatten(ag.ext_fcnet_output)[0].flatten()[0]
-
-                    print (reflexGain * colourStrength * delta, netGain*netOut)
+                    ag.act_fcnet(input_buff, meas, target_buff)
+                    netOut = np.ndarray.flatten(ag.ext_fcnet_output)[0].flatten()[0]
+                    print (curr_step, " ColourSteer: ", colourSteer, "delta: ", delta, " target: ", target_buff[0], " NetOut: ", netOut, " mean: ", np.mean(input_buff), " var: ", np.var(input_buff))
 
                     diff_theta = 0.
 
@@ -409,7 +394,7 @@ def main():
                     curr_act = np.zeros(7).tolist()
                     curr_act[0] = 0
                     curr_act[1] = 0
-                    curr_act[2] = 0 #shoot
+                    curr_act[2] = 0
                     curr_act[3] = 0. #curr_act[3] + diff_z
                     curr_act[3] = 0.
                     curr_act[4] = 0

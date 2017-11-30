@@ -81,10 +81,6 @@ COPY _vizdoom.cfg .
 ##########################
 RUN sudo chown ${HOST_UID}:${HOST_GID} -R *
 
-<<<<<<< HEAD
-CMD taskset -c 1 python run_agentTF.py
-=======
 
-CMD taskset -c 1 python3 run_agent.py
+CMD taskset -c 1 python3 run_agentTF.py
 
->>>>>>> 11d065b2b6c37f952be700177fec4e078fca1866
