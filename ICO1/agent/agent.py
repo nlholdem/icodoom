@@ -19,7 +19,7 @@ class Agent:
         self.state_meas_shape = args['state_meas_shape']
         self.meas_for_net = args['meas_for_net']
         self.meas_for_manual = args['meas_for_manual']
-        self.resolution = args['resolution']
+        self.resolution = args['resolution'] # [width, height]
 
         # preprocessing
         self.preprocess_input_images = args['preprocess_input_images']
@@ -55,65 +55,78 @@ class Agent:
         self.iter = 1
         
     def make_convnet(self):
-        n_ffnet_inputs = self.n_ffnet_input
-        n_ffnet_outputs = self.n_ffnet_output
+#         # self.resolution is [width, height]
+#         x_image = tf.reshape(self.covnet_input, [-1, self.resolution[0], self.resolution[1], 1])
+#
+#         n_features_maps = 20
+#         filter_width = int(2)
+#         filter_height = int(2)
+#
+#         W_conv1 = my_ops.weight_variable([filter_width, filter_height, 1, n_features_maps], 0.001)
+#         b_conv1 = my_ops.bias_variable([n_features_maps])
+#         h_conv1 = tf.nn.tanh(my_ops.conv2d(x_image, W_conv1) + b_conv1)
+#
+#         h_pool1 = my_ops.max_pool_2x2(h_conv1)
+# #        h_pool1 = h_conv1
+#
+#         W_fc1 = my_ops.weight_variable([int(self.resolution[0]/2) * int(self.resolution[1]/2) * n_features_maps, 20], 0.001)
+#         b_fc1 = my_ops.bias_variable([20])
+#
+#         h_pool1_flat = tf.reshape(h_pool1, [-1, int(self.resolution[0]/2) * int(self.resolution[1]/2) * n_features_maps])
+#         h_fc1 = tf.nn.tanh(tf.matmul(h_pool1_flat, W_fc1) + b_fc1)
+#
+#         # single output:
+#         W_fc2 = my_ops.weight_variable([20, 1], 0.01)
+#         b_fc2 = my_ops.bias_variable([1])
+#
+#         self.y_conv = tf.tanh(tf.matmul(h_fc1, W_fc2) + b_fc2)
+#
+#         self.covloss = tf.squared_difference(self.y_conv, self.covnet_target)
+#         self.covnet_train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.covloss)
+#         self.covaccuracy = tf.reduce_mean(self.covloss)
 
-        print("COVNET: Inputs: ", n_ffnet_inputs, " outputs: ", n_ffnet_outputs)
+        with tf.name_scope('reshape'):
+            x_image = tf.reshape(self.covnet_input, [-1, self.resolution[0], self.resolution[1], 1])
 
-        x_image = tf.reshape(self.covnet_input, [-1, self.resolution[1], self.resolution[0], 1])
+        # First convolutional layer - maps one grayscale image to 32 feature maps.
+        with tf.name_scope('conv1'):
+            W_conv1 = my_ops.weight_variable([5, 5, 1, 8], 0.1)
+            b_conv1 = my_ops.bias_variable([8])
+            h_conv1 = tf.nn.relu(my_ops.conv2d(x_image, W_conv1) + b_conv1)
 
-        n_features_maps = 10
-        filter_width = int(10)
-        filter_height = int(10)
+        # Pooling layer - downsamples by 2X.
+        with tf.name_scope('pool1'):
+            h_pool1 = my_ops.max_pool_2x2(h_conv1)
 
+        # Second convolutional layer -- maps 32 feature maps to 64.
+        with tf.name_scope('conv2'):
+            W_conv2 = my_ops.weight_variable([5, 5, 8, 8], 0.1)
+            b_conv2 = my_ops.bias_variable([8])
+            h_conv2 = tf.nn.relu(my_ops.conv2d(h_pool1, W_conv2) + b_conv2)
 
-        W_conv1 = my_ops.weight_variable([filter_width, filter_height, 1, n_features_maps], 0.001)
-        b_conv1 = my_ops.bias_variable([n_features_maps])
+        # Second pooling layer.
+        with tf.name_scope('pool2'):
+            h_pool2 = my_ops.max_pool_2x2(h_conv2)
 
-        h_conv1 = tf.nn.tanh(my_ops.conv2d(x_image, W_conv1) + b_conv1)
-        h_pool1 = my_ops.max_pool_2x2(h_conv1)
-        h_pool1 = h_conv1
+        # Fully connected layer 1 -- after 2 round of downsampling, our 28x28 image
+        # is down to 7x7x64 feature maps -- maps this to 1024 features.
+        with tf.name_scope('fc1'):
+            W_fc1 = my_ops.weight_variable([int(self.resolution[0]/4) * int(self.resolution[1]/4) * 8, 10], 0.001)
+            b_fc1 = my_ops.bias_variable([10])
 
-        W_fc1 = my_ops.weight_variable([int(self.resolution[0]/1) * int(self.resolution[1]/1) * n_features_maps, 10], 0.001)
-        b_fc1 = my_ops.bias_variable([10])
+            h_pool2_flat = tf.reshape(h_pool2, [-1, int(self.resolution[0]/4) * int(self.resolution[1]/4) * 8])
+            h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
-        h_pool1_flat = tf.reshape(h_pool1, [-1, int(self.resolution[0]/1) * int(self.resolution[1]/1) * n_features_maps])
-        h_fc1 = tf.nn.tanh(tf.matmul(h_pool1_flat, W_fc1) + b_fc1)
+        # Map the 1024 features to 10 classes, one for each digit
+        with tf.name_scope('fc2'):
+            W_fc2 = my_ops.weight_variable([10, 1], 0.1)
+            b_fc2 = my_ops.bias_variable([1])
 
-        # single output:
-        W_fc2 = my_ops.weight_variable([10, 1], 0.01)
-        b_fc2 = my_ops.bias_variable([1])
+            self.y_conv = tf.tanh(tf.matmul(h_fc1, W_fc2) + b_fc2)
+            self.covloss = tf.squared_difference(self.y_conv, self.covnet_target)
+            self.covnet_train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.covloss)
+            self.covaccuracy = tf.reduce_mean(self.covloss)
 
-        self.y_conv = tf.tanh(tf.matmul(h_fc1, W_fc2) + b_fc2)
-
-
-
-        # W_conv1 = my_ops.weight_variable([5, 5, 1, 32], 0.001)
-        # b_conv1 = my_ops.bias_variable([32])
-        #
-        # h_conv1 = tf.nn.relu(my_ops.conv2d(x_image, W_conv1) + b_conv1)
-        # h_pool1 = my_ops.max_pool_2x2(h_conv1)
-        #
-        # W_conv2 = my_ops.weight_variable([5, 5, 32, 64], 0.001)
-        # b_conv2 = my_ops.bias_variable([64])
-        #
-        # h_conv2 = tf.nn.relu(my_ops.conv2d(h_pool1, W_conv2) + b_conv2)
-        # h_pool2 = my_ops.max_pool_2x2(h_conv2)
-        #
-        # W_fc1 = my_ops.weight_variable([int(self.resolution[0]/4) * int(self.resolution[1]/4) * 64, 64], 0.001)
-        # b_fc1 = my_ops.bias_variable([64])
-        #
-        # h_pool2_flat = tf.reshape(h_pool2, [-1, int(self.resolution[0]/4) * int(self.resolution[1]/4) * 64])
-        # h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
-        #
-        # # single output:
-        # W_fc2 = my_ops.weight_variable([64, 1], 0.01)
-        # b_fc2 = my_ops.bias_variable([1])
-        #
-        # self.y_conv = tf.tanh(tf.matmul(h_fc1, W_fc2) + b_fc2)
-        self.covloss = tf.squared_difference(self.y_conv, self.covnet_target)
-        self.covnet_train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.covloss)
-        self.covaccuracy = tf.reduce_mean(self.covloss)
 
     def make_fcnet(self):
         n_ffnet_inputs = self.n_ffnet_input
@@ -218,8 +231,8 @@ class Agent:
         self.saver = tf.train.Saver()
         tf.initialize_all_variables().run(session=self.sess)
     
-    def act(self, state_imgs, state_meas, objective):
-        return self.postprocess_actions(self.act_net(state_imgs, state_meas, objective), self.act_manual(state_meas)), None # last output should be predictions, but we omit these for now
+#    def act(self, state_imgs, state_meas, objective):
+#        return self.postprocess_actions(self.act_net(state_imgs, state_meas, objective), self.act_manual(state_meas)), None # last output should be predictions, but we omit these for now
 
     def act_ffnet(self, in_image, in_meas, target):
 
@@ -242,18 +255,15 @@ class Agent:
 
     def act_covnet(self, in_image, in_meas, target):
 
-        net_inputs = in_image
-        net_targets = target
-
         if (in_meas[1] > 0):
             with self.sess.as_default():
                 self.sess.run([self.covnet_train_step], feed_dict={
-                    self.covnet_input: net_inputs,
-                    self.covnet_target: net_targets
+                    self.covnet_input: in_image,
+                    self.covnet_target: target
                 })
                 self.ext_covnet_output = self.sess.run([self.y_conv], feed_dict={
-                    self.covnet_input: net_inputs,
-                    self.covnet_target: net_targets
+                    self.covnet_input: in_image,
+                    self.covnet_target: target
                 })[0]
 
     #            if self.iter % self.epoch == 0:
@@ -266,19 +276,16 @@ class Agent:
 
     def act_fcnet(self, in_image, in_meas, target):
 
-        net_inputs = in_image
-        net_targets = target
-
         if (in_meas[1] > 0):
 
             with self.sess.as_default():
                 self.sess.run([self.fcnet_train_step], feed_dict={
-                    self.fcnet_input: net_inputs,
-                    self.fcnet_target: net_targets
+                    self.fcnet_input: in_image,
+                    self.fcnet_target: target
                 })
                 self.ext_fcnet_output = self.sess.run([self.y_fc], feed_dict={
-                    self.fcnet_input: net_inputs,
-                    self.fcnet_target: net_targets
+                    self.fcnet_input: in_image,
+                    self.fcnet_target: target
                 })[0]
 
 #                if self.iter % self.epoch == 0:
@@ -291,9 +298,11 @@ class Agent:
 
 
     def act(self, in_image, in_meas, target):
+        x_image = np.zeros([self.resolution[0], self.resolution[1]])
         if(self.net_type == "fc"):
             self.act_fcnet(in_image, in_meas, target)
         elif(self.net_type == "conv"):
+            x_image = np.reshape(in_image, [self.resolution[0], self.resolution[1]])
             self.act_covnet(in_image, in_meas, target)
 
     def act_net(self, state_imgs, state_meas, objective):

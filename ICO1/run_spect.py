@@ -126,8 +126,8 @@ def main():
 
 
     # net parameters
-#    agent_args['net_type'] = "fc"
-    agent_args['net_type'] = "conv"
+    agent_args['net_type'] = "fc"
+#    agent_args['net_type'] = "conv"
     agent_args['conv_params'] = np.array([(16, 5, 4), (32, 3, 2), (64, 3, 2), (128, 3, 2)],
                                          dtype=[('out_channels', int), ('kernel', int), ('stride', int)])
     agent_args['fc_img_params'] = np.array([(128,)], dtype=[('out_dims', int)])
@@ -335,7 +335,7 @@ def main():
                     imgRect = stateImg*1.0
 #                    imgRect[...] = 0.
 
-#                    ag.learning_rate = 0.
+                    ag.learning_rate = 0.
 
                     if(len(bottomLeft)>0 and len(topRight)>0 and ((topRight[0] - bottomLeft[0]) < width/3) and ((topRight[1] - bottomLeft[1]) < height/2)):
                         #imgRect = cv2.rectangle(imgRect, (bottomLeft[0], bottomLeft[1]), (topRight[0], topRight[1]), (255,255,255), 2)
@@ -343,7 +343,7 @@ def main():
 #                                                       bottomLeft[1] + int(0.5*(topRight[1] - bottomLeft[1]))),
 #                                             3, (255,0,0), 3)
                         colourSteer = bottomLeft[0] + int(0.5 * (topRight[0] - bottomLeft[0]))
-#                        ag.learning_rate = agent_args['learning_rate']
+                        ag.learning_rate = agent_args['learning_rate']
 
 #                        cv2.arrowedLine(imgRect, (colourSteer, imgCentre[1]+10), (colourSteer, imgCentre[1]), color=(255,255,255), thickness=2)
 #                        cv2.imwrite("/home/paul/tmp/Backup/rect-" + str(curr_step) + ".jpg", imgRect)
@@ -383,7 +383,7 @@ def main():
                     elif(ag.net_type == 'fc'):
                         netOut = np.ndarray.flatten(ag.ext_fcnet_output)[0].flatten()[0]
 
-                    print (" *** ", reflexGain * colourStrength * delta, netGain*netOut, ag.learning_rate)
+                    print (reflexGain * colourStrength * delta, netGain*netOut, ag.learning_rate)
 
                     diff_theta = 0.6 * max(min((icoInSteer), 5.), -5.)
 

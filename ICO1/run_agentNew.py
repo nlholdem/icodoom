@@ -126,8 +126,8 @@ def main():
 
 
     # net parameters
-#    agent_args['net_type'] = "fc"
-    agent_args['net_type'] = "conv"
+    agent_args['net_type'] = "fc"
+#    agent_args['net_type'] = "conv"
     agent_args['conv_params'] = np.array([(16, 5, 4), (32, 3, 2), (64, 3, 2), (128, 3, 2)],
                                          dtype=[('out_channels', int), ('kernel', int), ('stride', int)])
     agent_args['fc_img_params'] = np.array([(128,)], dtype=[('out_dims', int)])
@@ -246,8 +246,8 @@ def main():
 
     imgCentre = np.array([int(simulator_args['resolution'][0] / 2), int(simulator_args['resolution'][1] /2)])
     print ("Image centre: ", imgCentre)
-    simpleInputs = np.zeros((height, width))
-    imgRect = np.zeros((width, height))
+    rawInputs = np.zeros((height, width))
+    cheatInputs = np.zeros((width, height))
     input_buff = np.zeros((1,width*height))
     target_buff = np.zeros((1,1))
     meas_buff = np.zeros((1,simulator.num_meas))
@@ -257,7 +257,7 @@ def main():
     shoot = 0
 
     reflexOn = False
-    iter1 = 0
+    iter = 0
 
     while not term:
         if curr_step < historyLen:
@@ -279,9 +279,6 @@ def main():
             state = simulator._game.get_state()
 
             stateImg = state.screen_buffer
-            greyImg2 = np.array(np.sum(stateImg, axis=2)/3, dtype='uint8')
-#            greyImg2 = cv2.resize(stateImg, (width,height))
-#            greyImg2 = np.array(np.sum(greyImg2, axis=2)/3, dtype='uint8')
 
             if(curr_step % updatePtsFreq == 0):
                 p0Left = cv2.goodFeaturesToTrack(img[:,:,0], mask=maskLeft, **feature_params)
@@ -318,56 +315,41 @@ def main():
 
                 if (health<0.1):
                     reflexOn = False
-                    iter1 = 0
+                    iter = 0
 
 
                 # Don't run any networks when the player is dead!
                 if (health < 101. and health > 0.):
-                    #print (curr_step)
 
-                    icoInLeft = flowGain * (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0.
-                    icoInRight = flowGain * (flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0.
                     icoInSteer = flowGain * ((flowErrorRight - errorThresh) if (flowErrorRight - errorThresh) > 0. else 0. -
                     flowGain * (flowErrorLeft - errorThresh) if (flowErrorLeft - errorThresh) > 0. else 0. )
 
                     centre, bottomLeft, topRight, colourStrength = getMaxColourPos(stateImg, [255, 0, 0])
                     colourSteer = imgCentre[0]
-                    imgRect = stateImg*1.0
-#                    imgRect[...] = 0.
-
-#                    ag.learning_rate = 0.
+                    cheatInputs = stateImg*1.
 
                     if(len(bottomLeft)>0 and len(topRight)>0 and ((topRight[0] - bottomLeft[0]) < width/3) and ((topRight[1] - bottomLeft[1]) < height/2)):
-                        #imgRect = cv2.rectangle(imgRect, (bottomLeft[0], bottomLeft[1]), (topRight[0], topRight[1]), (255,255,255), 2)
-                        #imgRect = cv2.circle(imgRect, (bottomLeft[0] + int(0.5*(topRight[0] - bottomLeft[0])),
-#                                                       bottomLeft[1] + int(0.5*(topRight[1] - bottomLeft[1]))),
-#                                             3, (255,0,0), 3)
                         colourSteer = bottomLeft[0] + int(0.5 * (topRight[0] - bottomLeft[0]))
-#                        ag.learning_rate = agent_args['learning_rate']
+#                        cv2.imwrite("/home/paul/tmp/Backup/rect-" + str(curr_step) + ".jpg", cheatInputs)
 
-#                        cv2.arrowedLine(imgRect, (colourSteer, imgCentre[1]+10), (colourSteer, imgCentre[1]), color=(255,255,255), thickness=2)
-#                        cv2.imwrite("/home/paul/tmp/Backup/rect-" + str(curr_step) + ".jpg", imgRect)
+                    cv2.arrowedLine(cheatInputs, (colourSteer, imgCentre[1]+10), (colourSteer, imgCentre[1]), color=(255,255,255), thickness=2)
 
-                    # get the setpoint in the -.9/+.9 range
-#                    simpleInputs[:,:] = 0.1*np.random.rand(width, height)
-                    #cv2.arrowedLine(simpleInputs, (colourSteer, imgCentre[1]+10), (colourSteer, imgCentre[1]), color=(0,55,255), thickness=2)
-#                    simpleInputs = np.array(simpleInputs, dtype='uint8')
-                    simpleInputs = np.array(np.sum(img, axis=2) / 3)
+                    rawInputs = np.array(np.sum(stateImg, axis=2) / 3)
+                    cheatInputs = np.array(np.sum(cheatInputs, axis=2) / 3)
+#                    cv2.imwrite("/home/paul/tmp/Backup/cheat-" + str(curr_step) + ".jpg", cheatInputs)
 
-#                    greyImg2 = cv2.filter2D(greyImg2, -1, edge)
-                    imgRect = np.array(np.sum(imgRect, axis=2) / 3)
-                    imgRect = imgRect - np.mean(imgRect)
-                    imgRect = imgRect / np.sqrt(np.var(imgRect))
-                    input_buff[0,:] = np.ndarray.flatten(imgRect)
+                    input_buff[0,:] = np.ndarray.flatten(cheatInputs)
+                    input_buff = input_buff - np.mean(input_buff)
+                    input_buff = input_buff / np.sqrt(np.var(input_buff))
 
                     # we want the reflex to be delayed wrt to the image input, so that the image is. Otherwise the learning can
                     # never reduce the error to zero no matter how good the controller.
-                    if (iter1>2):
+                    if (iter>2):
                         delta = (float(colourSteer) - float(imgCentre[0]))/float(width)
                     else:
                         delta = 0
 
-                    if(iter1>2):
+                    if(iter>2):
                         if(np.abs(delta) < 0.01):
                             shoot = 1
 
@@ -383,14 +365,9 @@ def main():
                     elif(ag.net_type == 'fc'):
                         netOut = np.ndarray.flatten(ag.ext_fcnet_output)[0].flatten()[0]
 
-                    print (" *** ", reflexGain * colourStrength * delta, netGain*netOut, ag.learning_rate)
+                    print (" *** ", delta, delta + netOut, netGain*netOut, ag.learning_rate)
 
                     diff_theta = 0.6 * max(min((icoInSteer), 5.), -5.)
-
-                    #if (False):
-                        #net_output = np.ndarray.flatten(agent.test_ffnet(input_buff))[0]
-                    #else:
-                        #net_output = np.ndarray.flatten(agent.learn_ffnet(input_buff, target_buff))[0]
 
                     netErr[:,:] = 0.
                     diff_theta = diff_theta + reflexGain * colourStrength * delta
@@ -400,12 +377,12 @@ def main():
                     curr_act[1] = 0
                     curr_act[2] = 0 #shoot
                     curr_act[3] = curr_act[3] + diff_z
-                    curr_act[3] = 0.
+                    curr_act[3] = 5.
                     curr_act[4] = 0
-                    curr_act[5] = 0
+                    curr_act[5] = 1.
                     curr_act[6] = diff_theta + netGain*netOut
 
-                    iter1 += 1
+                    iter += 1
 
 
             if (curr_step % epoch == 0):
@@ -423,8 +400,6 @@ def main():
 
 
     simulator.close_game()
-    ag.save('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/' + 'hack-' + str(iter))
-
 
 if __name__ == '__main__':
     main()
