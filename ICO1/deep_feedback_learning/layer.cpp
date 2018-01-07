@@ -3,7 +3,17 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __linux__
 #include <pthread.h>
+#endif
+
+/**
+ * GNU GENERAL PUBLIC LICENSE
+ * Version 3, 29 June 2007
+ *
+ * (C) 2017, Bernd Porr <bernd@glasgowneuro.tech>
+ * (C) 2017, Paul Miller <paul@glasgowneuro.tech>
+ **/
 
 Layer::Layer(int _nNeurons, int _nInputs, int _nFilters, double _minT, double _maxT) {
 
@@ -29,6 +39,8 @@ Layer::~Layer() {
 	}
 	delete [] neurons;
 }
+
+#ifdef __linux__
 
 void Layer::calcOutputs() {
 	pthread_t t[nNeurons];
@@ -59,6 +71,33 @@ void Layer::doLearning() {
 		neurons[i]->normaliseWeights();	
 	}
 }
+
+#else
+
+void Layer::calcOutputs() {
+	for (int i = 0; i<nNeurons; i++) {
+		neurons[i]->calcOutput();
+	}
+}
+
+void Layer::doLearning() {
+	if (maxDetLayer) {
+		for (int i = 0; i<nNeurons; i++) {
+			neurons[i]->doMaxDet();
+		}
+	}
+	else {
+		for (int i = 0; i<nNeurons; i++) {
+			neurons[i]->doLearning();
+		}
+	}
+	if (!normaliseWeights) return;
+	for (int i = 0; i<nNeurons; i++) {
+		neurons[i]->normaliseWeights();
+	}
+}
+
+#endif
 
 
 void Layer::setNormaliseWeights(int _normaliseWeights) {
@@ -103,6 +142,12 @@ void Layer::setMomentum( double _momentum) {
 	}
 }
 
+void Layer::setActivationFunction(Neuron::ActivationFunction _activationFunction) {
+	for(int i=0;i<nNeurons;i++) {
+		neurons[i]->setActivationFunction(_activationFunction);
+	}
+}
+
 void Layer::setUseDerivative( int _useIt) {
 	for(int i=0;i<nNeurons;i++) {
 		neurons[i]->setUseDerivative(_useIt);
@@ -116,10 +161,17 @@ void Layer::initWeights( double max, int initBias, Neuron::WeightInitMethod weig
 }
 
 void Layer::setError( int i,  double _error) {
+#ifdef RANGE_CHECKS
+	if(i >= nNeurons) {
+		fprintf(stderr,"%s, i=%d\n",__FUNCTION__,i);
+		assert(0);
+	}
+#endif
 	neurons[i]->setError(_error);
 }
 
 double Layer::getError( int i) {
+	assert(i < nNeurons);
 	return neurons[i]->getError();
 }
 

@@ -2,6 +2,9 @@
 #include <math.h>
 #include <complex>
 #include <stdio.h>
+#ifdef __linux__
+#include <unistd.h>
+#endif
 
 
 Bandpass::Bandpass() {
@@ -87,16 +90,17 @@ double Bandpass::filter(double value) {
 
 void Bandpass::calcNorm(double f) {
 	float max = 0;
-	float norm = 1;
+	norm = 1;
 	for(int i=0;i<(2/f);i++) {
 		float v = 0;
-		if (i>((int)(1/f))) {
+		if (i>1) {
 			v = 1;
 		}
-		float v2 = filter(v);
+		float v2 = fabs(filter(v));
 		if (v2>max) max = v2;
 	}
-	//fprintf(stderr,"BPmax=%f\n",max);
+//	fprintf(stderr,"BPmax=%f\n",max);
+//	sleep(1);
 	norm = max;
 }
 

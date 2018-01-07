@@ -5,10 +5,9 @@
  * GNU GENERAL PUBLIC LICENSE
  * Version 3, 29 June 2007
  *
- * (C) 2017, Bernd Porr <mail@berndporr.me.uk>, <bernd@glasgowneuro.tech>
- * (C) 2017, Paul Miller <nlholdem@hotmail.com>
+ * (C) 2017, Bernd Porr <bernd@glasgowneuro.tech>
+ * (C) 2017, Paul Miller <paul@glasgowneuro.tech>
  **/
-
 
 #include "globals.h"
 #include "neuron.h"
@@ -51,10 +50,15 @@ public:
 	// sets the learning rate of all neurons
 	void setLearningRate( double _learningRate);
 
+	void setActivationFunction(Neuron::ActivationFunction _activationFunction);
+
+	// set the momentum of all neurons in this layer
 	void setMomentum( double _momentum);
 
 	// inits weights with a random value between -_max and max
-	void initWeights( double _max = 1,  int initBiasWeight = 1, Neuron::WeightInitMethod weightInitMethod = Neuron::MAX_OUTPUT_RANDOM);
+	void initWeights( double _max = 1,
+			  int initBiasWeight = 1,
+			  Neuron::WeightInitMethod weightInitMethod = Neuron::MAX_OUTPUT_RANDOM);
 	
 	// gets the outpuut of one neuron
 	inline double getOutput( int index) {
@@ -63,6 +67,7 @@ public:
 
 	// gets a pointer to one neuron
 	inline Neuron* getNeuron( int index) {
+		assert(index < nNeurons);
 		return neurons[index];
 	}
 

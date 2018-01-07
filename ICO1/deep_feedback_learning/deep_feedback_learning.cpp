@@ -5,19 +5,25 @@
  * GNU GENERAL PUBLIC LICENSE
  * Version 3, 29 June 2007
  *
- * (C) 2017, Bernd Porr <mail@berndporr.me.uk>, <bernd@glasgowneuro.tech>
- * (C) 2017, Paul Miller <nlholdem@hotmail.com>
+ * (C) 2017, Bernd Porr <bernd@glasgowneuro.tech>
+ * (C) 2017, Paul Miller <paul@glasgowneuro.tech>
  **/
 
-DeepFeedbackLearning::DeepFeedbackLearning(int num_input, int* num_hidden_array, int _num_hid_layers, int num_output,
-					   int num_filtersInput, int num_filtersHidden,
-					   double _minT, double _maxT) {
-
+DeepFeedbackLearning::DeepFeedbackLearning(
+	int num_of_inputs,
+	int* num_of_hidden_neurons_per_layer_array,
+	int _num_hid_layers,
+	int num_outputs,
+	int num_filtersInput,
+	int num_filtersHidden,
+	double _minT,
+	double _maxT) {
+	
 	assert(_num_hid_layers>0);
 	algorithm = backprop;
 
-	ni = num_input;
-	no = num_output;
+	ni = num_of_inputs;
+	no = num_outputs;
 	nfInput = num_filtersInput;
 	nfHidden = num_filtersHidden;
 	minT = _minT;
@@ -31,8 +37,8 @@ DeepFeedbackLearning::DeepFeedbackLearning(int num_input, int* num_hidden_array,
 #ifdef DEBUG_DFL
 	fprintf(stderr,"Creating input layer: ");
 #endif
-	layers[0] = new Layer(num_hidden_array[0], ni,nfInput,minT,maxT);
-	n_hidden[0] = num_hidden_array[0];
+	layers[0] = new Layer(num_of_hidden_neurons_per_layer_array[0], ni,nfInput,minT,maxT);
+	n_hidden[0] = num_of_hidden_neurons_per_layer_array[0];
 #ifdef DEBUG_DFL
 	fprintf(stderr,"created! n_hidden[0]=%d\n",n_hidden[0]);
 #endif
@@ -43,7 +49,7 @@ DeepFeedbackLearning::DeepFeedbackLearning(int num_input, int* num_hidden_array,
 	// additional hidden layers
 	// note that these are _additional_ layers
 	for(int i=1; i<num_hid_layers; i++) {
-		n_hidden[i] = num_hidden_array[i];
+		n_hidden[i] = num_of_hidden_neurons_per_layer_array[i];
 #ifdef DEBUG_DFL
 		fprintf(stderr,"Creating layers %d: ",i);
 #endif
@@ -67,7 +73,10 @@ DeepFeedbackLearning::DeepFeedbackLearning(int num_input, int* num_hidden_array,
 	setDebugInfo();
 }
 
-DeepFeedbackLearning::DeepFeedbackLearning(int num_input, int* num_hidden_array, int _num_hid_layers, int num_output) {
+DeepFeedbackLearning::DeepFeedbackLearning(int num_input,
+					   int* num_hidden_array,
+					   int _num_hid_layers,
+					   int num_output) {
 
 	algorithm = backprop;
 
@@ -208,7 +217,7 @@ void DeepFeedbackLearning::doStepBackprop(double* input, double* error) {
 	// error processing
 	// we put the error in the last layer, the output layer
 	for (int i=0; i<layers[num_hid_layers]->getNneurons(); i++) {
-		layers[num_hid_layers]->setError(i,error[i] * dsigm(layers[num_hid_layers]->getNeuron(i)->getOutput()));
+		layers[num_hid_layers]->setError(i,error[i] * layers[num_hid_layers]->getNeuron(i)->dActivation());
 	}
 	// let's now loop through the layers backwards
 	for (int k=num_hid_layers; k>0; k--) {
@@ -231,13 +240,12 @@ void DeepFeedbackLearning::doStepBackprop(double* input, double* error) {
 				// that is the error from neuron j in the emitter
 				// layer influencing the error in the receiver
 				// layer i weighted by its corresponding weight
-				err = err + emitterLayer->getNeuron(j)->getWeight(i) *
-					emitterLayer->getNeuron(j)->getError();
+				err = err + emitterLayer->getNeuron(j)->getAvgWeight(i);
 				// sanity check that it's not NAN
 				assert(!isnan(err));
 				//fprintf(stderr,"k=%d,i=%d,j=%d:err=%e\n",k,i,j,err);
 			}
-			receiverLayer->getNeuron(i)->setError(dsigm(receiverLayer->getNeuron(i)->getOutput()) * err);
+			receiverLayer->getNeuron(i)->setError(receiverLayer->getNeuron(i)->dActivation() * err);
 		}
 	}
 	doLearning();
@@ -276,7 +284,7 @@ void DeepFeedbackLearning::doStepForwardprop(double* input, double* error) {
 		for(int i=0;i<receiverLayer->getNneurons();i++) {
 			double err = 0;
 			for(int j=0;j<emitterLayer->getNneurons();j++) {
-				err = err + receiverLayer->getNeuron(i)->getWeight(j) *
+				err = err + receiverLayer->getNeuron(i)->getAvgWeight(j) *
 					emitterLayer->getNeuron(j)->getError();
 #ifdef RANGE_CHECKS
 				if (isnan(err) || (fabs(err)>100) || (fabs(emitterLayer->getNeuron(j)->getError())>100)) {
@@ -287,8 +295,8 @@ void DeepFeedbackLearning::doStepForwardprop(double* input, double* error) {
 #endif
 //				if (fabs(err)>0) fprintf(stderr,"k=%d,i=%d,j=%d:err=%e\n",k,i,j,err);
 			}
-//			receiverLayer->getNeuron(i)->setError(dsigm(receiverLayer->getNeuron(i)->getOutput()) * err);
-			receiverLayer->getNeuron(i)->setError(err);
+			err = err * learningRateDiscountFactor;
+			receiverLayer->getNeuron(i)->setError(err * receiverLayer->getNeuron(i)->dActivation());
 		}
 	}
 	doLearning();
@@ -313,6 +321,7 @@ void DeepFeedbackLearning::setMomentum(double momentum) {
 		layers[i]->setMomentum(momentum);
 	}
 }
+
 
 
 void DeepFeedbackLearning::initWeights(double max, int initBias, Neuron::WeightInitMethod weightInitMethod) {
@@ -356,10 +365,11 @@ bool DeepFeedbackLearning::saveModel(const char* name) {
 				for (int k=0; k<neuron->getNinputs(); k++) {
 					if(neuron->getMask(k)) {
 						for (int l=0; l<neuron->getNfilters(); l++) {
-							fprintf(f, "%f ", neuron->getWeight(k,l));
+							fprintf(f, "%lf ", neuron->getWeight(k,l));
 						}
 					}
 				}
+				fprintf(f, "%lf ", neuron->getBiasWeight());
 				fprintf(f, "\n");
 			}
 			fprintf(f, "\n");
@@ -378,6 +388,7 @@ bool DeepFeedbackLearning::loadModel(const char* name) {
 	Layer *layer;
 	Neuron *neuron;
 	double weight;
+	int result;
 
 	FILE *f=fopen(name, "r");
 
@@ -389,12 +400,18 @@ bool DeepFeedbackLearning::loadModel(const char* name) {
 				for (int k=0; k<neuron->getNinputs(); k++) {
 					if(neuron->getMask(k)) {
 						for (int l=0; l<neuron->getNfilters(); l++) {
-							fscanf(f, "%lf ", &weight);
+							result=fscanf(f, "%lf ", &weight);
+							neuron->setWeight(k, weight, l);
 						}
 					}
 				}
+				result=fscanf(f, "%lf", &weight);
+				neuron->setBiasWeight(weight);
+				result=fscanf(f, "%*c");
 			}
+			result=fscanf(f, "%*c");
 		}
+		result=fscanf(f, "%*c");
 	}
 	else {
 		return false;

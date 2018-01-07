@@ -4,6 +4,16 @@
 #include <stdio.h>
 #include <assert.h>
 
+/**
+ * GNU GENERAL PUBLIC LICENSE
+ * Version 3, 29 June 2007
+ *
+ * (C) 2017, Bernd Porr <bernd@glasgowneuro.tech>
+ * (C) 2017, Paul Miller <paul@glasgowneuro.tech>
+ **/
+
+#define SUM_ERR_THRES 1000
+
 Neuron::Neuron(int _nInputs, int _nFilters, double _minT, double _maxT) {
 	nInputs = _nInputs;
 	nFilters = _nFilters;
@@ -14,7 +24,6 @@ Neuron::Neuron(int _nInputs, int _nFilters, double _minT, double _maxT) {
 	weights = new double*[nInputs];
 	initialWeights = new double*[nInputs];
 	weightChange = new double*[nInputs];
-	filteredInputs = new double*[nInputs];
 
 	if (nFilters>0) {
 		bandpass = new Bandpass**[nInputs];
@@ -28,7 +37,6 @@ Neuron::Neuron(int _nInputs, int _nFilters, double _minT, double _maxT) {
 		weights[i] = new double[nFilters];
 		initialWeights[i] = new double[nFilters];
 		weightChange[i] = new double[nFilters];
-		filteredInputs[i] = new double[nFilters];
 		if (bandpass != NULL) {
 			bandpass[i] = new Bandpass*[nFilters];
 			 double fs = 1;
@@ -64,13 +72,13 @@ Neuron::Neuron(int _nInputs, int _nFilters, double _minT, double _maxT) {
 	sum = 0;
 	output = 0;
 	error = 0;
+	internal_error = 0;
 	learningRate = 0;
 	for(int i=0;i<nInputs;i++) {
 		for(int j=0;j<nFilters;j++) {
 			weights[i][j] = 0;
 			initialWeights[i][j] = 0;
 			weightChange[i][j] = 0;
-			filteredInputs[i][j] = 0;
 		}
 		inputs[i] = 0;
 		mask[i] = 1;
@@ -82,12 +90,10 @@ Neuron::~Neuron() {
 		delete[] weights[i];
 		delete[] initialWeights[i];
 		delete[] weightChange[i];
-		delete[] filteredInputs[i];
 	}
 	delete [] weights;
 	delete [] initialWeights;
 	delete [] weightChange;
-	delete [] filteredInputs;
 	delete [] inputs;
 	delete [] mask;
 }
@@ -112,15 +118,14 @@ void Neuron::calcFilterbankOutput() {
 			for(int j = 0;j<nFilters;j++) {
 				assert(weights[i][j] == (*weightsp2));
 				sum = sum + (*weightsp2) * (*bandpassp2)->filter(input);
-				filteredInputs[i][j] = (*bandpassp2)->getOutput();
-				bandpassp2++;
-				weightsp2++;
 #ifdef RANGE_CHECKS
-				if (isnan(sum) || isnan(weights[i][j]) || isnan(inputs[i]) || (sum>100)) {
-					fprintf(stderr,"Out of range Neuron::%s step=%ld, L=%d, N=%d, %f, %f, %f, %d, %d\n",
-						__func__,step,layerIndex,neuronIndex,sum,weights[i][j],inputs[i],i,j);
+				if (isnan(sum) || isnan(weights[i][j]) || isnan(inputs[i]) || (sum>SUM_ERR_THRES)) {
+					fprintf(stderr,"Out of range Neuron::%s step=%ld, L=%d, N=%d, sum=%f, weights=%f, inputs=%f, bandpass=%f, i=%d, j=%d\n",
+						__func__,step,layerIndex,neuronIndex,sum,weights[i][j],inputs[i],(*bandpassp2)->getOutput(),i,j);
 				}
 #endif
+				bandpassp2++;
+				weightsp2++;
 			}
 		}
 		maskp++;
@@ -150,7 +155,7 @@ void Neuron::calcOutputWithoutFilterbank() {
 				sum = sum + (*weightsp2) * input;
 				weightsp2++;
 #ifdef RANGE_CHECKS
-				if (isnan(sum) || isnan(weights[i][j]) || isnan(inputs[i]) || (fabs(sum)>100)) {
+				if (isnan(sum) || isnan(weights[i][j]) || isnan(inputs[i]) || (fabs(sum)>SUM_ERR_THRES)) {
 					fprintf(stderr,"Out of range Neuron::%s step=%ld, L=%d, N=%d, %f, %f, %f, %d, %d\n",
 						__func__,step,layerIndex,neuronIndex,sum,weights[i][j],inputs[i],i,j);
 				}
@@ -167,7 +172,7 @@ void Neuron::calcOutputWithoutFilterbank() {
 
 void Neuron::calcOutput() {
 
-	if ((bandpass)&&(!maxDet)) {
+	if (bandpass) {
 		calcFilterbankOutput();
 	} else {
 		calcOutputWithoutFilterbank();
@@ -176,14 +181,66 @@ void Neuron::calcOutput() {
 	sum = sum + biasweight * bias;
 
 #ifdef RANGE_CHECKS
-	if (fabs(sum) > 3) fprintf(stderr,"Neuron::%s, Sum (%e) is very high in layer %d, neuron %d, step %ld.\n",__func__,sum,layerIndex,neuronIndex,step);
+	if (fabs(sum) > SUM_ERR_THRES) fprintf(stderr,"Neuron::%s, Sum (%e) is very high in layer %d, neuron %d, step %ld.\n",__func__,sum,layerIndex,neuronIndex,step);
 #endif
 	
-#ifdef LINEAR_OUTPUT
-	output = sum;
-#else
-	output = tanh(sum);
-#endif
+	switch (activationFunction) {
+	case LINEAR:
+		output = sum;
+		break;
+	case TANH:
+		output = tanh(sum);
+		break;
+	case RELU:
+		if (sum>0) {
+			output = sum;
+		} else {
+			output = 0;
+		}
+		break;
+	case REMAXLU:
+		if (sum>0) {
+			if (sum<1) {
+				output = sum;
+			} else {
+				output = 1;
+			}
+		} else {
+			output = 0;
+		}
+		break;
+	default:
+		fprintf(stderr,"BUG: undefined activation function in Neuron::%s\n",__FUNCTION__);
+		assert(1==0);
+	}
+}
+
+
+double Neuron::dActivation() {
+	switch (activationFunction) {
+	case LINEAR:
+		return 1;
+	case TANH:
+		return (1.0 - output*output);
+	case RELU:
+		if (output>0) {
+			return 1;
+		} else {
+			return 0;
+		}
+		break;
+	case REMAXLU:
+		if ((output>0)&&(output<1)) {
+			return 1;
+		} else {
+			return 0;
+		}
+		break;		
+		
+	default:
+		fprintf(stderr,"BUG: undefined activation function in Neuron::%s\n",__FUNCTION__);
+		assert(1==0);
+	}
 }
 
 
@@ -208,23 +265,24 @@ void Neuron::doLearningWithFilterbank() {
 		double* weightschp2 = *weightschp1;
 		if (*maskp) {
 			for(int j=0;j<nFilters;j++) {
-				*weightschp2 = momentum * (*weightschp2) + (*bandpassp2)->getOutput() * error;
-				*weightsp2 = *weightsp2 + (*weightschp2) * learningRate;
+				*weightschp2 = momentum * (*weightschp2) +
+						(*bandpassp2)->getOutput() * internal_error * learningRate * learningRateFactor;
+				*weightsp2 = *weightsp2 + *weightschp2;
 #ifdef RANGE_CHECKS				
 				if (*weightsp2 > 10000) printf("Neuron::%s, step=%ld, L=%d,N=%d (%d,%d,%e,%e,%e,%e)\n",
 							       __func__,
 							       step,layerIndex,neuronIndex,
-							       i,j,*weightsp2,(*bandpassp2)->getOutput(),error,learningRate);
+							       i,j,*weightsp2,(*bandpassp2)->getOutput(),internal_error,learningRate);
 #endif
 				weightsp2++;
 				weightschp2++;
 				bandpassp2++;
 #ifdef RANGE_CHECKS
-				if (isnan(weights[i][j]) || isnan(inputs[i]) || isnan (error)) {
+				if (isnan(weights[i][j]) || isnan(inputs[i]) || isnan (internal_error)) {
 					printf("Neuron::%s: step=%ld, L=%d, %f,%f,%f\n",
 					       __func__,
 					       step,layerIndex,
-					       weights[i][j],inputs[i],error);
+					       weights[i][j],inputs[i],internal_error);
 					exit(EXIT_FAILURE);
 				}
 #endif
@@ -236,7 +294,7 @@ void Neuron::doLearningWithFilterbank() {
 		weightschp1++;
 	}
 //	printf("\n");
-	biasweight = biasweight + bias * error * learningRate;
+	biasweight = biasweight + bias * internal_error * learningRate;
 }
 
 
@@ -252,12 +310,13 @@ void Neuron::doLearningWithoutFilterbank() {
 			double* weightsp2 = *weightsp1;
 			double* weightschp2 = *weightschp1;
 			for(int j=0;j<nFilters;j++) {
-				*weightschp2 = momentum * (*weightschp2) + input * error * learningRate;
+				*weightschp2 = momentum * (*weightschp2) +
+						input * internal_error * learningRate * learningRateFactor;
 				*weightsp2 = *weightsp2 + *weightschp2;
 				weightsp2++;
 				weightschp2++;
 #ifdef RANGE_CHECKS
-				if (isnan(sum) || isnan(weights[i][j]) || isnan(inputs[i]) || (fabs(sum)>100)) {
+				if (isnan(sum) || isnan(weights[i][j]) || isnan(inputs[i]) || (fabs(sum)>SUM_ERR_THRES)) {
 					fprintf(stderr,"Out of range Neuron::%s step=%ld, L=%d, N=%d, %f, %f, %f, %d, %d\n",
 						__func__,step,layerIndex,neuronIndex,sum,weights[i][j],inputs[i],i,j);
 				}
@@ -270,11 +329,12 @@ void Neuron::doLearningWithoutFilterbank() {
 		weightschp1++;
 	}
 //	printf("\n");
-	biasweight = biasweight + bias * error * learningRate;
+	biasweight = biasweight + bias * internal_error * learningRate;
 }
 
 
-void Neuron::normaliseWeights() {
+
+double Neuron::getEuclideanNormOfWeightVector() {
 	double** weightsp1 = weights;
 	unsigned char * maskp = mask;
 	double norm = 0;
@@ -292,7 +352,60 @@ void Neuron::normaliseWeights() {
 	}
 	norm = norm + biasweight*biasweight;
 	norm = sqrt(norm);
-	
+	return norm;
+}
+
+
+double Neuron::getManhattanNormOfWeightVector() {
+	double** weightsp1 = weights;
+	unsigned char * maskp = mask;
+	double norm = 0;
+	for(int i=0;i<nInputs;i++) {
+		if (*maskp) {
+			double* weightsp2 = *weightsp1;
+			for(int j=0;j<nFilters;j++) {
+				double a = *weightsp2;
+				norm = norm + fabs(a);
+				weightsp2++;
+			}
+		}
+		maskp++;
+		weightsp1++;
+	}
+	norm = norm + fabs(biasweight);
+	return norm;
+}
+
+
+double Neuron::getAverageOfWeightVector() {
+	double** weightsp1 = weights;
+	unsigned char * maskp = mask;
+	double norm = 0;
+	long int n = 0;
+	for(int i=0;i<nInputs;i++) {
+		if (*maskp) {
+			double* weightsp2 = *weightsp1;
+			for(int j=0;j<nFilters;j++) {
+				double a = *weightsp2;
+				norm = norm + a;
+				weightsp2++;
+				n++;
+			}
+		}
+		maskp++;
+		weightsp1++;
+	}
+	norm = norm + fabs(biasweight);
+	n++;
+	return norm/(double)n;
+}
+
+
+void Neuron::normaliseWeights() {
+	double** weightsp1 = weights;
+	unsigned char * maskp = mask;
+	double norm = getEuclideanNormOfWeightVector();
+
 	//fprintf(stderr,"norm=%e\n",norm);
 	if (fabs(norm) > 0) {
 		weightsp1 = weights;
@@ -303,7 +416,7 @@ void Neuron::normaliseWeights() {
 				for(int j=0;j<nFilters;j++) {
 					*weightsp2 = *weightsp2 / norm;
 #ifdef RANGE_CHECKS
-					if (fabs(*weightsp2) > 100)
+					if (fabs(*weightsp2) > 1000)
 						fprintf(stderr,"Neuron::%s, step=%ld, L=%d, N=%d, %d,%d,weight=%e,norm=%e\n",__func__,step,layerIndex,neuronIndex,i,j,*weightsp2,norm);
 #endif
 					weightsp2++;
@@ -326,7 +439,7 @@ void Neuron::doMaxDet() {
 	double max = 0;
 	maxDet = 1;
 	for(int i=0;i<nInputs;i++) {
-		 double input = fabs(*inputsp);
+		double input = fabs(*inputsp);
 		double* weightsp2 = *weightsp1;
 		if (*maskp) {
 			if (input>max) {
@@ -367,7 +480,7 @@ void Neuron::initWeights( double _max,  int initBias, WeightInitMethod weightIni
 			switch (weightInitMethod) {
 			case MAX_WEIGHT_RANDOM:
 			case MAX_OUTPUT_RANDOM:
-				weights[i][j] = (((double)random()*2)/((double)RAND_MAX)*max)-max;
+				weights[i][j] = (((double)rand()*2)/((double)RAND_MAX)*max)-max;
 				//fprintf(stderr,"Init Weights: weight(%d,%d)=%f\n",i,j,weights[i][j]);
 				break;
 			case CONST_WEIGHTS:
@@ -382,7 +495,7 @@ void Neuron::initWeights( double _max,  int initBias, WeightInitMethod weightIni
 		switch (weightInitMethod) {
 		case MAX_WEIGHT_RANDOM:
 		case MAX_OUTPUT_RANDOM:
-			biasweight = (((double)random()*2)/((double)RAND_MAX)*max)-max;
+			biasweight = (((double)rand()*2)/((double)RAND_MAX)*max)-max;
 			break;
 		case CONST_WEIGHTS:
 		case MAX_OUTPUT_CONST:
@@ -464,7 +577,7 @@ double Neuron::getAvgWeight( int _input) {
 	return w/((double)n);
 }
 
-double Neuron::getAvgWeightCh( int _input) {
+double Neuron::getAvgWeightChange( int _input) {
 	if (!mask[_input]) return 0;
 	int n=0;
 	double wch=0;
@@ -477,12 +590,12 @@ double Neuron::getAvgWeightCh( int _input) {
 	return wch/((double)n);
 }
 
-double Neuron::getAvgWeightCh() {
+double Neuron::getAvgWeightChange() {
 	double wch=0;
 	int n=0;
 	for(int i=0;i<nInputs;i++) {
 		if (mask[i]) {
-			wch += getAvgWeightCh(i);
+			wch += getAvgWeightChange(i);
 			n++;
 		}
 	}
@@ -492,6 +605,7 @@ double Neuron::getAvgWeightCh() {
 
 
 void Neuron::setError( double _error) {
+	error = _error;
 #ifdef DEBUG_NEURON
 	if (isnan(_error)) {
 			printf(" Neuron::setError: error=%f\n",_error);
@@ -499,10 +613,10 @@ void Neuron::setError( double _error) {
 	}
 #endif
 	if (useDerivative) {
-		error = _error - oldError;
+		internal_error = _error - oldError;
 		oldError = _error;
 	} else {
-		error = _error;
+		internal_error = _error;
 	}
 }
 

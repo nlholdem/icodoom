@@ -1,247 +1,84 @@
-334  ColourSteer:  80  delta:  0  NetOut:  0.060848  mean:  -0.49913745915  var:  0.000347654876288
-335  ColourSteer:  80  delta:  0  NetOut:  0.0594471  mean:  -0.49913745915  var:  0.000347654876288
-336  ColourSteer:  80  delta:  0  NetOut:  0.0579202  mean:  -0.49913745915  var:  0.000347654876288
-337  ColourSteer:  80  delta:  0.0  NetOut:  0.0562865  mean:  -0.49913745915  var:  0.000347654876288
-338  ColourSteer:  80  delta:  0.0  NetOut:  0.0545639  mean:  -0.49913745915  var:  0.000347654876288
-339  ColourSteer:  80  delta:  0.0  NetOut:  0.0527686  mean:  -0.49913745915  var:  0.000347654876288
-340  ColourSteer:  80  delta:  0.0  NetOut:  0.0509157  mean:  -0.49913745915  var:  0.000347654876288
-341  ColourSteer:  80  delta:  0.0  NetOut:  0.0490192  mean:  -0.49913745915  var:  0.000347654876288
-342  ColourSteer:  80  delta:  0.0  NetOut:  0.0470917  mean:  -0.49913745915  var:  0.000347654876288
-343  ColourSteer:  80  delta:  0.0  NetOut:  0.0451448  mean:  -0.49913745915  var:  0.000347654876288
-344  ColourSteer:  80  delta:  0.0  NetOut:  0.0431889  mean:  -0.49913745915  var:  0.000347654876288
-345  ColourSteer:  80  delta:  0.0  NetOut:  0.0412337  mean:  -0.49913745915  var:  0.000347654876288
-346  ColourSteer:  80  delta:  0.0  NetOut:  0.0392877  mean:  -0.49913745915  var:  0.000347654876288
-347  ColourSteer:  80  delta:  0.0  NetOut:  0.0373586  mean:  -0.49913745915  var:  0.000347654876288
-348  ColourSteer:  80  delta:  0.0  NetOut:  0.0354533  mean:  -0.49913745915  var:  0.000347654876288
-349  ColourSteer:  80  delta:  0.0  NetOut:  0.0335779  mean:  -0.49913745915  var:  0.000347654876288
-350  ColourSteer:  80  delta:  0.0  NetOut:  0.0317378  mean:  -0.49913745915  var:  0.000347654876288
-351  ColourSteer:  80  delta:  0.0  NetOut:  0.0299376  mean:  -0.49913745915  var:  0.000347654876288
-352  ColourSteer:  80  delta:  0.0  NetOut:  0.0281814  mean:  -0.49913745915  var:  0.000347654876288
-353  ColourSteer:  80  delta:  0.0  NetOut:  0.0264727  mean:  -0.49913745915  var:  0.000347654876288
-354  ColourSteer:  80  delta:  0.0  NetOut:  0.0248145  mean:  -0.49913745915  var:  0.000347654876288
-355  ColourSteer:  80  delta:  0.0  NetOut:  0.023209  mean:  -0.49913745915  var:  0.000347654876288
-356  ColourSteer:  80  delta:  0.0  NetOut:  0.0216583  mean:  -0.49913745915  var:  0.000347654876288
-357  ColourSteer:  80  delta:  0.0  NetOut:  0.0201638  mean:  -0.49913745915  var:  0.000347654876288
-358  ColourSteer:  80  delta:  0.0  NetOut:  0.0187267  mean:  -0.49913745915  var:  0.000347654876288
-359  ColourSteer:  80  delta:  0.0  NetOut:  0.0173478  mean:  -0.49913745915  var:  0.000347654876288
-360  ColourSteer:  80  delta:  0.0  NetOut:  0.0160274  mean:  -0.49913745915  var:  0.000347654876288
-361  ColourSteer:  80  delta:  0.0  NetOut:  0.0147657  mean:  -0.49913745915  var:  0.000347654876288
-362  ColourSteer:  80  delta:  0.0  NetOut:  0.0135626  mean:  -0.49913745915  var:  0.000347654876288
-363  ColourSteer:  80  delta:  0.0  NetOut:  0.0124175  mean:  -0.49913745915  var:  0.000347654876288
-364  ColourSteer:  80  delta:  0.0  NetOut:  0.01133  mean:  -0.49913745915  var:  0.000347654876288
-365  ColourSteer:  80  delta:  0.0  NetOut:  0.0102992  mean:  -0.49913745915  var:  0.000347654876288
-366  ColourSteer:  80  delta:  0.0  NetOut:  0.00932415  mean:  -0.49913745915  var:  0.000347654876288
-367  ColourSteer:  80  delta:  0.0  NetOut:  0.00840368  mean:  -0.49913745915  var:  0.000347654876288
-368  ColourSteer:  80  delta:  0.0  NetOut:  0.00753656  mean:  -0.49913745915  var:  0.000347654876288
-369  ColourSteer:  21  delta:  -0.36875  NetOut:  0.00507355  mean:  -0.49913745915  var:  0.000347654876288
-370  ColourSteer:  30  delta:  -0.3125  NetOut:  0.00146016  mean:  -0.49913745915  var:  0.000347654876288
-371  ColourSteer:  38  delta:  -0.2625  NetOut:  -0.00294318  mean:  -0.49913745915  var:  0.000347654876288
-372  ColourSteer:  44  delta:  -0.225  NetOut:  -0.00787102  mean:  -0.49913745915  var:  0.000347654876288
-373  ColourSteer:  50  delta:  -0.1875  NetOut:  -0.0130863  mean:  -0.49913745915  var:  0.000347654876288
-374  ColourSteer:  55  delta:  -0.15625  NetOut:  -0.0184028  mean:  -0.49913745915  var:  0.000347654876288
-375  ColourSteer:  60  delta:  -0.125  NetOut:  -0.0236527  mean:  -0.49913745915  var:  0.000347654876288
-376  ColourSteer:  64  delta:  -0.1  NetOut:  -0.0287116  mean:  -0.49913745915  var:  0.000347654876288
-377  ColourSteer:  67  delta:  -0.08125  NetOut:  -0.0334951  mean:  -0.49913745915  var:  0.000347654876288
-378  ColourSteer:  70  delta:  -0.0625  NetOut:  -0.0379282  mean:  -0.49913745915  var:  0.000347654876288
-379  ColourSteer:  73  delta:  -0.04375  NetOut:  -0.0419441  mean:  -0.49913745915  var:  0.000347654876288
-380  ColourSteer:  76  delta:  -0.025  NetOut:  -0.0454847  mean:  -0.49913745915  var:  0.000347654876288
-381  ColourSteer:  78  delta:  -0.0125  NetOut:  -0.0485269  mean:  -0.49913745915  var:  0.000347654876288
-382  ColourSteer:  80  delta:  0.0  NetOut:  -0.051052  mean:  -0.49913745915  var:  0.000347654876288
-383  ColourSteer:  82  delta:  0.0125  NetOut:  -0.0530459  mean:  -0.49913745915  var:  0.000347654876288
-384  ColourSteer:  83  delta:  0.01875  NetOut:  -0.0545253  mean:  -0.49913745915  var:  0.000347654876288
-385  ColourSteer:  85  delta:  0.03125  NetOut:  -0.0554807  mean:  -0.49913745915  var:  0.000347654876288
-386  ColourSteer:  87  delta:  0.04375  NetOut:  -0.0559056  mean:  -0.49913745915  var:  0.000347654876288
-387  ColourSteer:  88  delta:  0.05  NetOut:  -0.0558243  mean:  -0.49913745915  var:  0.000347654876288
-388  ColourSteer:  88  delta:  0.05  NetOut:  -0.0552883  mean:  -0.49913745915  var:  0.000347654876288
-389  ColourSteer:  88  delta:  0.05  NetOut:  -0.0543458  mean:  -0.49913745915  var:  0.000347654876288
-390  ColourSteer:  89  delta:  0.05625  NetOut:  -0.0530143  mean:  -0.49913745915  var:  0.000347654876288
-391  ColourSteer:  89  delta:  0.05625  NetOut:  -0.051339  mean:  -0.49913745915  var:  0.000347654876288
-392  ColourSteer:  100  delta:  0.125  NetOut:  -0.0490651  mean:  -0.49913745915  var:  0.000347654876288
-393  ColourSteer:  98  delta:  0.1125  NetOut:  -0.0463179  mean:  -0.49913745915  var:  0.000347654876288
-394  ColourSteer:  88  delta:  0.05  NetOut:  -0.0434259  mean:  -0.49913745915  var:  0.000347654876288
-395  ColourSteer:  88  delta:  0.05  NetOut:  -0.0404159  mean:  -0.49913745915  var:  0.000347654876288
-396  ColourSteer:  89  delta:  0.05625  NetOut:  -0.0372858  mean:  -0.49913745915  var:  0.000347654876288
-397  ColourSteer:  89  delta:  0.05625  NetOut:  -0.0340608  mean:  -0.49913745915  var:  0.000347654876288
-398  ColourSteer:  89  delta:  0.05625  NetOut:  -0.0307645  mean:  -0.49913745915  var:  0.000347654876288
-399  ColourSteer:  89  delta:  0.05625  NetOut:  -0.0274182  mean:  -0.49913745915  var:  0.000347654876288
-400  ColourSteer:  89  delta:  0.05625  NetOut:  -0.0240411  mean:  -0.49913745915  var:  0.000347654876288
-401  ColourSteer:  89  delta:  0.05625  NetOut:  -0.020651  mean:  -0.49913745915  var:  0.000347654876288
-402  ColourSteer:  89  delta:  0.05625  NetOut:  -0.0172639  mean:  -0.49913745915  var:  0.000347654876288
-403  ColourSteer:  88  delta:  0.05  NetOut:  -0.013921  mean:  -0.49913745915  var:  0.000347654876288
-404  ColourSteer:  88  delta:  0.05  NetOut:  -0.0106324  mean:  -0.49913745915  var:  0.000347654876288
-405  ColourSteer:  88  delta:  0.05  NetOut:  -0.00740702  mean:  -0.49913745915  var:  0.000347654876288
-406  ColourSteer:  92  delta:  0.075  NetOut:  -0.00414412  mean:  -0.49913745915  var:  0.000347654876288
-407  ColourSteer:  88  delta:  0.05  NetOut:  -0.000970065  mean:  -0.49913745915  var:  0.000347654876288
-408  ColourSteer:  91  delta:  0.06875  NetOut:  0.00219167  mean:  -0.49913745915  var:  0.000347654876288
-409  ColourSteer:  90  delta:  0.0625  NetOut:  0.0053014  mean:  -0.49913745915  var:  0.000347654876288
-410  ColourSteer:  87  delta:  0.04375  NetOut:  0.00826928  mean:  -0.49913745915  var:  0.000347654876288
-411  ColourSteer:  88  delta:  0.05  NetOut:  0.0111238  mean:  -0.49913745915  var:  0.000347654876288
-412  ColourSteer:  87  delta:  0.04375  NetOut:  0.0138365  mean:  -0.49913745915  var:  0.000347654876288
-413  ColourSteer:  88  delta:  0.05  NetOut:  0.016437  mean:  -0.49913745915  var:  0.000347654876288
-414  ColourSteer:  88  delta:  0.05  NetOut:  0.0189252  mean:  -0.49913745915  var:  0.000347654876288
-415  ColourSteer:  89  delta:  0.05625  NetOut:  0.0213286  mean:  -0.49913745915  var:  0.000347654876288
-416  ColourSteer:  90  delta:  0.0625  NetOut:  0.0236726  mean:  -0.49913745915  var:  0.000347654876288
-417  ColourSteer:  92  delta:  0.075  NetOut:  0.0260073  mean:  -0.49913745915  var:  0.000347654876288
-418  ColourSteer:  94  delta:  0.0875  NetOut:  0.028378  mean:  -0.49913745915  var:  0.000347654876288
-419  ColourSteer:  97  delta:  0.10625  NetOut:  0.0308523  mean:  -0.49913745915  var:  0.000347654876288
-420  ColourSteer:  80  delta:  0.0  NetOut:  0.0329446  mean:  -0.49913745915  var:  0.000347654876288
-421  ColourSteer:  80  delta:  0.0  NetOut:  0.034684  mean:  -0.49913745915  var:  0.000347654876288
-422  ColourSteer:  80  delta:  0.0  NetOut:  0.0360979  mean:  -0.49913745915  var:  0.000347654876288
-423  ColourSteer:  80  delta:  0.0  NetOut:  0.0372126  mean:  -0.49913745915  var:  0.000347654876288
-424  ColourSteer:  80  delta:  0.0  NetOut:  0.038053  mean:  -0.49913745915  var:  0.000347654876288
-425  ColourSteer:  137  delta:  0.35625  NetOut:  0.0401857  mean:  -0.49913745915  var:  0.000347654876288
-426  ColourSteer:  80  delta:  0.0  NetOut:  0.0419308  mean:  -0.49913745915  var:  0.000347654876288
-427  ColourSteer:  80  delta:  0.0  NetOut:  0.0433196  mean:  -0.49913745915  var:  0.000347654876288
-428  ColourSteer:  80  delta:  0.0  NetOut:  0.0443815  mean:  -0.49913745915  var:  0.000347654876288
-429  ColourSteer:  147  delta:  0.41875  NetOut:  0.046934  mean:  -0.49913745915  var:  0.000347654876288
-430  ColourSteer:  137  delta:  0.35625  NetOut:  0.0505311  mean:  -0.49913745915  var:  0.000347654876288
-431  ColourSteer:  127  delta:  0.29375  NetOut:  0.0547837  mean:  -0.49913745915  var:  0.000347654876288
-432  ColourSteer:  120  delta:  0.25  NetOut:  0.0594235  mean:  -0.49913745915  var:  0.000347654876288
-433  ColourSteer:  115  delta:  0.21875  NetOut:  0.0642614  mean:  -0.49913745915  var:  0.000347654876288
-434  ColourSteer:  110  delta:  0.1875  NetOut:  0.0691275  mean:  -0.49913745915  var:  0.000347654876288
-435  ColourSteer:  108  delta:  0.175  NetOut:  0.0739466  mean:  -0.49913745915  var:  0.000347654876288
-436  ColourSteer:  105  delta:  0.15625  NetOut:  0.0786254  mean:  -0.49913745915  var:  0.000347654876288
-437  ColourSteer:  103  delta:  0.14375  NetOut:  0.0831064  mean:  -0.49913745915  var:  0.000347654876288
-438  ColourSteer:  80  delta:  0.0  NetOut:  0.086789  mean:  -0.49913745915  var:  0.000347654876288
-439  ColourSteer:  80  delta:  0.0  NetOut:  0.0897389  mean:  -0.49913745915  var:  0.000347654876288
-440  ColourSteer:  80  delta:  0.0  NetOut:  0.0920181  mean:  -0.49913745915  var:  0.000347654876288
-441  ColourSteer:  80  delta:  0.0  NetOut:  0.0936851  mean:  -0.49913745915  var:  0.000347654876288
-442  ColourSteer:  80  delta:  0.0  NetOut:  0.0947948  mean:  -0.49913745915  var:  0.000347654876288
-443  ColourSteer:  80  delta:  0.0  NetOut:  0.095399  mean:  -0.49913745915  var:  0.000347654876288
-444  ColourSteer:  80  delta:  0.0  NetOut:  0.095546  mean:  -0.49913745915  var:  0.000347654876288
-445  ColourSteer:  80  delta:  0.0  NetOut:  0.0952812  mean:  -0.49913745915  var:  0.000347654876288
-446  ColourSteer:  80  delta:  0.0  NetOut:  0.094647  mean:  -0.49913745915  var:  0.000347654876288
-447  ColourSteer:  80  delta:  0.0  NetOut:  0.093683  mean:  -0.49913745915  var:  0.000347654876288
-448  ColourSteer:  80  delta:  0.0  NetOut:  0.092426  mean:  -0.49913745915  var:  0.000347654876288
-449  ColourSteer:  80  delta:  0.0  NetOut:  0.0909103  mean:  -0.49913745915  var:  0.000347654876288
-450  ColourSteer:  80  delta:  0.0  NetOut:  0.089168  mean:  -0.49913745915  var:  0.000347654876288
-451  ColourSteer:  80  delta:  0.0  NetOut:  0.0872285  mean:  -0.49913745915  var:  0.000347654876288
-452  ColourSteer:  80  delta:  0.0  NetOut:  0.0851193  mean:  -0.49913745915  var:  0.000347654876288
-453  ColourSteer:  80  delta:  0.0  NetOut:  0.0828658  mean:  -0.49913745915  var:  0.000347654876288
-454  ColourSteer:  80  delta:  0.0  NetOut:  0.0804916  mean:  -0.49913745915  var:  0.000347654876288
-455  ColourSteer:  80  delta:  0.0  NetOut:  0.078018  mean:  -0.49913745915  var:  0.000347654876288
-456  ColourSteer:  80  delta:  0.0  NetOut:  0.0754652  mean:  -0.49913745915  var:  0.000347654876288
-457  ColourSteer:  80  delta:  0.0  NetOut:  0.0728512  mean:  -0.49913745915  var:  0.000347654876288
-458  ColourSteer:  80  delta:  0.0  NetOut:  0.0701929  mean:  -0.49913745915  var:  0.000347654876288
-459  ColourSteer:  80  delta:  0.0  NetOut:  0.0675053  mean:  -0.49913745915  var:  0.000347654876288
-460  ColourSteer:  80  delta:  0.0  NetOut:  0.0648025  mean:  -0.49913745915  var:  0.000347654876288
-461  ColourSteer:  80  delta:  0.0  NetOut:  0.0620969  mean:  -0.49913745915  var:  0.000347654876288
-462  ColourSteer:  80  delta:  0.0  NetOut:  0.0594  mean:  -0.49913745915  var:  0.000347654876288
-463  ColourSteer:  80  delta:  0.0  NetOut:  0.0567219  mean:  -0.49913745915  var:  0.000347654876288
-464  ColourSteer:  80  delta:  0.0  NetOut:  0.0540719  mean:  -0.49913745915  var:  0.000347654876288
-465  ColourSteer:  80  delta:  0.0  NetOut:  0.0514579  mean:  -0.49913745915  var:  0.000347654876288
-466  ColourSteer:  80  delta:  0.0  NetOut:  0.0488874  mean:  -0.49913745915  var:  0.000347654876288
-467  ColourSteer:  80  delta:  0.0  NetOut:  0.0463666  mean:  -0.49913745915  var:  0.000347654876288
-468  ColourSteer:  80  delta:  0.0  NetOut:  0.0439009  mean:  -0.49913745915  var:  0.000347654876288
-469  ColourSteer:  80  delta:  0.0  NetOut:  0.0414953  mean:  -0.49913745915  var:  0.000347654876288
-470  ColourSteer:  80  delta:  0.0  NetOut:  0.0391537  mean:  -0.49913745915  var:  0.000347654876288
-471  ColourSteer:  80  delta:  0.0  NetOut:  0.0368796  mean:  -0.49913745915  var:  0.000347654876288
-472  ColourSteer:  80  delta:  0.0  NetOut:  0.0346757  mean:  -0.49913745915  var:  0.000347654876288
-473  ColourSteer:  80  delta:  0.0  NetOut:  0.0325443  mean:  -0.49913745915  var:  0.000347654876288
-474  ColourSteer:  80  delta:  0.0  NetOut:  0.030487  mean:  -0.49913745915  var:  0.000347654876288
-475  ColourSteer:  80  delta:  0.0  NetOut:  0.0285052  mean:  -0.49913745915  var:  0.000347654876288
-476  ColourSteer:  80  delta:  0.0  NetOut:  0.0265997  mean:  -0.49913745915  var:  0.000347654876288
-477  ColourSteer:  80  delta:  0.0  NetOut:  0.0247709  mean:  -0.49913745915  var:  0.000347654876288
-478  ColourSteer:  80  delta:  0.0  NetOut:  0.0230188  mean:  -0.49913745915  var:  0.000347654876288
-479  ColourSteer:  80  delta:  0.0  NetOut:  0.0213433  mean:  -0.49913745915  var:  0.000347654876288
-480  ColourSteer:  80  delta:  0.0  NetOut:  0.0197437  mean:  -0.49913745915  var:  0.000347654876288
-481  ColourSteer:  80  delta:  0.0  NetOut:  0.0182193  mean:  -0.49913745915  var:  0.000347654876288
-482  ColourSteer:  80  delta:  0.0  NetOut:  0.016769  mean:  -0.49913745915  var:  0.000347654876288
-483  ColourSteer:  80  delta:  0.0  NetOut:  0.0153916  mean:  -0.49913745915  var:  0.000347654876288
-484  ColourSteer:  80  delta:  0.0  NetOut:  0.0140857  mean:  -0.49913745915  var:  0.000347654876288
-485  ColourSteer:  80  delta:  0.0  NetOut:  0.0128497  mean:  -0.49913745915  var:  0.000347654876288
-486  ColourSteer:  80  delta:  0.0  NetOut:  0.0116818  mean:  -0.49913745915  var:  0.000347654876288
-487  ColourSteer:  80  delta:  0.0  NetOut:  0.0105803  mean:  -0.49913745915  var:  0.000347654876288
-488  ColourSteer:  80  delta:  0.0  NetOut:  0.00954328  mean:  -0.49913745915  var:  0.000347654876288
-489  ColourSteer:  80  delta:  0.0  NetOut:  0.00856864  mean:  -0.49913745915  var:  0.000347654876288
-490  ColourSteer:  80  delta:  0.0  NetOut:  0.0076544  mean:  -0.49913745915  var:  0.000347654876288
-491  ColourSteer:  80  delta:  0.0  NetOut:  0.0067984  mean:  -0.49913745915  var:  0.000347654876288
-492  ColourSteer:  80  delta:  0.0  NetOut:  0.00599848  mean:  -0.49913745915  var:  0.000347654876288
-493  ColourSteer:  80  delta:  0.0  NetOut:  0.0052525  mean:  -0.49913745915  var:  0.000347654876288
-494  ColourSteer:  80  delta:  0.0  NetOut:  0.00455827  mean:  -0.49913745915  var:  0.000347654876288
-495  ColourSteer:  80  delta:  0.0  NetOut:  0.0039136  mean:  -0.49913745915  var:  0.000347654876288
-496  ColourSteer:  80  delta:  0.0  NetOut:  0.00331631  mean:  -0.49913745915  var:  0.000347654876288
-497  ColourSteer:  80  delta:  0.0  NetOut:  0.00276428  mean:  -0.49913745915  var:  0.000347654876288
-498  ColourSteer:  80  delta:  0.0  NetOut:  0.00225527  mean:  -0.49913745915  var:  0.000347654876288
-499  ColourSteer:  80  delta:  0.0  NetOut:  0.00178729  mean:  -0.49913745915  var:  0.000347654876288
-500  ColourSteer:  80  delta:  0.0  NetOut:  0.0013582  mean:  -0.49913745915  var:  0.000347654876288
-501  ColourSteer:  80  delta:  0.0  NetOut:  0.00096596  mean:  -0.49913745915  var:  0.000347654876288
-502  ColourSteer:  80  delta:  0.0  NetOut:  0.000608623  mean:  -0.49913745915  var:  0.000347654876288
-503  ColourSteer:  80  delta:  0.0  NetOut:  0.000284255  mean:  -0.49913745915  var:  0.000347654876288
-504  ColourSteer:  80  delta:  0.0  NetOut:  -9.06736e-06  mean:  -0.49913745915  var:  0.000347654876288
-505  ColourSteer:  80  delta:  0.0  NetOut:  -0.000273138  mean:  -0.49913745915  var:  0.000347654876288
-506  ColourSteer:  80  delta:  0.0  NetOut:  -0.000509761  mean:  -0.49913745915  var:  0.000347654876288
-507  ColourSteer:  80  delta:  0.0  NetOut:  -0.000720605  mean:  -0.49913745915  var:  0.000347654876288
-508  ColourSteer:  80  delta:  0.0  NetOut:  -0.000907369  mean:  -0.49913745915  var:  0.000347654876288
-509  ColourSteer:  80  delta:  0.0  NetOut:  -0.00107161  mean:  -0.49913745915  var:  0.000347654876288
-510  ColourSteer:  80  delta:  0.0  NetOut:  -0.00121487  mean:  -0.49913745915  var:  0.000347654876288
-511  ColourSteer:  80  delta:  0.0  NetOut:  -0.00133862  mean:  -0.49913745915  var:  0.000347654876288
-512  ColourSteer:  80  delta:  0.0  NetOut:  -0.00144426  mean:  -0.49913745915  var:  0.000347654876288
-513  ColourSteer:  80  delta:  0.0  NetOut:  -0.00153315  mean:  -0.49913745915  var:  0.000347654876288
-514  ColourSteer:  80  delta:  0.0  NetOut:  -0.00160653  mean:  -0.49913745915  var:  0.000347654876288
-515  ColourSteer:  80  delta:  0.0  NetOut:  -0.00166566  mean:  -0.49913745915  var:  0.000347654876288
-516  ColourSteer:  80  delta:  0.0  NetOut:  -0.00171169  mean:  -0.49913745915  var:  0.000347654876288
-517  ColourSteer:  80  delta:  0.0  NetOut:  -0.00174568  mean:  -0.49913745915  var:  0.000347654876288
-518  ColourSteer:  80  delta:  0.0  NetOut:  -0.00176875  mean:  -0.49913745915  var:  0.000347654876288
-519  ColourSteer:  80  delta:  0.0  NetOut:  -0.00178183  mean:  -0.49913745915  var:  0.000347654876288
-520  ColourSteer:  80  delta:  0.0  NetOut:  -0.00178589  mean:  -0.49913745915  var:  0.000347654876288
-521  ColourSteer:  80  delta:  0.0  NetOut:  -0.00178177  mean:  -0.49913745915  var:  0.000347654876288
-522  ColourSteer:  80  delta:  0.0  NetOut:  -0.00177033  mean:  -0.49913745915  var:  0.000347654876288
-523  ColourSteer:  80  delta:  0.0  NetOut:  -0.0017523  mean:  -0.49913745915  var:  0.000347654876288
-524  ColourSteer:  80  delta:  0.0  NetOut:  -0.00172847  mean:  -0.49913745915  var:  0.000347654876288
-525  ColourSteer:  80  delta:  0.0  NetOut:  -0.00169947  mean:  -0.49913745915  var:  0.000347654876288
-526  ColourSteer:  80  delta:  0.0  NetOut:  -0.00166596  mean:  -0.49913745915  var:  0.000347654876288
-527  ColourSteer:  80  delta:  0.0  NetOut:  -0.00162854  mean:  -0.49913745915  var:  0.000347654876288
-528  ColourSteer:  80  delta:  0.0  NetOut:  -0.00158773  mean:  -0.49913745915  var:  0.000347654876288
-529  ColourSteer:  80  delta:  0.0  NetOut:  -0.00154406  mean:  -0.49913745915  var:  0.000347654876288
-530  ColourSteer:  80  delta:  0.0  NetOut:  -0.00149801  mean:  -0.49913745915  var:  0.000347654876288
-531  ColourSteer:  80  delta:  0.0  NetOut:  -0.00144999  mean:  -0.49913745915  var:  0.000347654876288
-532  ColourSteer:  80  delta:  0.0  NetOut:  -0.00140041  mean:  -0.49913745915  var:  0.000347654876288
-533  ColourSteer:  80  delta:  0.0  NetOut:  -0.00134968  mean:  -0.49913745915  var:  0.000347654876288
-534  ColourSteer:  80  delta:  0.0  NetOut:  -0.00129806  mean:  -0.49913745915  var:  0.000347654876288
-535  ColourSteer:  80  delta:  0.0  NetOut:  -0.00124592  mean:  -0.49913745915  var:  0.000347654876288
-536  ColourSteer:  80  delta:  0.0  NetOut:  -0.0011935  mean:  -0.49913745915  var:  0.000347654876288
-537  ColourSteer:  80  delta:  0.0  NetOut:  -0.00114108  mean:  -0.49913745915  var:  0.000347654876288
-538  ColourSteer:  80  delta:  0.0  NetOut:  -0.00108889  mean:  -0.49913745915  var:  0.000347654876288
-539  ColourSteer:  80  delta:  0.0  NetOut:  -0.0010371  mean:  -0.49913745915  var:  0.000347654876288
-540  ColourSteer:  80  delta:  0.0  NetOut:  -0.000985935  mean:  -0.49913745915  var:  0.000347654876288
-541  ColourSteer:  80  delta:  0.0  NetOut:  -0.000935532  mean:  -0.49913745915  var:  0.000347654876288
-542  ColourSteer:  80  delta:  0.0  NetOut:  -0.000886045  mean:  -0.49913745915  var:  0.000347654876288
-543  ColourSteer:  80  delta:  0.0  NetOut:  -0.000837594  mean:  -0.49913745915  var:  0.000347654876288
-544  ColourSteer:  80  delta:  0.0  NetOut:  -0.000790275  mean:  -0.49913745915  var:  0.000347654876288
-545  ColourSteer:  80  delta:  0.0  NetOut:  -0.000744201  mean:  -0.49913745915  var:  0.000347654876288
-546  ColourSteer:  80  delta:  0.0  NetOut:  -0.000699438  mean:  -0.49913745915  var:  0.000347654876288
-547  ColourSteer:  80  delta:  0.0  NetOut:  -0.000656046  mean:  -0.49913745915  var:  0.000347654876288
-548  ColourSteer:  80  delta:  0.0  NetOut:  -0.000614099  mean:  -0.49913745915  var:  0.000347654876288
-549  ColourSteer:  80  delta:  0.0  NetOut:  -0.00057359  mean:  -0.49913745915  var:  0.000347654876288
-550  ColourSteer:  80  delta:  0.0  NetOut:  -0.000534624  mean:  -0.49913745915  var:  0.000347654876288
-551  ColourSteer:  80  delta:  0.0  NetOut:  -0.000497147  mean:  -0.49913745915  var:  0.000347654876288
-552  ColourSteer:  80  delta:  0.0  NetOut:  -0.000461221  mean:  -0.49913745915  var:  0.000347654876288
-553  ColourSteer:  80  delta:  0.0  NetOut:  -0.000426829  mean:  -0.49913745915  var:  0.000347654876288
-554  ColourSteer:  80  delta:  0.0  NetOut:  -0.000393987  mean:  -0.49913745915  var:  0.000347654876288
-555  ColourSteer:  80  delta:  0.0  NetOut:  -0.000362657  mean:  -0.49913745915  var:  0.000347654876288
-556  ColourSteer:  80  delta:  0.0  NetOut:  -0.000332862  mean:  -0.49913745915  var:  0.000347654876288
-557  ColourSteer:  80  delta:  0.0  NetOut:  -0.000304557  mean:  -0.49913745915  var:  0.000347654876288
-558  ColourSteer:  80  delta:  0.0  NetOut:  -0.000277705  mean:  -0.49913745915  var:  0.000347654876288
-559  ColourSteer:  80  delta:  0.0  NetOut:  -0.000252306  mean:  -0.49913745915  var:  0.000347654876288
-560  ColourSteer:  80  delta:  0.0  NetOut:  -0.000228323  mean:  -0.49913745915  var:  0.000347654876288
-561  ColourSteer:  80  delta:  0.0  NetOut:  -0.000205718  mean:  -0.49913745915  var:  0.000347654876288
-562  ColourSteer:  80  delta:  0.0  NetOut:  -0.000184424  mean:  -0.49913745915  var:  0.000347654876288
-563  ColourSteer:  80  delta:  0.0  NetOut:  -0.000164464  mean:  -0.49913745915  var:  0.000347654876288
-564  ColourSteer:  80  delta:  0.0  NetOut:  -0.000145756  mean:  -0.49913745915  var:  0.000347654876288
-565  ColourSteer:  80  delta:  0.0  NetOut:  -0.000128254  mean:  -0.49913745915  var:  0.000347654876288
-566  ColourSteer:  80  delta:  0.0  NetOut:  -0.000111923  mean:  -0.49913745915  var:  0.000347654876288
-567  ColourSteer:  80  delta:  0.0  NetOut:  -9.67458e-05  mean:  -0.49913745915  var:  0.000347654876288
-568  ColourSteer:  80  delta:  0.0  NetOut:  -8.25971e-05  mean:  -0.49913745915  var:  0.000347654876288
-569  ColourSteer:  80  delta:  0.0  NetOut:  -6.95437e-05  mean:  -0.49913745915  var:  0.000347654876288
-570  ColourSteer:  80  delta:  0.0  NetOut:  -5.74514e-05  mean:  -0.49913745915  var:  0.000347654876288
-571  ColourSteer:  80  delta:  0.0  NetOut:  -4.63128e-05  mean:  -0.49913745915  var:  0.000347654876288
-572  ColourSteer:  80  delta:  0.0  NetOut:  -3.60757e-05  mean:  -0.49913745915  var:  0.000347654876288
-573  ColourSteer:  80  delta:  0.0  NetOut:  -2.66954e-05  mean:  -0.49913745915  var:  0.000347654876288
-574  ColourSteer:  80  delta:  0.0  NetOut:  -1.81347e-05  mean:  -0.49913745915  var:  0.000347654876288
-575  ColourSteer:  80  delta:  0.0  NetOut:  -1.0334e-05  mean:  -0.49913745915  var:  0.000347654876288
-576  ColourSteer:  80  delta:  0.0  NetOut:  -3.28571e-06  mean:  -0.49913745915  var:  0.000347654876288
-577  ColourSteer:  80  delta:  0.0  NetOut:  3.09199e-06  mean:  -0.49913745915  var:  0.000347654876288
-578  ColourSteer:  80  delta:  0.0  NetOut:  8.84384e-06  mean:  -0.49913745915  var:  0.000347654876288
-579  ColourSteer:  80  delta:  0.0  NetOut:  1.39475e-05  mean:  -0.49913745915  var:  0.000347654876288
 
+HistoryLen:  3
+starting simulator
+Simulator: colour format:  RGB24
+['TURN_LEFT', 'TURN_RIGHT', 'ATTACK', 'MOVE_FORWARD_BACKWARD_DELTA', 'MOVE_RIGHT', 'MOVE_LEFT', 'TURN_LEFT_RIGHT_DELTA', 'TURN180', 'SELECT_WEAPON2', 'SELECT_WEAPON3', 'SELECT_WEAPON4', 'SELECT_WEAPON5', 'SELECT_WEAPON6', 'SELECT_WEAPON7'] [3 6] [ 0  1  2  4  5  7  8  9 10 11 12 13]
+started simulator
+state_meas_shape:  (3, 16)  ==  (9,)
+act_buffer_shape:  (3, 7)
+ffnet_inputs:  19200
+ffnet_hidden:  [50  5]
+ext_ffnet_output:  (1,)
+model loaded..
+Image centre:  [80 60]
+Image:  (120, 160, 3)  max:  255  min:  0
+Image:  (120, 160, 3)  max:  255  min:  0
+Image:  (120, 160, 3)  max:  255  min:  0
+LOSS:  0.00101094
+LOSS:  0.000983169
+LOSS:  0.000956029
+LOSS:  0.000929403
+LOSS:  0.000235533
+LOSS:  0.00084503
+LOSS:  0.034658
+LOSS:  0.0271251
+LOSS:  0.0970058
+LOSS:  0.0987431
+LOSS:  0.0010806
+LOSS:  0.00225539
+LOSS:  0.00355312
+LOSS:  0.00116705
+LOSS:  0.048687
+LOSS:  0.00139058
+LOSS:  0.0141399
+LOSS:  0.00307929
+LOSS:  0.00151289
+LOSS:  0.00149549
+LOSS:  0.00146009
+LOSS:  0.00142301
+LOSS:  0.00138627
+LOSS:  0.00987565
+LOSS:  0.0299095
+LOSS:  0.017791
+LOSS:  0.00101902
+LOSS:  0.000161121
+LOSS:  0.000353252
+LOSS:  0.00192351
+LOSS:  0.08289
+LOSS:  0.015095
+LOSS:  0.0051108
+LOSS:  0.000719251
+LOSS:  0.00235016
+LOSS:  0.00231154
+LOSS:  0.00227997
+LOSS:  0.00220827
+LOSS:  0.00228535
+LOSS:  0.00228214
+LOSS:  0.00202076
+LOSS:  0.0023936
+LOSS:  0.136595
+LOSS:  0.00960254
+LOSS:  0.00165388
+LOSS:  8.59161e-05
+LOSS:  8.5307e-06
+LOSS:  0.00280443
+LOSS:  0.246102
+LOSS:  0.0280644
+LOSS:  0.138075
+LOSS:  0.00224718
+LOSS:  0.00219789
+LOSS:  0.00214058
+LOSS:  0.00208321
+LOSS:  0.00202673
+LOSS:  0.00197127
+LOSS:  0.00206347
+LOSS:  0.00206005
+LOSS:  0.0272512
+LOSS:  0.00480228
+LOSS:  0.00187779
+LOSS:  0.00256734
+LOSS:  0.159711
+LOSS:  0.00084873
+LOSS:  0.00160475
+LOSS:  0.0104105
+LOSS:  0.00574639

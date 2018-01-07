@@ -342,7 +342,7 @@ class Agent:
 
     def save(self, checkpoint_dir, iter):
         self.save_path = self.saver.save(self.sess, checkpoint_dir, global_step=iter)
-        #print ("saving model file: ", self.save_path)
+        print ("saving model file: ", self.save_path)
 
 
 

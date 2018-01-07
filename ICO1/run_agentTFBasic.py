@@ -9,6 +9,10 @@ sys.path.append('./agent')
 sys.path.append('./deep_feedback_learning')
 from agent.doom_simulator import DoomSimulator
 from agent.agent import Agent
+from deep_feedback_learning import DeepFeedbackLearning
+import threading
+from time import sleep
+from matplotlib import pyplot as plt
 
 width = 160
 widthIn = 160
@@ -26,7 +30,6 @@ edge = np.array((
 	[0, 1, 0],
 	[1, -4, 1],
 	[0, 1, 0]), dtype="int")
-
 
 def getColourImbalance(img, colour):
     if(img.shape[0]) != 3:

@@ -227,7 +227,7 @@ def main():
     skipImage = 1
     skipImageICO = 5
     reflexGain = 1E-4
-    flowGain = 5.
+    flowGain = 0.
     netGain = 10.
     oldHealth = 0.
 
@@ -377,9 +377,8 @@ def main():
                     curr_act[1] = 0
                     curr_act[2] = 0 #shoot
                     curr_act[3] = curr_act[3] + diff_z
-                    curr_act[3] = 5.
                     curr_act[4] = 0
-                    curr_act[5] = 1.
+                    curr_act[5] = 0.
                     curr_act[6] = diff_theta + netGain*netOut
 
                     iter += 1

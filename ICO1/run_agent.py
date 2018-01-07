@@ -7,7 +7,7 @@ sys.path.append('./agent')
 sys.path.append('./deep_feedback_learning')
 from agent.doom_simulator import DoomSimulator
 #from agent.agent import Agent
-from deep_ico.deep_feedback_learning import DeepFeedbackLearning
+from deep_feedback_learning import DeepFeedbackLearning
 import threading
 from matplotlib import pyplot as plt
 
@@ -17,12 +17,12 @@ height = 240
 heightIn = 240
 nFiltersInput = 3
 nFiltersHidden = 3
-nHidden0 = 4
+nHidden = [16, 10, 10]
 # nFiltersHidden = 0 means that the layer is linear without filters
 minT = 3
 maxT = 15
 
-deepBP = DeepFeedbackLearning(width * height, [16, 10, 10], 1, nFiltersInput, nFiltersHidden, minT, maxT)
+deepBP = DeepFeedbackLearning(width * height, [nHidden[0], nHidden[1], nHidden[2]], 1, nFiltersInput, nFiltersHidden, minT, maxT)
 # init the weights
 deepBP.getLayer(0).setConvolution(width, height)
 deepBP.initWeights(1E-6, 1)
@@ -274,8 +274,8 @@ def main():
     maskRight = np.zeros([height, width], np.uint8)
     maskRight[half_height:, half_width:] = 1.
 
-
-    netErr = np.zeros((width,height))
+    # for ICO, the errors are the same dimensionality as the first hidden layer
+    netErr = np.zeros(nHidden[0])
 
 #    deepIcoEfference = Deep_ICO(simulator_args['resolution'][0] * simulator_args['resolution'][1] + 7, 10, 1)
     nh = np.asarray([36,36])
@@ -392,7 +392,7 @@ def main():
                     if (colourStrength1 > 150.):
                         simpleInputs1[bottomLeft1[0]:topRight1[0], bottomLeft1[1]:topRight1[1]] = 1.
 
-                    netErr[:,:] = 0.
+                    netErr[:] = 0.
                     #deepBP.doStep(np.ndarray.flatten(inputs), np.ndarray.flatten(netErr))
                     #icoSteer = deepBP.getOutput(0)
                     #delta = sp - icoSteer
@@ -412,25 +412,11 @@ def main():
                     #else:
                         #net_output = np.ndarray.flatten(agent.learn_ffnet(input_buff, target_buff))[0]
 
-                    netErr[:,:] = delta
+                    netErr[:] = delta
                     deepBP.doStep(preprocess_input_images(greyImg2.flatten()), netErr.flatten())
 
                     icoSteer = deepBP.getOutput(0)
-                    #print ("In ", inputs[colourSteer], "Error: ", netErr[0,0], "Wt ", deepBP.getLayer(0).getNeuron(0).getWeight(int(colourSteer))
-                    #      , "WtOut ", deepBP.getLayer(1).getNeuron(0).getWeight(0)
-                    #, " Out ", deepBP.getLayer(0).getNeuron(0).getOutput(), " NErr ", deepBP.getLayer(0).getNeuron(0).getError(), " OUT ", 40.*icoSteer
-                    #, " OUTErr ", deepBP.getLayer(1).getNeuron(0).getError())
-
-                    #deepBP.doStep(np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step - 1) % historyLen, 2, :, :])), np.ndarray.flatten(netErr))
-#                    deepBP.doStep(np.ndarray.flatten(inputs), np.ndarray.flatten(netErr))
-                    #deepBP.doStep(np.ndarray.flatten(preprocess_input_images(img_buffer[(curr_step - 1) % historyLen, 0, :, :])), [0.0001 * colourStrength * (colourSteer - imgCentre[0])])
-                    #deepBP.doStep([(colourSteer - imgCentre[0])/width], [0.0001*colourStrength * (colourSteer - imgCentre[0])])
                     print (" ** ", curr_step, icoSteer, " ", delta, " ", colourStrength2)
-
-                    #print (colourSteer, " In ", inputs[colourSteer], "Error: ", netErr[0,0], "Wt ", deepBP.getLayer(0).getNeuron(0).getWeight(int(colourSteer))
-                    #       , " NOut ", deepBP.getLayer(0).getNeuron(0).getOutput(), " NErr ", deepBP.getLayer(0).getNeuron(0).getError(), " OUT ", 40.*icoSteer
-                    #       , "OUTRefl ", diff_theta + 0.03 * colourStrength * (colourSteer - imgCentre[0])/width
-                    #       , " OUTErr ", deepBP.getLayer(1).getNeuron(0).getError())
 
                     diff_theta = 0.6 * max(min((icoInSteer), 5.), -5.)
 

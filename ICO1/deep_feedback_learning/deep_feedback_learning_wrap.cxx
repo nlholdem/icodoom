@@ -4456,6 +4456,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_DeepFeedbackLearning_setLearningRateDiscountFactor(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  DeepFeedbackLearning *arg1 = (DeepFeedbackLearning *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:DeepFeedbackLearning_setLearningRateDiscountFactor",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_DeepFeedbackLearning, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DeepFeedbackLearning_setLearningRateDiscountFactor" "', argument " "1"" of type '" "DeepFeedbackLearning *""'"); 
+  }
+  arg1 = reinterpret_cast< DeepFeedbackLearning * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DeepFeedbackLearning_setLearningRateDiscountFactor" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  (arg1)->setLearningRateDiscountFactor(arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_DeepFeedbackLearning_setMomentum(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   DeepFeedbackLearning *arg1 = (DeepFeedbackLearning *) 0 ;
@@ -4847,6 +4877,28 @@ SWIGINTERN PyObject *_wrap_DeepFeedbackLearning_getNumHidLayers(PyObject *SWIGUN
   }
   arg1 = reinterpret_cast< DeepFeedbackLearning * >(argp1);
   result = (int)(arg1)->getNumHidLayers();
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DeepFeedbackLearning_getNumLayers(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  DeepFeedbackLearning *arg1 = (DeepFeedbackLearning *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DeepFeedbackLearning_getNumLayers",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_DeepFeedbackLearning, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DeepFeedbackLearning_getNumLayers" "', argument " "1"" of type '" "DeepFeedbackLearning *""'"); 
+  }
+  arg1 = reinterpret_cast< DeepFeedbackLearning * >(argp1);
+  result = (int)(arg1)->getNumLayers();
   resultobj = SWIG_From_int(static_cast< int >(result));
   return resultobj;
 fail:
@@ -5739,6 +5791,36 @@ SWIGINTERN PyObject *_wrap_Layer_setLearningRate(PyObject *SWIGUNUSEDPARM(self),
   } 
   arg2 = static_cast< double >(val2);
   (arg1)->setLearningRate(arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Layer_setActivationFunction(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Layer *arg1 = (Layer *) 0 ;
+  Neuron::ActivationFunction arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Layer_setActivationFunction",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Layer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Layer_setActivationFunction" "', argument " "1"" of type '" "Layer *""'"); 
+  }
+  arg1 = reinterpret_cast< Layer * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Layer_setActivationFunction" "', argument " "2"" of type '" "Neuron::ActivationFunction""'");
+  } 
+  arg2 = static_cast< Neuron::ActivationFunction >(val2);
+  (arg1)->setActivationFunction(arg2);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -6924,6 +7006,58 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Neuron_setActivationFunction(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Neuron *arg1 = (Neuron *) 0 ;
+  Neuron::ActivationFunction arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Neuron_setActivationFunction",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_setActivationFunction" "', argument " "1"" of type '" "Neuron *""'"); 
+  }
+  arg1 = reinterpret_cast< Neuron * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_setActivationFunction" "', argument " "2"" of type '" "Neuron::ActivationFunction""'");
+  } 
+  arg2 = static_cast< Neuron::ActivationFunction >(val2);
+  (arg1)->setActivationFunction(arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Neuron_dActivation(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Neuron *arg1 = (Neuron *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Neuron_dActivation",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_dActivation" "', argument " "1"" of type '" "Neuron *""'"); 
+  }
+  arg1 = reinterpret_cast< Neuron * >(argp1);
+  result = (double)(arg1)->dActivation();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Neuron_getMinWeightValue(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   Neuron *arg1 = (Neuron *) 0 ;
@@ -7034,7 +7168,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Neuron_getWeight__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Neuron_getWeight(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   Neuron *arg1 = (Neuron *) 0 ;
   int arg2 ;
@@ -7074,354 +7208,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Neuron_getWeight__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Neuron *arg1 = (Neuron *) 0 ;
-  int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  double result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Neuron_getWeight",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getWeight" "', argument " "1"" of type '" "Neuron *""'"); 
-  }
-  arg1 = reinterpret_cast< Neuron * >(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_getWeight" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = static_cast< int >(val2);
-  result = (double)(arg1)->getWeight(arg2);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_getWeight(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Neuron, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_Neuron_getWeight__SWIG_1(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Neuron, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_Neuron_getWeight__SWIG_0(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Neuron_getWeight'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    Neuron::getWeight(int,int)\n"
-    "    Neuron::getWeight(int)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_getWeightChange__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Neuron *arg1 = (Neuron *) 0 ;
-  int arg2 ;
-  int arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  int val3 ;
-  int ecode3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  double result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:Neuron_getWeightChange",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getWeightChange" "', argument " "1"" of type '" "Neuron *""'"); 
-  }
-  arg1 = reinterpret_cast< Neuron * >(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_getWeightChange" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = static_cast< int >(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Neuron_getWeightChange" "', argument " "3"" of type '" "int""'");
-  } 
-  arg3 = static_cast< int >(val3);
-  result = (double)(arg1)->getWeightChange(arg2,arg3);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_getWeightChange__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Neuron *arg1 = (Neuron *) 0 ;
-  int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  double result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Neuron_getWeightChange",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getWeightChange" "', argument " "1"" of type '" "Neuron *""'"); 
-  }
-  arg1 = reinterpret_cast< Neuron * >(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_getWeightChange" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = static_cast< int >(val2);
-  result = (double)(arg1)->getWeightChange(arg2);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_getWeightChange(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Neuron, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_Neuron_getWeightChange__SWIG_1(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Neuron, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_Neuron_getWeightChange__SWIG_0(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Neuron_getWeightChange'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    Neuron::getWeightChange(int,int)\n"
-    "    Neuron::getWeightChange(int)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_getFilteredInput__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Neuron *arg1 = (Neuron *) 0 ;
-  int arg2 ;
-  int arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  int val3 ;
-  int ecode3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  double result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:Neuron_getFilteredInput",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getFilteredInput" "', argument " "1"" of type '" "Neuron *""'"); 
-  }
-  arg1 = reinterpret_cast< Neuron * >(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_getFilteredInput" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = static_cast< int >(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Neuron_getFilteredInput" "', argument " "3"" of type '" "int""'");
-  } 
-  arg3 = static_cast< int >(val3);
-  result = (double)(arg1)->getFilteredInput(arg2,arg3);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_getFilteredInput__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Neuron *arg1 = (Neuron *) 0 ;
-  int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  double result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Neuron_getFilteredInput",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getFilteredInput" "', argument " "1"" of type '" "Neuron *""'"); 
-  }
-  arg1 = reinterpret_cast< Neuron * >(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_getFilteredInput" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = static_cast< int >(val2);
-  result = (double)(arg1)->getFilteredInput(arg2);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_getFilteredInput(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Neuron, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_Neuron_getFilteredInput__SWIG_1(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Neuron, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_Neuron_getFilteredInput__SWIG_0(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Neuron_getFilteredInput'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    Neuron::getFilteredInput(int,int)\n"
-    "    Neuron::getFilteredInput(int)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_setWeight__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Neuron_setWeight(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   Neuron *arg1 = (Neuron *) 0 ;
   int arg2 ;
@@ -7466,115 +7253,6 @@ SWIGINTERN PyObject *_wrap_Neuron_setWeight__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_setWeight__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Neuron *arg1 = (Neuron *) 0 ;
-  int arg2 ;
-  double arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  double val3 ;
-  int ecode3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:Neuron_setWeight",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_setWeight" "', argument " "1"" of type '" "Neuron *""'"); 
-  }
-  arg1 = reinterpret_cast< Neuron * >(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_setWeight" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = static_cast< int >(val2);
-  ecode3 = SWIG_AsVal_double(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Neuron_setWeight" "', argument " "3"" of type '" "double""'");
-  } 
-  arg3 = static_cast< double >(val3);
-  (arg1)->setWeight(arg2,arg3);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Neuron_setWeight(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[5] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 4) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Neuron, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_double(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_Neuron_setWeight__SWIG_1(self, args);
-        }
-      }
-    }
-  }
-  if (argc == 4) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Neuron, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_double(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          {
-            int res = SWIG_AsVal_int(argv[3], NULL);
-            _v = SWIG_CheckState(res);
-          }
-          if (_v) {
-            return _wrap_Neuron_setWeight__SWIG_0(self, args);
-          }
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Neuron_setWeight'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    Neuron::setWeight(int,double,int)\n"
-    "    Neuron::setWeight(int,double)\n");
-  return 0;
 }
 
 
@@ -7694,6 +7372,58 @@ SWIGINTERN PyObject *_wrap_Neuron_getInput(PyObject *SWIGUNUSEDPARM(self), PyObj
   arg2 = static_cast< int >(val2);
   result = (double)(arg1)->getInput(arg2);
   resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Neuron_getBiasWeight(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Neuron *arg1 = (Neuron *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Neuron_getBiasWeight",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getBiasWeight" "', argument " "1"" of type '" "Neuron *""'"); 
+  }
+  arg1 = reinterpret_cast< Neuron * >(argp1);
+  result = (double)(arg1)->getBiasWeight();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Neuron_setBiasWeight(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Neuron *arg1 = (Neuron *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Neuron_setBiasWeight",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_setBiasWeight" "', argument " "1"" of type '" "Neuron *""'"); 
+  }
+  arg1 = reinterpret_cast< Neuron * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_setBiasWeight" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  (arg1)->setBiasWeight(arg2);
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
@@ -7895,7 +7625,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightCh__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightChange__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   Neuron *arg1 = (Neuron *) 0 ;
   int arg2 ;
@@ -7907,18 +7637,18 @@ SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightCh__SWIG_0(PyObject *SWIGUNUSEDPAR
   PyObject * obj1 = 0 ;
   double result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:Neuron_getAvgWeightCh",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:Neuron_getAvgWeightChange",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getAvgWeightCh" "', argument " "1"" of type '" "Neuron *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getAvgWeightChange" "', argument " "1"" of type '" "Neuron *""'"); 
   }
   arg1 = reinterpret_cast< Neuron * >(argp1);
   ecode2 = SWIG_AsVal_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_getAvgWeightCh" "', argument " "2"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Neuron_getAvgWeightChange" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = static_cast< int >(val2);
-  result = (double)(arg1)->getAvgWeightCh(arg2);
+  result = (double)(arg1)->getAvgWeightChange(arg2);
   resultobj = SWIG_From_double(static_cast< double >(result));
   return resultobj;
 fail:
@@ -7926,7 +7656,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightCh__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightChange__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   Neuron *arg1 = (Neuron *) 0 ;
   void *argp1 = 0 ;
@@ -7934,13 +7664,13 @@ SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightCh__SWIG_1(PyObject *SWIGUNUSEDPAR
   PyObject * obj0 = 0 ;
   double result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:Neuron_getAvgWeightCh",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:Neuron_getAvgWeightChange",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getAvgWeightCh" "', argument " "1"" of type '" "Neuron *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getAvgWeightChange" "', argument " "1"" of type '" "Neuron *""'"); 
   }
   arg1 = reinterpret_cast< Neuron * >(argp1);
-  result = (double)(arg1)->getAvgWeightCh();
+  result = (double)(arg1)->getAvgWeightChange();
   resultobj = SWIG_From_double(static_cast< double >(result));
   return resultobj;
 fail:
@@ -7948,7 +7678,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightCh(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightChange(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
@@ -7966,7 +7696,7 @@ SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightCh(PyObject *self, PyObject *args)
     int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Neuron, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
-      return _wrap_Neuron_getAvgWeightCh__SWIG_1(self, args);
+      return _wrap_Neuron_getAvgWeightChange__SWIG_1(self, args);
     }
   }
   if (argc == 2) {
@@ -7980,16 +7710,16 @@ SWIGINTERN PyObject *_wrap_Neuron_getAvgWeightCh(PyObject *self, PyObject *args)
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_Neuron_getAvgWeightCh__SWIG_0(self, args);
+        return _wrap_Neuron_getAvgWeightChange__SWIG_0(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Neuron_getAvgWeightCh'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Neuron_getAvgWeightChange'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    Neuron::getAvgWeightCh(int)\n"
-    "    Neuron::getAvgWeightCh()\n");
+    "    Neuron::getAvgWeightChange(int)\n"
+    "    Neuron::getAvgWeightChange()\n");
   return 0;
 }
 
@@ -8304,6 +8034,72 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Neuron_getEuclideanNormOfWeightVector(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Neuron *arg1 = (Neuron *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Neuron_getEuclideanNormOfWeightVector",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getEuclideanNormOfWeightVector" "', argument " "1"" of type '" "Neuron *""'"); 
+  }
+  arg1 = reinterpret_cast< Neuron * >(argp1);
+  result = (double)(arg1)->getEuclideanNormOfWeightVector();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Neuron_getManhattanNormOfWeightVector(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Neuron *arg1 = (Neuron *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Neuron_getManhattanNormOfWeightVector",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getManhattanNormOfWeightVector" "', argument " "1"" of type '" "Neuron *""'"); 
+  }
+  arg1 = reinterpret_cast< Neuron * >(argp1);
+  result = (double)(arg1)->getManhattanNormOfWeightVector();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Neuron_getAverageOfWeightVector(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Neuron *arg1 = (Neuron *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Neuron_getAverageOfWeightVector",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Neuron, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Neuron_getAverageOfWeightVector" "', argument " "1"" of type '" "Neuron *""'"); 
+  }
+  arg1 = reinterpret_cast< Neuron * >(argp1);
+  result = (double)(arg1)->getAverageOfWeightVector();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Neuron_normaliseWeights(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   Neuron *arg1 = (Neuron *) 0 ;
@@ -8429,6 +8225,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"DeepFeedbackLearning_doStep", _wrap_DeepFeedbackLearning_doStep, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_getOutput", _wrap_DeepFeedbackLearning_getOutput, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_setLearningRate", _wrap_DeepFeedbackLearning_setLearningRate, METH_VARARGS, NULL},
+	 { (char *)"DeepFeedbackLearning_setLearningRateDiscountFactor", _wrap_DeepFeedbackLearning_setLearningRateDiscountFactor, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_setMomentum", _wrap_DeepFeedbackLearning_setMomentum, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_setAlgorithm", _wrap_DeepFeedbackLearning_setAlgorithm, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_getAlgorithm", _wrap_DeepFeedbackLearning_getAlgorithm, METH_VARARGS, NULL},
@@ -8436,6 +8233,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"DeepFeedbackLearning_seedRandom", _wrap_DeepFeedbackLearning_seedRandom, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_setBias", _wrap_DeepFeedbackLearning_setBias, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_getNumHidLayers", _wrap_DeepFeedbackLearning_getNumHidLayers, METH_VARARGS, NULL},
+	 { (char *)"DeepFeedbackLearning_getNumLayers", _wrap_DeepFeedbackLearning_getNumLayers, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_getLayer", _wrap_DeepFeedbackLearning_getLayer, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_getOutputLayer", _wrap_DeepFeedbackLearning_getOutputLayer, METH_VARARGS, NULL},
 	 { (char *)"DeepFeedbackLearning_getLayers", _wrap_DeepFeedbackLearning_getLayers, METH_VARARGS, NULL},
@@ -8455,6 +8253,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Layer_setInput", _wrap_Layer_setInput, METH_VARARGS, NULL},
 	 { (char *)"Layer_setInputs", _wrap_Layer_setInputs, METH_VARARGS, NULL},
 	 { (char *)"Layer_setLearningRate", _wrap_Layer_setLearningRate, METH_VARARGS, NULL},
+	 { (char *)"Layer_setActivationFunction", _wrap_Layer_setActivationFunction, METH_VARARGS, NULL},
 	 { (char *)"Layer_setMomentum", _wrap_Layer_setMomentum, METH_VARARGS, NULL},
 	 { (char *)"Layer_initWeights", _wrap_Layer_initWeights, METH_VARARGS, NULL},
 	 { (char *)"Layer_getOutput", _wrap_Layer_getOutput, METH_VARARGS, NULL},
@@ -8477,19 +8276,21 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Neuron_doMaxDet", _wrap_Neuron_doMaxDet, METH_VARARGS, NULL},
 	 { (char *)"Neuron_doMaxDetThread", _wrap_Neuron_doMaxDetThread, METH_VARARGS, NULL},
 	 { (char *)"Neuron_initWeights", _wrap_Neuron_initWeights, METH_VARARGS, NULL},
+	 { (char *)"Neuron_setActivationFunction", _wrap_Neuron_setActivationFunction, METH_VARARGS, NULL},
+	 { (char *)"Neuron_dActivation", _wrap_Neuron_dActivation, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getMinWeightValue", _wrap_Neuron_getMinWeightValue, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getMaxWeightValue", _wrap_Neuron_getMaxWeightValue, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getWeightDistanceFromInitialWeights", _wrap_Neuron_getWeightDistanceFromInitialWeights, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getOutput", _wrap_Neuron_getOutput, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getSum", _wrap_Neuron_getSum, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getWeight", _wrap_Neuron_getWeight, METH_VARARGS, NULL},
-	 { (char *)"Neuron_getWeightChange", _wrap_Neuron_getWeightChange, METH_VARARGS, NULL},
-	 { (char *)"Neuron_getFilteredInput", _wrap_Neuron_getFilteredInput, METH_VARARGS, NULL},
 	 { (char *)"Neuron_setWeight", _wrap_Neuron_setWeight, METH_VARARGS, NULL},
 	 { (char *)"Neuron_setError", _wrap_Neuron_setError, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getError", _wrap_Neuron_getError, METH_VARARGS, NULL},
 	 { (char *)"Neuron_setInput", _wrap_Neuron_setInput, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getInput", _wrap_Neuron_getInput, METH_VARARGS, NULL},
+	 { (char *)"Neuron_getBiasWeight", _wrap_Neuron_getBiasWeight, METH_VARARGS, NULL},
+	 { (char *)"Neuron_setBiasWeight", _wrap_Neuron_setBiasWeight, METH_VARARGS, NULL},
 	 { (char *)"Neuron_setBias", _wrap_Neuron_setBias, METH_VARARGS, NULL},
 	 { (char *)"Neuron_setLearningRate", _wrap_Neuron_setLearningRate, METH_VARARGS, NULL},
 	 { (char *)"Neuron_setMomentum", _wrap_Neuron_setMomentum, METH_VARARGS, NULL},
@@ -8497,10 +8298,13 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Neuron_getNinputs", _wrap_Neuron_getNinputs, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getNfilters", _wrap_Neuron_getNfilters, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getAvgWeight", _wrap_Neuron_getAvgWeight, METH_VARARGS, NULL},
-	 { (char *)"Neuron_getAvgWeightCh", _wrap_Neuron_getAvgWeightCh, METH_VARARGS, NULL},
+	 { (char *)"Neuron_getAvgWeightChange", _wrap_Neuron_getAvgWeightChange, METH_VARARGS, NULL},
 	 { (char *)"Neuron_setGeometry", _wrap_Neuron_setGeometry, METH_VARARGS, NULL},
 	 { (char *)"Neuron_setMask", _wrap_Neuron_setMask, METH_VARARGS, NULL},
 	 { (char *)"Neuron_getMask", _wrap_Neuron_getMask, METH_VARARGS, NULL},
+	 { (char *)"Neuron_getEuclideanNormOfWeightVector", _wrap_Neuron_getEuclideanNormOfWeightVector, METH_VARARGS, NULL},
+	 { (char *)"Neuron_getManhattanNormOfWeightVector", _wrap_Neuron_getManhattanNormOfWeightVector, METH_VARARGS, NULL},
+	 { (char *)"Neuron_getAverageOfWeightVector", _wrap_Neuron_getAverageOfWeightVector, METH_VARARGS, NULL},
 	 { (char *)"Neuron_normaliseWeights", _wrap_Neuron_normaliseWeights, METH_VARARGS, NULL},
 	 { (char *)"Neuron_saveInitialWeights", _wrap_Neuron_saveInitialWeights, METH_VARARGS, NULL},
 	 { (char *)"Neuron_setDebugInfo", _wrap_Neuron_setDebugInfo, METH_VARARGS, NULL},
@@ -9249,6 +9053,10 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "Neuron_MAX_WEIGHT_RANDOM",SWIG_From_int(static_cast< int >(Neuron::MAX_WEIGHT_RANDOM)));
   SWIG_Python_SetConstant(d, "Neuron_MAX_OUTPUT_CONST",SWIG_From_int(static_cast< int >(Neuron::MAX_OUTPUT_CONST)));
   SWIG_Python_SetConstant(d, "Neuron_CONST_WEIGHTS",SWIG_From_int(static_cast< int >(Neuron::CONST_WEIGHTS)));
+  SWIG_Python_SetConstant(d, "Neuron_LINEAR",SWIG_From_int(static_cast< int >(Neuron::LINEAR)));
+  SWIG_Python_SetConstant(d, "Neuron_TANH",SWIG_From_int(static_cast< int >(Neuron::TANH)));
+  SWIG_Python_SetConstant(d, "Neuron_RELU",SWIG_From_int(static_cast< int >(Neuron::RELU)));
+  SWIG_Python_SetConstant(d, "Neuron_REMAXLU",SWIG_From_int(static_cast< int >(Neuron::REMAXLU)));
 #if PY_VERSION_HEX >= 0x03000000
   return m;
 #else

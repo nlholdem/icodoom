@@ -117,6 +117,9 @@ class DeepFeedbackLearning(_object):
     def setLearningRate(self, learningRate: 'double') -> "void":
         return _deep_feedback_learning.DeepFeedbackLearning_setLearningRate(self, learningRate)
 
+    def setLearningRateDiscountFactor(self, _learningRateDiscountFactor: 'double') -> "void":
+        return _deep_feedback_learning.DeepFeedbackLearning_setLearningRateDiscountFactor(self, _learningRateDiscountFactor)
+
     def setMomentum(self, momentum: 'double') -> "void":
         return _deep_feedback_learning.DeepFeedbackLearning_setMomentum(self, momentum)
 
@@ -137,6 +140,9 @@ class DeepFeedbackLearning(_object):
 
     def getNumHidLayers(self) -> "int":
         return _deep_feedback_learning.DeepFeedbackLearning_getNumHidLayers(self)
+
+    def getNumLayers(self) -> "int":
+        return _deep_feedback_learning.DeepFeedbackLearning_getNumLayers(self)
 
     def getLayer(self, i: 'int') -> "Layer *":
         return _deep_feedback_learning.DeepFeedbackLearning_getLayer(self, i)
@@ -203,6 +209,9 @@ class Layer(_object):
 
     def setLearningRate(self, _learningRate: 'double') -> "void":
         return _deep_feedback_learning.Layer_setLearningRate(self, _learningRate)
+
+    def setActivationFunction(self, _activationFunction: 'Neuron::ActivationFunction') -> "void":
+        return _deep_feedback_learning.Layer_setActivationFunction(self, _activationFunction)
 
     def setMomentum(self, _momentum: 'double') -> "void":
         return _deep_feedback_learning.Layer_setMomentum(self, _momentum)
@@ -282,6 +291,16 @@ class Neuron(_object):
 
     def initWeights(self, *args) -> "void":
         return _deep_feedback_learning.Neuron_initWeights(self, *args)
+    LINEAR = _deep_feedback_learning.Neuron_LINEAR
+    TANH = _deep_feedback_learning.Neuron_TANH
+    RELU = _deep_feedback_learning.Neuron_RELU
+    REMAXLU = _deep_feedback_learning.Neuron_REMAXLU
+
+    def setActivationFunction(self, _activationFunction: 'Neuron::ActivationFunction') -> "void":
+        return _deep_feedback_learning.Neuron_setActivationFunction(self, _activationFunction)
+
+    def dActivation(self) -> "double":
+        return _deep_feedback_learning.Neuron_dActivation(self)
 
     def getMinWeightValue(self) -> "double":
         return _deep_feedback_learning.Neuron_getMinWeightValue(self)
@@ -298,16 +317,10 @@ class Neuron(_object):
     def getSum(self) -> "double":
         return _deep_feedback_learning.Neuron_getSum(self)
 
-    def getWeight(self, _index: 'int', _filter: 'int'=0) -> "double":
+    def getWeight(self, _index: 'int', _filter: 'int') -> "double":
         return _deep_feedback_learning.Neuron_getWeight(self, _index, _filter)
 
-    def getWeightChange(self, _index: 'int', _filter: 'int'=0) -> "double":
-        return _deep_feedback_learning.Neuron_getWeightChange(self, _index, _filter)
-
-    def getFilteredInput(self, _index: 'int', _filter: 'int'=0) -> "double":
-        return _deep_feedback_learning.Neuron_getFilteredInput(self, _index, _filter)
-
-    def setWeight(self, _index: 'int', _weight: 'double', _filter: 'int'=0) -> "void":
+    def setWeight(self, _index: 'int', _weight: 'double', _filter: 'int') -> "void":
         return _deep_feedback_learning.Neuron_setWeight(self, _index, _weight, _filter)
 
     def setError(self, _error: 'double') -> "void":
@@ -321,6 +334,12 @@ class Neuron(_object):
 
     def getInput(self, _index: 'int') -> "double":
         return _deep_feedback_learning.Neuron_getInput(self, _index)
+
+    def getBiasWeight(self) -> "double":
+        return _deep_feedback_learning.Neuron_getBiasWeight(self)
+
+    def setBiasWeight(self, _biasweight: 'double') -> "void":
+        return _deep_feedback_learning.Neuron_setBiasWeight(self, _biasweight)
 
     def setBias(self, _bias: 'double') -> "void":
         return _deep_feedback_learning.Neuron_setBias(self, _bias)
@@ -343,8 +362,8 @@ class Neuron(_object):
     def getAvgWeight(self, _input: 'int') -> "double":
         return _deep_feedback_learning.Neuron_getAvgWeight(self, _input)
 
-    def getAvgWeightCh(self, *args) -> "double":
-        return _deep_feedback_learning.Neuron_getAvgWeightCh(self, *args)
+    def getAvgWeightChange(self, *args) -> "double":
+        return _deep_feedback_learning.Neuron_getAvgWeightChange(self, *args)
 
     def setGeometry(self, _width: 'int', _height: 'int') -> "void":
         return _deep_feedback_learning.Neuron_setGeometry(self, _width, _height)
@@ -354,6 +373,15 @@ class Neuron(_object):
 
     def getMask(self, *args) -> "unsigned char":
         return _deep_feedback_learning.Neuron_getMask(self, *args)
+
+    def getEuclideanNormOfWeightVector(self) -> "double":
+        return _deep_feedback_learning.Neuron_getEuclideanNormOfWeightVector(self)
+
+    def getManhattanNormOfWeightVector(self) -> "double":
+        return _deep_feedback_learning.Neuron_getManhattanNormOfWeightVector(self)
+
+    def getAverageOfWeightVector(self) -> "double":
+        return _deep_feedback_learning.Neuron_getAverageOfWeightVector(self)
 
     def normaliseWeights(self) -> "void":
         return _deep_feedback_learning.Neuron_normaliseWeights(self)
