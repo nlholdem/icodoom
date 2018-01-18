@@ -31,8 +31,9 @@ deepBP = DeepFeedbackLearning(width * height, nHidden, 1, nFiltersInput, nFilter
 deepBP.initWeights(1.0, deep_feedback_learning.Neuron.MAX_OUTPUT_RANDOM)
 print ("Initialised weights")
 deepBP.setBias(1)
-deepBP.setAlgorithm(DeepFeedbackLearning.backprop)
+deepBP.setAlgorithm(DeepFeedbackLearning.ico)
 deepBP.setLearningRate(1E-3)
+#deepBP.setLearningRate(0.)
 deepBP.setMomentum(0.5)
 deepBP.seedRandom(89)
 deepBP.setUseDerivative(0)
@@ -107,8 +108,8 @@ def plotWeights():
             plt.pause(5.0)
 
 
-t1 = threading.Thread(target=plotWeights)
-t1.start()
+#t1 = threading.Thread(target=plotWeights)
+#t1.start()
 
 
 def getColourImbalance(img, colour):
@@ -345,6 +346,13 @@ def main():
     delta = 0.
     shoot = 0
 
+    # do simple linear regression to estimate the visual error / motor output gain.
+    # two elements, one for reflex, one for bot output:
+    deltaWts = np.zeros(2)
+    deltaLearningRate = 1E-1
+    deltaEst = 0.
+    deltaError = 0.
+
     reflexOn = False
     iter = 0
 
@@ -436,10 +444,15 @@ def main():
 
                     # we want the reflex to be delayed wrt to the image input, so that the image is. Otherwise the learning can
                     # never reduce the error to zero no matter how good the controller.
+
+                    oldDelta = delta
+
                     if (iter>2):
                         delta = (float(colourSteer) - float(imgCentre[0]))/float(width)
                     else:
                         delta = 0
+
+                    deltaDiff = delta - oldDelta
 
                     if(iter>2):
                         if(np.abs(delta) < 0.01):
@@ -458,6 +471,7 @@ def main():
                     deepBP.doStep(np.ndarray.flatten(input_buff), netErr)
 
                     netOut = deepBP.getOutput(0)
+                    print(deltaDiff, delta, netOut)
                     #print (" *** ", delta, delta + netOut, netGain*netOut)
 
                     diff_theta = 0.6 * max(min((icoInSteer), 5.), -5.)
