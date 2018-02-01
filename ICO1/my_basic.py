@@ -15,7 +15,8 @@ sys.path.append('./deep_feedback_learning')
 
 import numpy as np
 import cv2
-from deep_ico.deep_feedback_learning import DeepFeedbackLearning
+import deep_feedback_learning
+from deep_feedback_learning import DeepFeedbackLearning
 
 # Create DoomGame instance. It will run the game and communicate with you.
 game = DoomGame()

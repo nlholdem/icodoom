@@ -20,7 +20,8 @@ height = 120
 heightIn = 120
 nFiltersInput = 0
 nFiltersHidden = 0
-nHidden = [5]
+nHidden = [15]
+learningRate = 1e-3
 # nFiltersHidden = 0 means that the layer is linear without filters
 minT = 5
 maxT = 10
@@ -32,11 +33,15 @@ deepBP.initWeights(1.0, deep_feedback_learning.Neuron.MAX_OUTPUT_RANDOM)
 print ("Initialised weights")
 deepBP.setBias(1)
 deepBP.setAlgorithm(DeepFeedbackLearning.ico)
-deepBP.setLearningRate(1E-3)
+deepBP.setLearningRate(learningRate)
 #deepBP.setLearningRate(0.)
 deepBP.setMomentum(0.5)
 deepBP.seedRandom(89)
 deepBP.setUseDerivative(0)
+deepBP.setActivationFunction(deep_feedback_learning.Neuron.TANH)
+deepBP.getLayer(0).setNormaliseWeights(deep_feedback_learning.Layer.WEIGHT_NORM_NEURON)
+#deepBP.getLayer(1).setNormaliseWeights(deep_feedback_learning.Layer.WEIGHT_NORM_LAYER)
+
 
 
 preprocess_input_images = lambda x: x / 255. - 0.5
@@ -159,11 +164,6 @@ def getMaxColourPos(img, colour):
     else:
         bottomLeft = []
         topRight = []
-#    print("COLOUR: ", [indx1, indx0])
-
-#    cv2.imwrite("/home/paul/tmp/Images/Positive/rect-" + ".jpg", img)
-
-#    print ("Colour diff: ", np.mean(diff) - diff[indx0,indx1])
     return np.array([indx1, indx0]), bottomLeft, topRight, np.mean(diff) - diff[indx0,indx1]
 
 
@@ -179,10 +179,8 @@ def savePosImage(curr_step, centre, x1, y1, x2, y2, _img, myFile, width, height)
 
 def saveNegImage(curr_step, img2, myFile, width, height):
     myFile.write("/home/paul/tmp/Images/" + str(curr_step) + ".jpg\n")
-#    img2 = np.rollaxis(img2, 0, 3)
     img = Image.fromarray(img2)
     img.save("/home/paul/tmp/Images/Negative/" + str(curr_step) + ".jpg")
-#    np.save('/home/paul/tmp/Images/Negative/' + str(curr_step), img2)
 
 def main():
     ## Simulator
@@ -262,24 +260,12 @@ def main():
 
     agent_args['state_meas_shape'] = (len(agent_args['meas_for_net']),)
 
-#    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
-#    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, log_device_placement=False))
-
-#    agent = Agent(sess, agent_args)
-#    agent.load('/home/paul/Dev/GameAI/vizdoom_cig2017/icolearner/ICO1/checkpoints/ICO-8600')
-#    print("model loaded..")
-
-    #    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
-#    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, log_device_placement=False))
-
     img_buffer = np.zeros(
         (historyLen, simulator.resolution[1], simulator.resolution[0], num_channels), dtype='uint8')
 
     meas_buffer = np.zeros((historyLen, simulator.num_meas))
     act_buffer = np.zeros((historyLen, 7))
-    act_buffer_ico = np.zeros((agent_args['history_length_ico'], 7))
     curr_step = 0
-    old_step = -1
     term = False
 
     print ("state_meas_shape: ", meas_buffer.shape, " == ", agent_args['state_meas_shape'])
@@ -301,10 +287,7 @@ def main():
         print("No checkpoint found...")
 
 
-    diff_y = 0
-    diff_x = 0
     diff_z = 0
-    diff_theta = 0
     iter = 1
     epoch = 200
     radialFlowLeft = 30.
@@ -314,12 +297,10 @@ def main():
     rotationGain = 50.
     errorThresh = 10.
     updatePtsFreq = 50
-    skipImage = 1
-    skipImageICO = 5
-    reflexGain = 1E-4
+    reflexGain = 1E-3
     flowGain = 0.
     netGain = 10.
-    oldHealth = 0.
+    reflexReduceGain = -0.01
 
     # create masks for left and right visual fields - note that these only cover the upper half of the image
     # this is to help prevent the tracking getting confused by the floor pattern
@@ -346,16 +327,9 @@ def main():
     delta = 0.
     shoot = 0
 
-    # do simple linear regression to estimate the visual error / motor output gain.
-    # two elements, one for reflex, one for bot output:
-    deltaWts = np.zeros(2)
-    deltaLearningRate = 1E-1
-    deltaEst = 0.
-    deltaError = 0.
-
     reflexOn = False
     iter = 0
-
+    killed = False
     deepBP.saveModel("Models/hack.txt")
 
     while not term:
@@ -411,11 +385,29 @@ def main():
 
             if curr_step > 100:
                 health = meas[1]
+                if curr_step == 10000:
+                    g = open("/home/paul/Dev/GameAI/vizdoom_cig2017/KD.txt", "a")
+                    g.write("Learning on\n")
+                    g.close()
+
+                if curr_step < 10000:
+                    learningRate = 0.
+                else:
+                    learningRate = 1e-3
 
                 if (health<0.1):
                     reflexOn = False
                     iter = 0
 
+
+                if (simulator._game.is_player_dead()) and killed == False:
+                    g = open("/home/paul/Dev/GameAI/vizdoom_cig2017/KD.txt", "a")
+                    g.write("0\n")
+                    g.close()
+                    killed = True
+                    print("KILLED")
+                if (not(simulator._game.is_player_dead())):
+                    killed = False
 
                 # Don't run any networks when the player is dead!
                 if (health < 101. and health > 0.):
@@ -425,17 +417,13 @@ def main():
 
                     centre, bottomLeft, topRight, colourStrength = getMaxColourPos(stateImg, [255, 0, 0])
                     colourSteer = imgCentre[0]
-                    cheatInputs = stateImg*1.
 
                     if(len(bottomLeft)>0 and len(topRight)>0 and ((topRight[0] - bottomLeft[0]) < width/3) and ((topRight[1] - bottomLeft[1]) < height/2)):
                         colourSteer = bottomLeft[0] + int(0.5 * (topRight[0] - bottomLeft[0]))
+                        shoot = 1
 #                        cv2.imwrite("/home/paul/tmp/Backup/rect-" + str(curr_step) + ".jpg", cheatInputs)
 
-#                    cv2.arrowedLine(cheatInputs, (colourSteer, imgCentre[1]+10), (colourSteer, imgCentre[1]), color=(255,255,255), thickness=2)
-
                     rawInputs = np.array(np.sum(stateImg, axis=2) / 3)
-                    cheatInputs = np.array(np.sum(cheatInputs, axis=2) / 3)
-#                    cv2.imwrite("/home/paul/tmp/Backup/cheat-" + str(curr_step) + ".jpg", cheatInputs)
 #                    cv2.imwrite("/home/paul/tmp/Backup/raw-" + str(curr_step) + ".jpg", rawInputs)
 
                     input_buff[:] = np.ndarray.flatten(rawInputs)
@@ -446,50 +434,51 @@ def main():
                     # never reduce the error to zero no matter how good the controller.
 
                     oldDelta = delta
-
                     if (iter>2):
                         delta = (float(colourSteer) - float(imgCentre[0]))/float(width)
                     else:
                         delta = 0
 
                     deltaDiff = delta - oldDelta
-
                     if(iter>2):
-                        if(np.abs(delta) < 0.01):
-                            shoot = 1
+                        if(np.abs(delta) > 0.01):
+                            shoot = 0
 
                     netErr[:] = delta
                     target_buff[...] = delta + netOut
-#                    target_buff[...] = delta
-
-#                    target_buff[...] = 0.2
                     meas_buff[0,:] = meas
 
                     if(deepBP.getAlgorithm() == DeepFeedbackLearning.backprop):
                         netErr = netErr[0:1]
 
+                    deepBP.setLearningRate(0.)
                     deepBP.doStep(np.ndarray.flatten(input_buff), netErr)
-
                     netOut = deepBP.getOutput(0)
-                    print(deltaDiff, delta, netOut)
-                    #print (" *** ", delta, delta + netOut, netGain*netOut)
+                    netErr += reflexReduceGain * netGain * netOut
+
+                    deepBP.setLearningRate(learningRate)
+                    deepBP.doStep(np.ndarray.flatten(input_buff), netErr)
+                    netOut = deepBP.getOutput(0)
+
+#                    print("%s" % (" SHOOT " if shoot == 1 else "       "), deltaDiff, delta, netOut)
+                    print (curr_step, delta, netGain*netOut)
 
                     diff_theta = 0.6 * max(min((icoInSteer), 5.), -5.)
 
                     netErr[:] = 0.
                     diff_theta = diff_theta + reflexGain * colourStrength * delta
+#                    diff_z = -1.
 
                     curr_act = np.zeros(7).tolist()
                     curr_act[0] = 0
                     curr_act[1] = 0
-                    curr_act[2] = 0 #shoot
+                    curr_act[2] = shoot
                     curr_act[3] = curr_act[3] + diff_z
                     curr_act[4] = 0
                     curr_act[5] = 0.
                     curr_act[6] = diff_theta + netGain*netOut
 
                     iter += 1
-
 
             if (curr_step % epoch == 0):
 
